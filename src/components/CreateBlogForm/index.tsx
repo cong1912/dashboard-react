@@ -13,6 +13,12 @@ import { Box } from '@mui/system';
 import { DropzoneArea } from 'material-ui-dropzone';
 import { useQuill } from 'react-quilljs';
 import 'react-quill/dist/quill.snow.css';
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle
+} from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -38,7 +44,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-const CreateBlogForm = () => {
+const CreateBlogForm = ({ open, handleClose }) => {
   const classes = useStyles();
   const { quill, quillRef } = useQuill();
   const fileInput = useRef();
@@ -59,35 +65,43 @@ const CreateBlogForm = () => {
   };
 
   return (
-    <Paper className={classes.pageContent}>
-      <form className={classes.root}>
-        <Grid container>
-          <Grid item xs={6}>
-            <TextField variant="outlined" label="Title" value="" />
-            <TextField variant="outlined" label="Description" value="" />
-            <Box>
-              <div ref={quillRef} style={{ height: 110 }} />
-            </Box>
-          </Grid>
-          <Grid item xs={6}>
-            <FormControl>
-              <FormLabel>Thumb</FormLabel>
-              <DropzoneArea onChange={handleChange} />
-            </FormControl>
-            <Box>
-              <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                className={classes.label}
-              >
-                Submit
-              </Button>
-            </Box>
-          </Grid>
-        </Grid>
-      </form>
-    </Paper>
+    <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="xl">
+      <DialogTitle>Create New Blog</DialogTitle>
+      <DialogContent>
+        <Paper className={classes.pageContent}>
+          <form className={classes.root}>
+            <Grid container>
+              <Grid item xs={6}>
+                <TextField variant="outlined" label="Title" value="" />
+                <TextField variant="outlined" label="Description" value="" />
+                <Box>
+                  <div ref={quillRef} style={{ height: 110 }} />
+                </Box>
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl>
+                  <FormLabel>Thumb</FormLabel>
+                  <DropzoneArea onChange={handleChange} />
+                </FormControl>
+                <Box>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    className={classes.label}
+                  >
+                    Submit
+                  </Button>
+                </Box>
+              </Grid>
+            </Grid>
+          </form>
+        </Paper>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>Cancel</Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 

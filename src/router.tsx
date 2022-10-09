@@ -30,6 +30,7 @@ const Messenger = Loader(
 const Transactions = Loader(
   lazy(() => import('src/content/applications/Transactions'))
 );
+const BlogManager = Loader(lazy(() => import('src/content/applications/Blog')));
 const UserProfile = Loader(
   lazy(() => import('src/content/applications/Users/profile'))
 );
@@ -78,9 +79,6 @@ const StatusMaintenance = Loader(
 
 //Authen
 const LoginPage = Loader(lazy(() => import('src/content/authentication')));
-const CreatBlogForm = Loader(
-  lazy(() => import('src/components/CreateBlogForm'))
-);
 
 const routes: RouteObject[] = [
   {
@@ -137,16 +135,6 @@ const routes: RouteObject[] = [
     ]
   },
   {
-    path: '/creatblogform',
-    element: <BaseLayout />,
-    children: [
-      {
-        path: '',
-        element: <CreatBlogForm />
-      }
-    ]
-  },
-  {
     path: 'dashboards',
     element: <SidebarLayout />,
     children: [
@@ -175,6 +163,10 @@ const routes: RouteObject[] = [
       {
         path: 'transactions',
         element: <Transactions />
+      },
+      {
+        path: 'blog',
+        element: <BlogManager />
       },
       {
         path: 'profile',
