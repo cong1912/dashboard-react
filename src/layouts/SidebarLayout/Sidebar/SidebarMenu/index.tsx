@@ -253,6 +253,17 @@ function SidebarMenu() {
                   BLog List
                 </Button>
               </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/management/category-blog"
+                  startIcon={<TableChartTwoToneIcon />}
+                >
+                  Category BLog
+                </Button>
+              </ListItem>
             </List>
           </SubMenuWrapper>
         </List>
@@ -275,6 +286,39 @@ function SidebarMenu() {
                   startIcon={<TableChartTwoToneIcon />}
                 >
                   Transactions List
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/management/courses"
+                  startIcon={<TableChartTwoToneIcon />}
+                >
+                  Course List
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/management/faqs"
+                  startIcon={<TableChartTwoToneIcon />}
+                >
+                  FAQ List
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/management/user-manager"
+                  startIcon={<TableChartTwoToneIcon />}
+                >
+                  User List
                 </Button>
               </ListItem>
             </List>

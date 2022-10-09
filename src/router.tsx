@@ -30,7 +30,6 @@ const Messenger = Loader(
 const Transactions = Loader(
   lazy(() => import('src/content/applications/Transactions'))
 );
-const BlogManager = Loader(lazy(() => import('src/content/applications/Blog')));
 const UserProfile = Loader(
   lazy(() => import('src/content/applications/Users/profile'))
 );
@@ -79,6 +78,23 @@ const StatusMaintenance = Loader(
 
 //Authen
 const LoginPage = Loader(lazy(() => import('src/content/authentication')));
+
+// Categories
+const CategoryBlog = Loader(
+  lazy(() => import('src/content/applications/Categories'))
+);
+const BlogManager = Loader(lazy(() => import('src/content/applications/Blog')));
+
+//Courses
+const Courses = Loader(lazy(() => import('src/content/applications/Courses')));
+
+// FAQ
+const FAQ = Loader(lazy(() => import('src/content/applications/FAQs')));
+
+// UserManager
+const UserManager = Loader(
+  lazy(() => import('src/content/applications/UserManager'))
+);
 
 const routes: RouteObject[] = [
   {
@@ -167,6 +183,22 @@ const routes: RouteObject[] = [
       {
         path: 'blog',
         element: <BlogManager />
+      },
+      {
+        path: 'category-blog',
+        element: <CategoryBlog />
+      },
+      {
+        path: 'courses',
+        element: <Courses />
+      },
+      {
+        path: 'faqs',
+        element: <FAQ />
+      },
+      {
+        path: 'user-manager',
+        element: <UserManager />
       },
       {
         path: 'profile',
