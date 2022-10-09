@@ -78,6 +78,9 @@ const StatusMaintenance = Loader(
 
 //Authen
 const LoginPage = Loader(lazy(() => import('src/content/authentication')));
+const CreatBlogForm = Loader(
+  lazy(() => import('src/components/CreateBlogForm'))
+);
 
 const routes: RouteObject[] = [
   {
@@ -130,6 +133,16 @@ const routes: RouteObject[] = [
       {
         path: '',
         element: <LoginPage />
+      }
+    ]
+  },
+  {
+    path: '/creatblogform',
+    element: <BaseLayout />,
+    children: [
+      {
+        path: '',
+        element: <CreatBlogForm />
       }
     ]
   },
