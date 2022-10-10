@@ -1,4 +1,4 @@
-import { Copyright } from '@mui/icons-material';
+import React from 'react';
 import {
   Box,
   Button,
@@ -8,19 +8,18 @@ import {
   Link,
   TextField
 } from '@mui/material';
-import React from 'react';
 
-const LoginForm = () => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password')
-    });
-  };
+const LoginForm = ({
+  requesting,
+  errorEmailField,
+  errorPasswordField,
+  loginAccount,
+  handleChangeEmail,
+  handleChangePassword,
+  handleSubmitForm
+}) => {
   return (
-    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+    <Box component="form" noValidate onSubmit={handleSubmitForm} sx={{ mt: 1 }}>
       <TextField
         margin="normal"
         required
@@ -30,6 +29,10 @@ const LoginForm = () => {
         name="email"
         autoComplete="email"
         autoFocus
+        onChange={handleChangeEmail}
+        value={loginAccount.email}
+        error={Boolean(errorEmailField)}
+        helperText={errorEmailField?.error}
       />
       <TextField
         margin="normal"
@@ -40,12 +43,22 @@ const LoginForm = () => {
         type="password"
         id="password"
         autoComplete="current-password"
+        onChange={handleChangePassword}
+        value={loginAccount.password}
+        error={Boolean(errorPasswordField)}
+        helperText={errorPasswordField?.error}
       />
       <FormControlLabel
         control={<Checkbox value="remember" color="primary" />}
         label="Remember me"
       />
-      <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+      <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        disabled={requesting}
+        sx={{ mt: 3, mb: 2 }}
+      >
         Sign In
       </Button>
       <Grid container>
@@ -60,7 +73,6 @@ const LoginForm = () => {
           </Link>
         </Grid>
       </Grid>
-      <Copyright sx={{ mt: 5 }} />
     </Box>
   );
 };

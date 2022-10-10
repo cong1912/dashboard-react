@@ -1,32 +1,89 @@
-import React from 'react';
+import React, { useState, ChangeEvent, useContext } from 'react';
 import LoginForm from '../pages/Components/LoginForm';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Avatar, CssBaseline, Grid, Link, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import Paper from '@mui/material/Paper';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import Validator from 'input-field-validator';
+import { login } from 'src/services/AuthService';
+import { ErrorField } from 'src/interfaces/ErrorField';
+import { Navigate, NavigateFunction, useNavigate } from 'react-router';
+import { ERROR_ACTION } from 'src/reduces/ErrrorsReducer';
+import { AppContext } from 'src/AppProvider';
+import { AppContextType } from 'src/interfaces/AppContextType';
+import { UserSession } from 'src/interfaces/User';
 
 const theme = createTheme();
 
 const index = () => {
+  const [requesting, setRequesting] = useState<boolean>(false);
+  let navigate: NavigateFunction = useNavigate();
+  const appContext = useContext(AppContext) as AppContextType;
+  const { errorsReducer } = appContext;
+  const [errors, errorDispatch] = errorsReducer;
+  const [loginAccount, setLoginAccount] = useState({
+    email: '',
+    password: ''
+  });
+  const [errorField, setErrorField] = useState<ErrorField[]>([]);
+
+  const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
+    setLoginAccount({ ...loginAccount, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmitForm = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setRequesting(true);
+
+    try {
+      const validation = new Validator(
+        { email: loginAccount.email, password: loginAccount.password },
+        {
+          email: ['required', 'email', 'lowercase'],
+          password: ['required', 'minlength:8']
+        }
+      );
+      const valid = validation.validate();
+      if (!valid) {
+        setErrorField(validation.fieldErrors);
+        errorDispatch({
+          type: ERROR_ACTION.SET_ERROR,
+          error: 'Error input'
+        });
+        setRequesting(false);
+        return;
+      }
+
+      setErrorField([]);
+
+      const response: { data: UserSession } = await login({
+        email: loginAccount.email,
+        password: loginAccount.password
+      });
+
+      localStorage.setItem('token', JSON.stringify(response.data.token));
+      navigate('/dashboards/crypto');
+      setLoginAccount({
+        email: '',
+        password: ''
+      });
+    } catch (error) {
+      errorDispatch({
+        type: ERROR_ACTION.SET_ERROR,
+        error: (error as Error).message
+      });
+      setRequesting(false);
+    }
+  };
+
+  const errorEmailField: ErrorField | undefined = errorField.find(
+    (element: { field: string; error: string }) => element.field == 'email'
+  );
+  const errorPasswordField: ErrorField | undefined = errorField.find(
+    (element: { field: string; error: string }) => element.field == 'password'
+  );
+
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: '100vh' }}>
@@ -63,7 +120,15 @@ const index = () => {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            <LoginForm />
+            <LoginForm
+              requesting={requesting}
+              errorEmailField={errorEmailField}
+              errorPasswordField={errorPasswordField}
+              loginAccount={loginAccount}
+              handleChangeEmail={handleChangeValue}
+              handleChangePassword={handleChangeValue}
+              handleSubmitForm={handleSubmitForm}
+            />
           </Box>
         </Grid>
       </Grid>

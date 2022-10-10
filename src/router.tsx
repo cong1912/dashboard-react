@@ -7,12 +7,17 @@ import BaseLayout from 'src/layouts/BaseLayout';
 
 import SuspenseLoader from 'src/components/SuspenseLoader';
 
-const Loader = (Component) => (props) =>
-  (
+const Loader = (Component) => (props) => {
+  const token = localStorage.getItem('token');
+
+  return token ? (
     <Suspense fallback={<SuspenseLoader />}>
       <Component {...props} />
     </Suspense>
+  ) : (
+    <Navigate to="/login" />
   );
+};
 
 // Pages
 
