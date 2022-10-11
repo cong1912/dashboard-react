@@ -92,8 +92,9 @@ const FAQ = Loader(lazy(() => import('src/content/applications/FAQs')));
 const UserManager = Loader(
   lazy(() => import('src/content/applications/UserManager'))
 );
+const LoginPage = Loader(lazy(() => import('src/content/authentication')));
 
-const AuthRoutes = (isLoggedIn: boolean) => [
+const routes = (isLoggedIn: boolean) => [
   {
     path: '',
     element: isLoggedIn ? <BaseLayout /> : <Navigate to="/login" />,
@@ -251,7 +252,17 @@ const AuthRoutes = (isLoggedIn: boolean) => [
         element: <Forms />
       }
     ]
+  },
+  {
+    path: '/login',
+    element: <BaseLayout />,
+    children: [
+      {
+        path: '',
+        element: <LoginPage />
+      }
+    ]
   }
 ];
 
-export default AuthRoutes;
+export default routes;
