@@ -76,9 +76,6 @@ const StatusMaintenance = Loader(
   lazy(() => import('src/content/pages/Status/Maintenance'))
 );
 
-//Authen
-const LoginPage = Loader(lazy(() => import('src/content/authentication')));
-
 // Categories
 const CategoryBlog = Loader(
   lazy(() => import('src/content/applications/Categories'))
@@ -96,10 +93,10 @@ const UserManager = Loader(
   lazy(() => import('src/content/applications/UserManager'))
 );
 
-const routes: RouteObject[] = [
+const AuthRoutes = (isLoggedIn: boolean) => [
   {
     path: '',
-    element: <BaseLayout />,
+    element: isLoggedIn ? <BaseLayout /> : <Navigate to="/login" />,
     children: [
       {
         path: '/',
@@ -141,18 +138,8 @@ const routes: RouteObject[] = [
     ]
   },
   {
-    path: '/login',
-    element: <BaseLayout />,
-    children: [
-      {
-        path: '',
-        element: <LoginPage />
-      }
-    ]
-  },
-  {
     path: 'dashboards',
-    element: <SidebarLayout />,
+    element: isLoggedIn ? <SidebarLayout /> : <Navigate to="/login" />,
     children: [
       {
         path: '',
@@ -170,7 +157,7 @@ const routes: RouteObject[] = [
   },
   {
     path: 'management',
-    element: <SidebarLayout />,
+    element: isLoggedIn ? <SidebarLayout /> : <Navigate to="/login" />,
     children: [
       {
         path: '',
@@ -221,7 +208,7 @@ const routes: RouteObject[] = [
   },
   {
     path: '/components',
-    element: <SidebarLayout />,
+    element: isLoggedIn ? <SidebarLayout /> : <Navigate to="/login" />,
     children: [
       {
         path: '',
@@ -267,4 +254,4 @@ const routes: RouteObject[] = [
   }
 ];
 
-export default routes;
+export default AuthRoutes;
