@@ -6,16 +6,21 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 import { CssBaseline } from '@mui/material';
 import ThemeProvider from './theme/ThemeProvider';
+import { AppProvider } from './AppProvider';
+import ErrorSnackbar from './content/pages/Components/ErrorSnackbar';
 
 function App() {
   const content = useRoutes(router);
 
   return (
     <ThemeProvider>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <CssBaseline />
-        {content}
-      </LocalizationProvider>
+      <AppProvider>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <CssBaseline />
+          {content}
+        </LocalizationProvider>
+        <ErrorSnackbar />
+      </AppProvider>
     </ThemeProvider>
   );
 }

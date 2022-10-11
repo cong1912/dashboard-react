@@ -6,6 +6,7 @@ import 'nprogress/nprogress.css';
 import App from 'src/App';
 import { SidebarProvider } from 'src/contexts/SidebarContext';
 import * as serviceWorker from 'src/serviceWorker';
+import './services/index';
 
 ReactDOM.render(
   <HelmetProvider>
