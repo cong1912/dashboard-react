@@ -76,9 +76,6 @@ const StatusMaintenance = Loader(
   lazy(() => import('src/content/pages/Status/Maintenance'))
 );
 
-//Authen
-const LoginPage = Loader(lazy(() => import('src/content/authentication')));
-
 // Categories
 const CategoryBlog = Loader(
   lazy(() => import('src/content/applications/Categories'))
@@ -96,7 +93,7 @@ const UserManager = Loader(
   lazy(() => import('src/content/applications/UserManager'))
 );
 
-const routes: RouteObject[] = [
+const AuthRoutes: RouteObject[] = [
   {
     path: '',
     element: <BaseLayout />,
@@ -137,16 +134,6 @@ const routes: RouteObject[] = [
       {
         path: '*',
         element: <Status404 />
-      }
-    ]
-  },
-  {
-    path: '/login',
-    element: <BaseLayout />,
-    children: [
-      {
-        path: '',
-        element: <LoginPage />
       }
     ]
   },
@@ -267,4 +254,4 @@ const routes: RouteObject[] = [
   }
 ];
 
-export default routes;
+export default AuthRoutes;

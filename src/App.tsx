@@ -1,5 +1,6 @@
 import { useRoutes } from 'react-router-dom';
-import router from 'src/router';
+import AuthRoutes from 'src/routers/authRouter';
+import UnAuthRoutes from 'src/routers/unAuthRouter';
 
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -10,14 +11,18 @@ import { AppProvider } from './AppProvider';
 import ErrorSnackbar from './content/pages/Components/ErrorSnackbar';
 
 function App() {
-  const content = useRoutes(router);
+  const authRouter = useRoutes(AuthRoutes);
+  console.log(authRouter);
+  const unAuthRouter = useRoutes(UnAuthRoutes);
 
   return (
     <ThemeProvider>
       <AppProvider>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <CssBaseline />
-          {content}
+          {unAuthRouter}
+
+          {authRouter}
         </LocalizationProvider>
         <ErrorSnackbar />
       </AppProvider>
