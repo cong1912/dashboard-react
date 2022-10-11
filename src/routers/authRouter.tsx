@@ -93,10 +93,10 @@ const UserManager = Loader(
   lazy(() => import('src/content/applications/UserManager'))
 );
 
-const AuthRoutes: RouteObject[] = [
+const AuthRoutes = (isLoggedIn: boolean) => [
   {
     path: '',
-    element: <BaseLayout />,
+    element: isLoggedIn ? <BaseLayout /> : <Navigate to="/login" />,
     children: [
       {
         path: '/',
@@ -139,7 +139,7 @@ const AuthRoutes: RouteObject[] = [
   },
   {
     path: 'dashboards',
-    element: <SidebarLayout />,
+    element: isLoggedIn ? <SidebarLayout /> : <Navigate to="/login" />,
     children: [
       {
         path: '',
@@ -157,7 +157,7 @@ const AuthRoutes: RouteObject[] = [
   },
   {
     path: 'management',
-    element: <SidebarLayout />,
+    element: isLoggedIn ? <SidebarLayout /> : <Navigate to="/login" />,
     children: [
       {
         path: '',
@@ -208,7 +208,7 @@ const AuthRoutes: RouteObject[] = [
   },
   {
     path: '/components',
-    element: <SidebarLayout />,
+    element: isLoggedIn ? <SidebarLayout /> : <Navigate to="/login" />,
     children: [
       {
         path: '',

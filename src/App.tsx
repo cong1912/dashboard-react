@@ -11,9 +11,12 @@ import { AppProvider } from './AppProvider';
 import ErrorSnackbar from './content/pages/Components/ErrorSnackbar';
 
 function App() {
-  const authRouter = useRoutes(AuthRoutes);
-  console.log(authRouter);
+  const existedUserSession = JSON.parse(
+    localStorage.getItem('token') || 'null'
+  );
+  const authRouter = useRoutes(AuthRoutes(Boolean(existedUserSession)));
   const unAuthRouter = useRoutes(UnAuthRoutes);
+  console.log('use', Boolean(existedUserSession));
 
   return (
     <ThemeProvider>

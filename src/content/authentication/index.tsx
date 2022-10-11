@@ -5,7 +5,7 @@ import { Avatar, CssBaseline, Grid, Link, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import Paper from '@mui/material/Paper';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Validator from 'input-field-validator';
+// import Validator from 'input-field-validator';
 import { login } from 'src/services/AuthService';
 import { ErrorField } from 'src/interfaces/ErrorField';
 import { Navigate, NavigateFunction, useNavigate } from 'react-router';
@@ -37,23 +37,23 @@ const index = () => {
     setRequesting(true);
 
     try {
-      const validation = new Validator(
-        { email: loginAccount.email, password: loginAccount.password },
-        {
-          email: ['required', 'email', 'lowercase'],
-          password: ['required', 'minlength:8']
-        }
-      );
-      const valid = validation.validate();
-      if (!valid) {
-        setErrorField(validation.fieldErrors);
-        errorDispatch({
-          type: ERROR_ACTION.SET_ERROR,
-          error: 'Error input'
-        });
-        setRequesting(false);
-        return;
-      }
+      // const validation = new Validator(
+      //   { email: loginAccount.email, password: loginAccount.password },
+      //   {
+      //     email: ['required', 'email', 'lowercase'],
+      //     password: ['required', 'minlength:8']
+      //   }
+      // );
+      // const valid = validation.validate();
+      // if (!valid) {
+      //   setErrorField(validation.fieldErrors);
+      //   errorDispatch({
+      //     type: ERROR_ACTION.SET_ERROR,
+      //     error: 'Error input'
+      //   });
+      //   setRequesting(false);
+      //   return;
+      // }
 
       setErrorField([]);
 
