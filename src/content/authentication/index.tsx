@@ -71,7 +71,7 @@ const index = () => {
     } catch (error) {
       errorDispatch({
         type: ERROR_ACTION.SET_ERROR,
-        error: (error as Error).message
+        error: error.response.data.message
       });
       setRequesting(false);
     }

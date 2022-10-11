@@ -6,11 +6,7 @@ import 'nprogress/nprogress.css';
 import App from 'src/App';
 import { SidebarProvider } from 'src/contexts/SidebarContext';
 import * as serviceWorker from 'src/serviceWorker';
-import axios from 'axios';
-
-axios.defaults.baseURL = process.env.REACT_APP_API_END_POINT;
-axios.defaults.headers.common['Authorization'] =
-  'Bearer ' + localStorage.getItem('token');
+import './services/index';
 
 ReactDOM.render(
   <HelmetProvider>

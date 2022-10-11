@@ -13,15 +13,15 @@ function App() {
   const content = useRoutes(router);
 
   return (
-    <AppProvider>
-      <ThemeProvider>
+    <ThemeProvider>
+      <AppProvider>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <CssBaseline />
           {content}
         </LocalizationProvider>
-      </ThemeProvider>
-      <ErrorSnackbar />
-    </AppProvider>
+        <ErrorSnackbar />
+      </AppProvider>
+    </ThemeProvider>
   );
 }
 export default App;
