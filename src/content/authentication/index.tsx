@@ -1,88 +1,62 @@
-import React, { useState, ChangeEvent, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import LoginForm from '../pages/Components/LoginForm';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Avatar, CssBaseline, Grid, Link, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import Paper from '@mui/material/Paper';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-// import Validator from 'input-field-validator';
 import { login } from 'src/services/AuthService';
-import { ErrorField } from 'src/interfaces/ErrorField';
-import { Navigate, NavigateFunction, useNavigate } from 'react-router';
+import { NavigateFunction, useNavigate } from 'react-router';
 import { ERROR_ACTION } from 'src/reduces/ErrrorsReducer';
 import { AppContext } from 'src/AppProvider';
 import { AppContextType } from 'src/interfaces/AppContextType';
 import { UserSession } from 'src/interfaces/User';
-
+import * as yup from 'yup';
 const theme = createTheme();
+import { useFormik } from 'formik';
+
+const validationSchema = yup.object({
+  email: yup
+    .string()
+    .email('Enter a valid email')
+    .required('Email is required'),
+  password: yup
+    .string()
+    .min(8, 'Password should be of minimum 8 characters length')
+    .required('Password is required')
+});
 
 const index = () => {
-  const [requesting, setRequesting] = useState<boolean>(false);
   let navigate: NavigateFunction = useNavigate();
+  const [requesting, setRequesting] = useState<boolean>(false);
   const appContext = useContext(AppContext) as AppContextType;
   const { errorsReducer } = appContext;
   const [errors, errorDispatch] = errorsReducer;
-  const [loginAccount, setLoginAccount] = useState({
-    email: '',
-    password: ''
-  });
-  const [errorField, setErrorField] = useState<ErrorField[]>([]);
 
-  const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
-    setLoginAccount({ ...loginAccount, [e.target.name]: e.target.value });
-  };
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: ''
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (values, { resetForm }) => {
+      setRequesting(true);
 
-  const handleSubmitForm = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setRequesting(true);
+      try {
+        const response: { data: UserSession } = await login(values);
+        localStorage.setItem('token', JSON.stringify(response.data.token));
+        navigate('/dashboards/crypto');
+        resetForm();
+      } catch (error) {
+        errorDispatch({
+          type: ERROR_ACTION.SET_ERROR,
+          error: error.response.data.message
+        });
 
-    try {
-      // const validation = new Validator(
-      //   { email: loginAccount.email, password: loginAccount.password },
-      //   {
-      //     email: ['required', 'email', 'lowercase'],
-      //     password: ['required', 'minlength:8']
-      //   }
-      // );
-      // const valid = validation.validate();
-      // if (!valid) {
-      //   setErrorField(validation.fieldErrors);
-      //   errorDispatch({
-      //     type: ERROR_ACTION.SET_ERROR,
-      //     error: 'Error input'
-      //   });
-      //   setRequesting(false);
-      //   return;
-      // }
-
-      setErrorField([]);
-
-      const response: { data: UserSession } = await login({
-        email: loginAccount.email,
-        password: loginAccount.password
-      });
-
-      localStorage.setItem('token', JSON.stringify(response.data.token));
-      navigate('/dashboards/crypto');
-      setLoginAccount({
-        email: '',
-        password: ''
-      });
-    } catch (error) {
-      errorDispatch({
-        type: ERROR_ACTION.SET_ERROR,
-        error: error.response.data.message
-      });
-      setRequesting(false);
+        setRequesting(false);
+      }
     }
-  };
-
-  const errorEmailField: ErrorField | undefined = errorField.find(
-    (element: { field: string; error: string }) => element.field == 'email'
-  );
-  const errorPasswordField: ErrorField | undefined = errorField.find(
-    (element: { field: string; error: string }) => element.field == 'password'
-  );
+  });
 
   return (
     <ThemeProvider theme={theme}>
@@ -120,15 +94,7 @@ const index = () => {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            <LoginForm
-              requesting={requesting}
-              errorEmailField={errorEmailField}
-              errorPasswordField={errorPasswordField}
-              loginAccount={loginAccount}
-              handleChangeEmail={handleChangeValue}
-              handleChangePassword={handleChangeValue}
-              handleSubmitForm={handleSubmitForm}
-            />
+            <LoginForm requesting={requesting} formik={formik} />
           </Box>
         </Grid>
       </Grid>

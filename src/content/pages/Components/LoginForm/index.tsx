@@ -9,17 +9,9 @@ import {
   TextField
 } from '@mui/material';
 
-const LoginForm = ({
-  requesting,
-  errorEmailField,
-  errorPasswordField,
-  loginAccount,
-  handleChangeEmail,
-  handleChangePassword,
-  handleSubmitForm
-}) => {
+const LoginForm = ({ requesting, formik }) => {
   return (
-    <Box component="form" noValidate onSubmit={handleSubmitForm} sx={{ mt: 1 }}>
+    <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 1 }}>
       <TextField
         margin="normal"
         required
@@ -29,10 +21,10 @@ const LoginForm = ({
         name="email"
         autoComplete="email"
         autoFocus
-        onChange={handleChangeEmail}
-        value={loginAccount.email}
-        error={Boolean(errorEmailField)}
-        helperText={errorEmailField?.error}
+        value={formik.values.email}
+        onChange={formik.handleChange}
+        error={formik.touched.email && Boolean(formik.errors.email)}
+        helperText={formik.touched.email && formik.errors.email}
       />
       <TextField
         margin="normal"
@@ -43,10 +35,10 @@ const LoginForm = ({
         type="password"
         id="password"
         autoComplete="current-password"
-        onChange={handleChangePassword}
-        value={loginAccount.password}
-        error={Boolean(errorPasswordField)}
-        helperText={errorPasswordField?.error}
+        value={formik.values.password}
+        onChange={formik.handleChange}
+        error={formik.touched.password && Boolean(formik.errors.password)}
+        helperText={formik.touched.password && formik.errors.password}
       />
       <FormControlLabel
         control={<Checkbox value="remember" color="primary" />}
