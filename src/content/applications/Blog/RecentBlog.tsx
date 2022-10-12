@@ -4,6 +4,7 @@ import BlogTable from './BlogTable';
 import { subDays } from 'date-fns';
 
 function RecentBlogs({
+  blogs,
   handleClickOpenDialog,
   handleClose,
   handleOpenDeleteDialog

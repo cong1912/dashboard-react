@@ -19,21 +19,19 @@ import {
   DialogContent,
   DialogTitle
 } from '@material-ui/core';
+import QuillInput from '../QuillInput';
+import BlogManager from 'src/content/applications/Blog';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     '& .MuiFormControl-root': {
-      width: '80%',
+      width: '90%',
       margin: theme.spacing(1)
     },
     '& .MuiBox-root': {
-      width: '80%',
+      width: '90%',
       margin: theme.spacing(1)
     }
-  },
-  pageContent: {
-    margin: theme.spacing(5),
-    padding: theme.spacing(5)
   },
   btn: {
     margin: theme.spacing(0.5)
@@ -44,18 +42,25 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-const CreateBlogForm = ({ open, handleClose }) => {
+const CreateBlogForm = ({
+  open,
+  blog,
+  handleClose,
+  handleChangeTitle,
+  handleChangeSummary,
+  setContent,
+  setImage,
+  handleCreateBlog,
+  requesting
+}) => {
   const classes = useStyles();
   const { quill, quillRef } = useQuill();
   const fileInput = useRef();
-  const [image, setImage] = useState([]);
-  const [value, setValue] = useState('');
-  console.log(fileInput);
 
   useEffect(() => {
     if (quill) {
       quill.on('text-change', () => {
-        setValue(quillRef.current.firstChild.innerHTML);
+        setContent(quillRef.current.firstChild.innerHTML);
       });
     }
   }, [quill]);
@@ -67,40 +72,50 @@ const CreateBlogForm = ({ open, handleClose }) => {
   return (
     <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="xl">
       <DialogTitle>Create New Blog</DialogTitle>
-      <DialogContent>
-        <Paper className={classes.pageContent}>
-          <form className={classes.root}>
-            <Grid container>
-              <Grid item xs={6}>
-                <TextField variant="outlined" label="Title" value="" />
-                <TextField variant="outlined" label="Description" value="" />
-                <Box>
-                  <div ref={quillRef} style={{ height: 110 }} />
-                </Box>
-              </Grid>
-              <Grid item xs={6}>
-                <FormControl>
-                  <FormLabel>Thumb</FormLabel>
-                  <DropzoneArea onChange={handleChange} />
-                </FormControl>
-                <Box>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    size="large"
-                    className={classes.label}
-                  >
-                    Submit
-                  </Button>
-                </Box>
-              </Grid>
+      <form className={classes.root} onSubmit={handleCreateBlog}>
+        <DialogContent>
+          <Grid container>
+            <Grid item xs={6}>
+              <TextField
+                variant="outlined"
+                label="Title"
+                name="title"
+                onChange={handleChangeTitle}
+                value={blog.title}
+              />
+              <TextField
+                variant="outlined"
+                label="Description"
+                name="summary"
+                onChange={handleChangeSummary}
+                value={blog.summary}
+              />
+              <Box>
+                <QuillInput quillRef={quillRef} />
+              </Box>
             </Grid>
-          </form>
-        </Paper>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-      </DialogActions>
+            <Grid item xs={6}>
+              <FormControl>
+                <FormLabel>Thumb</FormLabel>
+                <DropzoneArea onChange={handleChange} />
+              </FormControl>
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            type="submit"
+            className={classes.label}
+            disabled={requesting}
+          >
+            Submit
+          </Button>
+          <Button onClick={handleClose}>Cancel</Button>
+        </DialogActions>
+      </form>
     </Dialog>
   );
 };
