@@ -1,6 +1,5 @@
 import { useRoutes } from 'react-router-dom';
-import AuthRoutes from 'src/routers/authRouter';
-import UnAuthRoutes from 'src/routers/unAuthRouter';
+import routes from 'src/routes';
 
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -14,18 +13,14 @@ function App() {
   const existedUserSession = JSON.parse(
     localStorage.getItem('token') || 'null'
   );
-  const authRouter = useRoutes(AuthRoutes(Boolean(existedUserSession)));
-  const unAuthRouter = useRoutes(UnAuthRoutes);
-  console.log('use', Boolean(existedUserSession));
+  const content = useRoutes(routes(Boolean(existedUserSession)));
 
   return (
     <ThemeProvider>
       <AppProvider>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <CssBaseline />
-          {unAuthRouter}
-
-          {authRouter}
+          {content}
         </LocalizationProvider>
         <ErrorSnackbar />
       </AppProvider>
