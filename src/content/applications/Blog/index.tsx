@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { ChangeEvent, lazy, useContext, useState } from 'react';
+import useSWR from 'swr';
 import { Helmet } from 'react-helmet-async';
 import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
@@ -6,12 +7,38 @@ import { Grid, Container } from '@mui/material';
 import Footer from 'src/components/Footer';
 
 import RecentBlog from './RecentBlog';
-import CreateBlogForm from 'src/components/CreateBlogForm';
-import DeleteDialog from 'src/components/DeleteDialog';
+import { Loader } from 'src/routes';
+import { getData } from 'src/helpers/apiHandle';
+import { NEWS_URL } from 'src/constants/url';
+import { createBlog } from 'src/services/BlogService';
+
+import { ERROR_ACTION } from 'src/reduces/ErrrorsReducer';
+import { AppContext } from 'src/AppProvider';
+import { AppContextType } from 'src/interfaces/AppContextType';
+
+const CreateBlogForm = Loader(
+  lazy(() => import('src/components/CreateBlogForm'))
+);
+const DeleteDialog = Loader(lazy(() => import('src/components/DeleteDialog')));
 
 function BlogManager() {
   const [openDialog, setOpenDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [content, setContent] = useState('');
+  const [image, setImage] = useState([]);
+  const [blog, setBlog] = useState({
+    title: '',
+    summary: ''
+  });
+  const [requesting, setRequesting] = useState<boolean>(false);
+  const appContext = useContext(AppContext) as AppContextType;
+  const { errorsReducer } = appContext;
+  const [errors, errorDispatch] = errorsReducer;
+  const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
+    setBlog({ ...blog, [e.target.name]: e.target.value });
+  };
+
+  const { data, error } = useSWR(NEWS_URL, getData);
 
   //dialog create,edit
   const handleCloseDialog = () => {
@@ -19,6 +46,25 @@ function BlogManager() {
   };
   const handleClickOpenDialog = () => {
     setOpenDialog(true);
+  };
+  const handleCreateBlog = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    try {
+      const formData = new FormData();
+      formData.append('file', image[0]);
+      formData.append('content', content);
+      formData.append('title', blog.title);
+      formData.append('summary', blog.summary);
+
+      const response = await createBlog(formData);
+    } catch (error) {
+      errorDispatch({
+        type: ERROR_ACTION.SET_ERROR,
+        error: error.response.data.message
+      });
+      setRequesting(false);
+    }
   };
 
   // dialog delete
@@ -48,6 +94,7 @@ function BlogManager() {
         >
           <Grid item xs={12}>
             <RecentBlog
+              blogs={data}
               handleClickOpenDialog={handleClickOpenDialog}
               handleClose={handleCloseDialog}
               handleOpenDeleteDialog={handleOpenDeleteDialog}
@@ -56,7 +103,17 @@ function BlogManager() {
         </Grid>
       </Container>
       <Footer />
-      <CreateBlogForm open={openDialog} handleClose={handleCloseDialog} />
+      <CreateBlogForm
+        blog={blog}
+        open={openDialog}
+        handleClose={handleCloseDialog}
+        handleChangeTitle={handleChangeValue}
+        handleChangeSummary={handleChangeValue}
+        setContent={setContent}
+        setImage={setImage}
+        requesting={requesting}
+        handleCreateBlog={handleCreateBlog}
+      />
       <DeleteDialog
         open={openDeleteDialog}
         name="blog"
