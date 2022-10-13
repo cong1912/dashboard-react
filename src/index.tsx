@@ -1,4 +1,4 @@
-import { createRoot } from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -8,16 +8,15 @@ import { SidebarProvider } from 'src/contexts/SidebarContext';
 import * as serviceWorker from 'src/serviceWorker';
 import './services/index';
 
-const root = createRoot(document.getElementById('root'));
-
-root.render(
+ReactDOM.render(
   <HelmetProvider>
     <SidebarProvider>
       <BrowserRouter>
         <App />
       </BrowserRouter>
     </SidebarProvider>
-  </HelmetProvider>
+  </HelmetProvider>,
+  document.getElementById('root')
 );
 
 serviceWorker.unregister();
