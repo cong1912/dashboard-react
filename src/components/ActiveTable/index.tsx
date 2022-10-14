@@ -1,11 +1,18 @@
 import { Box, IconButton, Tooltip } from '@mui/material';
 import { Delete, Edit, Preview } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
+import { deleteBlog } from 'src/services/BlogService';
+import { NEWS_URL } from 'src/constants/url';
+import { mutate } from 'swr';
 
 const ActiveTable = ({ params, rowId, setRowId }) => {
   const navigate = useNavigate();
   const handleEdit = () => {
     // navigate('/');
+  };
+  const handelDeleteBlog = async (params) => {
+    await deleteBlog(params.id);
+    await mutate(NEWS_URL);
   };
 
   return (
@@ -23,9 +30,7 @@ const ActiveTable = ({ params, rowId, setRowId }) => {
         </IconButton>
       </Tooltip>
       <Tooltip title="Delete this room">
-        <IconButton
-        // onClick={() => deleteRoom(params.row, currentUser, dispatch)}
-        >
+        <IconButton onClick={() => handelDeleteBlog(params)}>
           <Delete />
         </IconButton>
       </Tooltip>

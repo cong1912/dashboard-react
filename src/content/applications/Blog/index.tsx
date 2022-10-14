@@ -75,7 +75,7 @@ function BlogManager() {
       formData.append('title', blog.title);
       formData.append('summary', blog.summary);
 
-      const response = await createBlog(formData);
+      await createBlog(formData);
       successDispatch({
         type: SUCCESS_ACTION.SET_SUCCESS,
         success: 'Create Blog Success'
@@ -100,8 +100,9 @@ function BlogManager() {
   const handleCloseDeleteDialog = () => {
     setOpenDeleteDialog(false);
   };
-  const handleOpenDeleteDialog = () => {
+  const handleOpenDeleteDialog = (rowId) => {
     setOpenDeleteDialog(true);
+    console.log('id', rowId);
   };
   const handleDeleteBlog = () => {};
 
