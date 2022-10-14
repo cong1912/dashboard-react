@@ -5,6 +5,10 @@ import ErrorsReducer, {
   errorInitialState
 } from 'src/reduces/ErrrorsReducer';
 import { Nullable } from 'src/interfaces/common';
+import SuccessReducer, {
+  SuccessAction,
+  successInitialState
+} from './reduces/SuccessReducer';
 export const AppContext = createContext<AppContextType | null>(null);
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
@@ -13,8 +17,13 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     dispatch: React.Dispatch<ErrorAction>
   ] = useReducer(ErrorsReducer, errorInitialState);
 
+  const successReducer: [
+    state: Nullable<string | null>,
+    dispatch: React.Dispatch<SuccessAction>
+  ] = useReducer(SuccessReducer, successInitialState);
+
   return (
-    <AppContext.Provider value={{ errorsReducer }}>
+    <AppContext.Provider value={{ errorsReducer, successReducer }}>
       {children}
     </AppContext.Provider>
   );
