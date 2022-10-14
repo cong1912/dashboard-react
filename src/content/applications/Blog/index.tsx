@@ -54,7 +54,7 @@ function BlogManager() {
   const { data, error } = useSWR<IBlogs>(NEWS_URL, getData);
   const objectEmpty = {
     pageSize: 1,
-    results: [{ id: 1 }, { id: 2 }, { id: 3 }]
+    results: [{ id: 1, image: 'public/uploads/file-1665731987187.png' }]
   };
   const response = data || objectEmpty;
 
