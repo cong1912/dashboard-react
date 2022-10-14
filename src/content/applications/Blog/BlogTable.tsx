@@ -3,7 +3,6 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import Avatar from '@mui/material/Avatar';
-import moment from 'moment';
 import { grey } from '@mui/material/colors';
 import ActiveTable from 'src/components/ActiveTable';
 
@@ -13,7 +12,6 @@ const BlogTable = ({
   handleOpenDeleteDialog,
   handleClose
 }) => {
-  console.log(blogs.results);
   const [pageSize, setPageSize] = useState(20);
   const [rowId, setRowId] = useState(null);
 
@@ -27,7 +25,6 @@ const BlogTable = ({
         headerName: 'Image',
         width: 200,
         renderCell: (params) => {
-          console.log(params);
           return (
             <img src={process.env.REACT_APP_API_END_POINT + params.value} />
           );

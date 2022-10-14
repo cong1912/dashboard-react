@@ -8,6 +8,7 @@ import { CssBaseline } from '@mui/material';
 import ThemeProvider from './theme/ThemeProvider';
 import { AppProvider } from './AppProvider';
 import ErrorSnackbar from './content/pages/Components/ErrorSnackbar';
+import SuccessSnackbar from './content/pages/Components/SuccessSnackbar';
 
 function App() {
   const existedUserSession = JSON.parse(
@@ -23,6 +24,7 @@ function App() {
           {content}
         </LocalizationProvider>
         <ErrorSnackbar />
+        <SuccessSnackbar />
       </AppProvider>
     </ThemeProvider>
   );

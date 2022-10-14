@@ -16,6 +16,7 @@ import { ERROR_ACTION } from 'src/reduces/ErrrorsReducer';
 import { AppContext } from 'src/AppProvider';
 import { AppContextType } from 'src/interfaces/AppContextType';
 import { Nullable } from 'src/interfaces/common';
+import { SUCCESS_ACTION } from 'src/reduces/SuccessReducer';
 
 const CreateBlogForm = Loader(
   lazy(() => import('src/components/CreateBlogForm'))
@@ -35,17 +36,17 @@ interface IBlogs {
 function BlogManager() {
   const [openDialog, setOpenDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [content, setContent] = useState('');
   const [image, setImage] = useState([]);
-  const [blogs, setBlogs] = useState<IBlogs>();
+  const [content, setContent] = useState('');
   const [blog, setBlog] = useState({
     title: '',
     summary: ''
   });
   const [requesting, setRequesting] = useState<boolean>(false);
   const appContext = useContext(AppContext) as AppContextType;
-  const { errorsReducer } = appContext;
+  const { errorsReducer, successReducer } = appContext;
   const [errors, errorDispatch] = errorsReducer;
+  const [success, successDispatch] = successReducer;
   const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     setBlog({ ...blog, [e.target.name]: e.target.value });
   };
@@ -75,6 +76,16 @@ function BlogManager() {
       formData.append('summary', blog.summary);
 
       const response = await createBlog(formData);
+      successDispatch({
+        type: SUCCESS_ACTION.SET_SUCCESS,
+        success: 'Create Blog Success'
+      });
+      setOpenDialog(false);
+      setContent('');
+      setBlog({
+        title: '',
+        summary: ''
+      });
     } catch (error) {
       errorDispatch({
         type: ERROR_ACTION.SET_ERROR,
@@ -126,7 +137,7 @@ function BlogManager() {
         handleClose={handleCloseDialog}
         handleChangeTitle={handleChangeValue}
         handleChangeSummary={handleChangeValue}
-        setContent={setContent}
+        handleChangeContent={setContent}
         setImage={setImage}
         requesting={requesting}
         handleCreateBlog={handleCreateBlog}

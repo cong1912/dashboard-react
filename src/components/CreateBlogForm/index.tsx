@@ -11,8 +11,6 @@ import {
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { DropzoneArea } from 'material-ui-dropzone';
-import { useQuill } from 'react-quilljs';
-import 'react-quill/dist/quill.snow.css';
 import {
   Dialog,
   DialogActions,
@@ -48,22 +46,13 @@ const CreateBlogForm = ({
   handleClose,
   handleChangeTitle,
   handleChangeSummary,
-  setContent,
+  handleChangeContent,
   setImage,
   handleCreateBlog,
   requesting
 }) => {
   const classes = useStyles();
-  const { quill, quillRef } = useQuill();
   const fileInput = useRef();
-
-  useEffect(() => {
-    if (quill) {
-      quill.on('text-change', () => {
-        setContent(quillRef.current.firstChild.innerHTML);
-      });
-    }
-  }, [quill]);
 
   const handleChange = (files) => {
     setImage(files);
@@ -91,7 +80,10 @@ const CreateBlogForm = ({
                 value={blog.summary}
               />
               <Box>
-                <QuillInput quillRef={quillRef} />
+                <QuillInput
+                  content={blog.content}
+                  handleChangeContent={handleChangeContent}
+                />
               </Box>
             </Grid>
             <Grid item xs={6}>

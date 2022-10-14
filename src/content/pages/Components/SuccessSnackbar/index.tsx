@@ -2,8 +2,8 @@ import { Snackbar } from '@mui/material';
 import { AppContext } from 'src/AppProvider';
 import React, { useContext } from 'react';
 import { AppContextType } from 'src/interfaces/AppContextType';
-import { ERROR_ACTION } from 'src/reduces/ErrrorsReducer';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import { SUCCESS_ACTION } from 'src/reduces/SuccessReducer';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -12,10 +12,10 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const ErrorSnackbar = () => {
+const SuccessSnackbar = () => {
   const appContext = useContext(AppContext) as AppContextType;
-  const { errorsReducer } = appContext;
-  const [error, dispatch] = errorsReducer;
+  const { successReducer } = appContext;
+  const [success, dispatch] = successReducer;
   const handleClose = (
     event?: React.SyntheticEvent | Event,
     reason?: string
@@ -25,22 +25,22 @@ const ErrorSnackbar = () => {
     }
 
     dispatch({
-      type: ERROR_ACTION.REMOVE_ERROR
+      type: SUCCESS_ACTION.REMOVE_SUCCESS
     });
   };
   return (
     <Snackbar
       data-testid="snackbar"
       anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-      open={Boolean(error)}
+      open={Boolean(success)}
       autoHideDuration={6000}
       onClose={handleClose}
     >
-      <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-        {error}
+      <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+        {success}
       </Alert>
     </Snackbar>
   );
 };
 
-export default ErrorSnackbar;
+export default SuccessSnackbar;
