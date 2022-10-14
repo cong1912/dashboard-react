@@ -1,5 +1,5 @@
 import { ChangeEvent, lazy, useContext, useState } from 'react';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import { Helmet } from 'react-helmet-async';
 import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
@@ -80,6 +80,7 @@ function BlogManager() {
         type: SUCCESS_ACTION.SET_SUCCESS,
         success: 'Create Blog Success'
       });
+      await mutate(NEWS_URL);
       setOpenDialog(false);
       setContent('');
       setBlog({
