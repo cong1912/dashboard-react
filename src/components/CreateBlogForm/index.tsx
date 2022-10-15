@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   Grid,
-  Paper,
   TextField,
   Theme,
   Button,
   FormControl,
-  FormLabel
+  FormLabel,
+  Autocomplete
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
@@ -26,9 +26,15 @@ const useStyles = makeStyles((theme: Theme) => ({
       width: '90%',
       margin: theme.spacing(1)
     },
+    '& .MuiDialogContent-root': {
+      height: 400
+    },
     '& .MuiBox-root': {
       width: '90%',
       margin: theme.spacing(1)
+    },
+    '& .quill': {
+      height: 120
     }
   },
   btn: {
@@ -39,6 +45,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: theme.spacing(0.5)
   }
 }));
+const top100Films = [
+  { name: 'The Shawshank Redemption', id: 1994 },
+  { name: 'The Godfather', id: 1972 },
+  { name: 'The Godfather: Part II', id: 1974 },
+  { name: 'The Dark Knight', id: 2008 }
+];
 
 const CreateBlogForm = ({
   open,
@@ -52,7 +64,6 @@ const CreateBlogForm = ({
   requesting
 }) => {
   const classes = useStyles();
-  const fileInput = useRef();
 
   const handleChange = (files) => {
     setImage(files);
@@ -81,22 +92,39 @@ const CreateBlogForm = ({
               />
               <Box>
                 <QuillInput
-                  content={blog.content}
+                  content=""
                   handleChangeContent={handleChangeContent}
                 />
               </Box>
             </Grid>
             <Grid item xs={6}>
               <FormControl>
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+                  options={top100Films}
+                  onChange={(event, value) => console.log(event, value)}
+                  value={top100Films[0]}
+                  getOptionLabel={(option: { name: string }) => option.name}
+                  renderInput={(params) => {
+                    return <TextField {...params} label="Category" />;
+                  }}
+                />
                 <FormLabel>Thumb</FormLabel>
-                <DropzoneArea onChange={handleChange} />
+                <DropzoneArea
+                  initialFiles={['']}
+                  onChange={handleChange}
+                  acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
+                  maxFileSize={5000000}
+                  filesLimit={1}
+                />
               </FormControl>
             </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
           <Button
-            variant="contained"
+            // variant="contained"
             color="primary"
             size="large"
             type="submit"

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ErrorAction } from 'src/reduces/ErrrorsReducer';
+import { ErrorAction } from 'src/reduces/ErrorsReducer';
 import { SuccessAction } from 'src/reduces/SuccessReducer';
 import { Nullable } from './common';
 export interface AppContextType {

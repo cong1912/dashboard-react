@@ -7,21 +7,17 @@ import { Grid, Container } from '@mui/material';
 import Footer from 'src/components/Footer';
 
 import RecentBlog from './RecentBlog';
-import { Loader } from 'src/routes';
 import { getData } from 'src/helpers/apiHandle';
 import { NEWS_URL } from 'src/constants/url';
 import { createBlog } from 'src/services/BlogService';
 
-import { ERROR_ACTION } from 'src/reduces/ErrrorsReducer';
+import { ERROR_ACTION } from 'src/reduces/ErrorsReducer';
 import { AppContext } from 'src/AppProvider';
 import { AppContextType } from 'src/interfaces/AppContextType';
-import { Nullable } from 'src/interfaces/common';
 import { SUCCESS_ACTION } from 'src/reduces/SuccessReducer';
 
-const CreateBlogForm = Loader(
-  lazy(() => import('src/components/CreateBlogForm'))
-);
-const DeleteDialog = Loader(lazy(() => import('src/components/DeleteDialog')));
+const CreateBlogForm = lazy(() => import('src/components/CreateBlogForm'));
+const DeleteDialog = lazy(() => import('src/components/DeleteDialog'));
 
 interface IBlog {
   title: string;
@@ -102,7 +98,6 @@ function BlogManager() {
   };
   const handleOpenDeleteDialog = (rowId) => {
     setOpenDeleteDialog(true);
-    console.log('id', rowId);
   };
   const handleDeleteBlog = () => {};
 

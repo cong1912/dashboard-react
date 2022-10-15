@@ -7,7 +7,7 @@ import Paper from '@mui/material/Paper';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { login } from 'src/services/AuthService';
 import { NavigateFunction, useNavigate } from 'react-router';
-import { ERROR_ACTION } from 'src/reduces/ErrrorsReducer';
+import { ERROR_ACTION } from 'src/reduces/ErrorsReducer';
 import { AppContext } from 'src/AppProvider';
 import { AppContextType } from 'src/interfaces/AppContextType';
 import { UserSession } from 'src/interfaces/User';
