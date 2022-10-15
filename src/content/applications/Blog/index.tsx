@@ -7,21 +7,17 @@ import { Grid, Container } from '@mui/material';
 import Footer from 'src/components/Footer';
 
 import RecentBlog from './RecentBlog';
-import { Loader } from 'src/routes';
 import { getData } from 'src/helpers/apiHandle';
 import { NEWS_URL } from 'src/constants/url';
 import { createBlog } from 'src/services/BlogService';
 
-import { ERROR_ACTION } from 'src/reduces/ErrrorsReducer';
+import { ERROR_ACTION } from 'src/reduces/ErrorsReducer';
 import { AppContext } from 'src/AppProvider';
 import { AppContextType } from 'src/interfaces/AppContextType';
-import { Nullable } from 'src/interfaces/common';
 import { SUCCESS_ACTION } from 'src/reduces/SuccessReducer';
 
-const CreateBlogForm = Loader(
-  lazy(() => import('src/components/CreateBlogForm'))
-);
-const DeleteDialog = Loader(lazy(() => import('src/components/DeleteDialog')));
+const CreateBlogForm = lazy(() => import('src/components/CreateBlogForm'));
+const DeleteDialog = lazy(() => import('src/components/DeleteDialog'));
 
 interface IBlog {
   title: string;
@@ -54,7 +50,7 @@ function BlogManager() {
   const { data, error } = useSWR<IBlogs>(NEWS_URL, getData);
   const objectEmpty = {
     pageSize: 1,
-    results: [{ id: 1 }, { id: 2 }, { id: 3 }]
+    results: [{ id: 1, image: 'public/uploads/file-1665731987187.png' }]
   };
   const response = data || objectEmpty;
 
@@ -75,7 +71,7 @@ function BlogManager() {
       formData.append('title', blog.title);
       formData.append('summary', blog.summary);
 
-      const response = await createBlog(formData);
+      await createBlog(formData);
       successDispatch({
         type: SUCCESS_ACTION.SET_SUCCESS,
         success: 'Create Blog Success'
@@ -100,7 +96,7 @@ function BlogManager() {
   const handleCloseDeleteDialog = () => {
     setOpenDeleteDialog(false);
   };
-  const handleOpenDeleteDialog = () => {
+  const handleOpenDeleteDialog = (rowId) => {
     setOpenDeleteDialog(true);
   };
   const handleDeleteBlog = () => {};

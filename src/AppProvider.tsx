@@ -3,7 +3,7 @@ import React, { createContext, useReducer, ReactNode } from 'react';
 import ErrorsReducer, {
   ErrorAction,
   errorInitialState
-} from 'src/reduces/ErrrorsReducer';
+} from 'src/reduces/ErrorsReducer';
 import { Nullable } from 'src/interfaces/common';
 import SuccessReducer, {
   SuccessAction,

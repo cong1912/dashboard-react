@@ -13,3 +13,15 @@ export const createBlog = (data) => {
     }
   });
 };
+
+export const deleteBlog = (id) => {
+  const token = JSON.parse(localStorage.getItem('token') || 'null');
+
+  return axios({
+    method: 'delete',
+    url: `/news/articles/${id}`,
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+};

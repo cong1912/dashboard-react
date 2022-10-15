@@ -25,8 +25,15 @@ const BlogTable = ({
         headerName: 'Image',
         width: 200,
         renderCell: (params) => {
+          const newImage = params.row.image.slice(7, params.value.length);
+
           return (
-            <img src={process.env.REACT_APP_API_END_POINT + params.value} />
+            <img
+              crossOrigin="anonymous"
+              src={process.env.REACT_APP_API_BACK_END + newImage}
+              loading="lazy"
+              width="30%"
+            />
           );
         },
         sortable: false,

@@ -2,7 +2,7 @@ import { Snackbar } from '@mui/material';
 import { AppContext } from 'src/AppProvider';
 import React, { useContext } from 'react';
 import { AppContextType } from 'src/interfaces/AppContextType';
-import { ERROR_ACTION } from 'src/reduces/ErrrorsReducer';
+import { ERROR_ACTION } from 'src/reduces/ErrorsReducer';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
