@@ -6,12 +6,7 @@ import Avatar from '@mui/material/Avatar';
 import { grey } from '@mui/material/colors';
 import ActiveTable from 'src/components/ActiveTable';
 
-const BlogTable = ({
-  handleClickOpenDialog,
-  blogs,
-  handleOpenDeleteDialog,
-  handleClose
-}) => {
+const BlogTable = ({ blogs }) => {
   const [pageSize, setPageSize] = useState(20);
   const [rowId, setRowId] = useState(null);
 

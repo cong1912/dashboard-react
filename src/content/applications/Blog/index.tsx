@@ -120,9 +120,9 @@ function BlogManager() {
           <Grid item xs={12}>
             <RecentBlog
               blogs={response}
-              handleClickOpenDialog={handleClickOpenDialog}
-              handleClose={handleCloseDialog}
-              handleOpenDeleteDialog={handleOpenDeleteDialog}
+              // handleClickOpenDialog={handleClickOpenDialog}
+              // handleClose={handleCloseDialog}
+              // handleOpenDeleteDialog={handleOpenDeleteDialog}
             />
           </Grid>
         </Grid>

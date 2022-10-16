@@ -13,6 +13,19 @@ export const createBlog = (data) => {
     }
   });
 };
+export const updateBlog = (data, id) => {
+  const token = JSON.parse(localStorage.getItem('token') || 'null');
+
+  return axios({
+    method: 'put',
+    url: `/news/articles/${id}`,
+    data: data,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Authorization: `Bearer ${token}`
+    }
+  });
+};
 
 export const deleteBlog = (id) => {
   const token = JSON.parse(localStorage.getItem('token') || 'null');

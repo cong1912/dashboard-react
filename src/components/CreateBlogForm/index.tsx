@@ -112,7 +112,6 @@ const CreateBlogForm = ({
                 />
                 <FormLabel>Thumb</FormLabel>
                 <DropzoneArea
-                  initialFiles={['']}
                   onChange={handleChange}
                   acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
                   maxFileSize={5000000}
