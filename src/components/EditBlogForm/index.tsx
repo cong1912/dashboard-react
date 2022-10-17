@@ -27,7 +27,6 @@ import { SUCCESS_ACTION } from 'src/reduces/SuccessReducer';
 import { ERROR_ACTION } from 'src/reduces/ErrorsReducer';
 import { AppContext } from 'src/AppProvider';
 import { AppContextType } from 'src/interfaces/AppContextType';
-
 interface IBlog {
   value: {
     article: {
@@ -47,12 +46,12 @@ export interface ICategories {
   };
 }
 
-interface ICategory {
+export interface ICategory {
   id: number;
   name: string;
 }
 
-interface ICategoryFormData {
+export interface ICategoryFormData {
   id: string;
   name: string;
 }

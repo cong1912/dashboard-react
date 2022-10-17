@@ -18,7 +18,6 @@ import {
   DialogTitle
 } from '@material-ui/core';
 import QuillInput from '../QuillInput';
-import BlogManager from 'src/content/applications/Blog';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -61,7 +60,10 @@ const CreateBlogForm = ({
   handleChangeContent,
   setImage,
   handleCreateBlog,
-  requesting
+  requesting,
+  categories,
+  category,
+  setCategory
 }) => {
   const classes = useStyles();
 
@@ -102,9 +104,9 @@ const CreateBlogForm = ({
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
-                  options={top100Films}
-                  onChange={(event, value) => console.log(event, value)}
-                  value={top100Films[0]}
+                  options={categories.results}
+                  onChange={(event, value) => setCategory(value)}
+                  value={category}
                   getOptionLabel={(option: { name: string }) => option.name}
                   renderInput={(params) => {
                     return <TextField {...params} label="Category" />;
