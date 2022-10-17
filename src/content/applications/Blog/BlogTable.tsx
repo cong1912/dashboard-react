@@ -2,7 +2,6 @@ import React, { useMemo, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
-import Avatar from '@mui/material/Avatar';
 import { grey } from '@mui/material/colors';
 import ActiveTable from 'src/components/ActiveTable';
 
@@ -36,14 +35,6 @@ const BlogTable = ({ blogs }) => {
       },
       { field: 'viewed', headerName: 'Viewed', width: 200 },
       { field: 'shared', headerName: 'Shared', width: 200 },
-      {
-        field: 'category',
-        headerName: 'Category',
-        width: 100,
-        type: 'singleSelect',
-        valueOptions: ['basic', 'editor', 'admin'],
-        editable: true
-      },
       {
         field: 'status',
         headerName: 'status',

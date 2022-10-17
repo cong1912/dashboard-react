@@ -1,4 +1,4 @@
-import { ChangeEvent, lazy, useContext, useState } from 'react';
+import { ChangeEvent, lazy, useContext, useEffect, useState } from 'react';
 import useSWR, { mutate } from 'swr';
 import { Helmet } from 'react-helmet-async';
 import PageHeader from './PageHeader';
@@ -8,13 +8,18 @@ import Footer from 'src/components/Footer';
 import BlogTable from './BlogTable';
 
 import { getData } from 'src/helpers/apiHandle';
-import { NEWS_URL } from 'src/constants/url';
+import { ARTICLE_CATEGORY, NEWS_URL } from 'src/constants/url';
 import { createBlog } from 'src/services/BlogService';
 
 import { ERROR_ACTION } from 'src/reduces/ErrorsReducer';
 import { AppContext } from 'src/AppProvider';
 import { AppContextType } from 'src/interfaces/AppContextType';
 import { SUCCESS_ACTION } from 'src/reduces/SuccessReducer';
+import {
+  ICategories,
+  ICategory,
+  ICategoryFormData
+} from 'src/components/EditBlogForm';
 
 const CreateBlogForm = lazy(() => import('src/components/CreateBlogForm'));
 
@@ -30,7 +35,7 @@ interface IBlogs {
 
 function BlogManager() {
   const [openDialog, setOpenDialog] = useState(false);
-
+  const [category, setCategory] = useState<ICategory>();
   const [image, setImage] = useState([]);
   const [content, setContent] = useState('');
   const [blog, setBlog] = useState({
@@ -46,12 +51,22 @@ function BlogManager() {
     setBlog({ ...blog, [e.target.name]: e.target.value });
   };
 
-  const { data, error } = useSWR<IBlogs>(NEWS_URL, getData);
+  const { data: article } = useSWR<IBlogs>(NEWS_URL, getData);
+  const { data: categories } = useSWR<ICategories>(ARTICLE_CATEGORY, getData);
   const objectEmpty = {
     pageSize: 1,
     results: [{ id: 1, image: 'public/uploads/file-1665731987187.png' }]
   };
-  const response = data || objectEmpty;
+  const response = article || objectEmpty;
+
+  const objectEmptyCategories = {
+    value: {
+      results: [{ id: 4, name: 'Thông tin chứng khoán' }]
+    }
+  };
+  const resCategories = categories || objectEmptyCategories;
+
+  // setCategory(resCategories.value.results[0]);
 
   //dialog create,edit
   const handleCloseDialog = () => {
@@ -69,6 +84,7 @@ function BlogManager() {
       formData.append('content', content);
       formData.append('title', blog.title);
       formData.append('summary', blog.summary);
+      formData.append('categoryId', category.id as unknown as string);
 
       await createBlog(formData);
       successDispatch({
@@ -123,6 +139,9 @@ function BlogManager() {
         setImage={setImage}
         requesting={requesting}
         handleCreateBlog={handleCreateBlog}
+        categories={resCategories}
+        category={category}
+        setCategory={setCategory}
       />
     </>
   );
