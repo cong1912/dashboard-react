@@ -137,7 +137,7 @@ const EditBlogForm = ({ open, id, setIsOpenUpdateModal }) => {
       formData.append('content', content);
       formData.append('title', title);
       formData.append('summary', summary);
-      formData.append('categoryId', categoriesUpdate.id);
+      if (categoriesUpdate) formData.append('categoryId', categoriesUpdate.id);
       if (image[0]) {
         formData.append('file', image[0]);
       }
