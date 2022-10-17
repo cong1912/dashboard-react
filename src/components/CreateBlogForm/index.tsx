@@ -123,7 +123,6 @@ const CreateBlogForm = ({
         </DialogContent>
         <DialogActions>
           <Button
-            // variant="contained"
             color="primary"
             size="large"
             type="submit"
