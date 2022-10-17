@@ -1,20 +1,10 @@
 import { Card } from '@mui/material';
 import BlogTable from './BlogTable';
 
-function RecentBlogs({
-  blogs,
-  handleClickOpenDialog,
-  handleClose,
-  handleOpenDeleteDialog
-}) {
+function RecentBlogs({ blogs }) {
   return (
     <Card>
-      <BlogTable
-        blogs={blogs}
-        handleClickOpenDialog={handleClickOpenDialog}
-        handleOpenDeleteDialog={handleOpenDeleteDialog}
-        handleClose={handleClose}
-      />
+      <BlogTable blogs={blogs} />
     </Card>
   );
 }
