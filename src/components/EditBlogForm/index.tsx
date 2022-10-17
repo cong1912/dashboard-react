@@ -112,30 +112,21 @@ const EditBlogForm = ({ open, id, setIsOpenUpdateModal }) => {
     const [article, articleCategory]: [IBlog, ICategories] =
       data as unknown as [IBlog, ICategories];
 
-    console.log(article, articleCategory);
-
     setTitle(article.value.article.title);
-    console.log(1);
-
     setSummary(article.value.article.summary);
-    console.log(2);
     setContent(article.value.article.content);
-    console.log(3);
     setImageUrl(
       `${
         process.env.REACT_APP_API_BACK_END +
         article.value.article.image.slice(7, article.value.article.image.length)
       }`
     );
-    console.log(4);
     setCategories(articleCategory.value.results);
-    console.log(5);
     setIndexCategory(
       articleCategory.value.results.findIndex(
         (element) => element.id == article.value.article.categoryId
       )
     );
-    console.log(6);
   }, [data, id]);
 
   const handleUpdateBlog = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -167,7 +158,6 @@ const EditBlogForm = ({ open, id, setIsOpenUpdateModal }) => {
       setRequesting(false);
     }
   };
-  console.log('categoriesUpdate', categoriesUpdate);
 
   const handleCloseUpdateModal = () => {
     setIsOpenUpdateModal(false);
@@ -188,53 +178,57 @@ const EditBlogForm = ({ open, id, setIsOpenUpdateModal }) => {
       <DialogTitle>Edit Blog</DialogTitle>
       <form className={classes.root} onSubmit={handleUpdateBlog}>
         <DialogContent>
-          <Grid container>
-            <Grid item xs={6}>
-              <TextField
-                variant="outlined"
-                label="Title"
-                name="title"
-                onChange={(e) => setTitle(e.target.value)}
-                value={title}
-              />
-              <TextField
-                variant="outlined"
-                label="Description"
-                name="summary"
-                onChange={(e) => setSummary(e.target.value)}
-                value={summary}
-              />
-              <Box>
-                <QuillInput
-                  content={content}
-                  handleChangeContent={setContent}
+          {!data ? (
+            <CircularProgress />
+          ) : (
+            <Grid container>
+              <Grid item xs={6}>
+                <TextField
+                  variant="outlined"
+                  label="Title"
+                  name="title"
+                  onChange={(e) => setTitle(e.target.value)}
+                  value={title}
                 />
-              </Box>
+                <TextField
+                  variant="outlined"
+                  label="Description"
+                  name="summary"
+                  onChange={(e) => setSummary(e.target.value)}
+                  value={summary}
+                />
+                <Box>
+                  <QuillInput
+                    content={content}
+                    handleChangeContent={setContent}
+                  />
+                </Box>
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl>
+                  <Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    options={categories}
+                    onChange={(event, value) => setCategoriesUpdate(value)}
+                    value={categories[indexCategory]}
+                    getOptionLabel={(option: { name: string }) => option.name}
+                    renderInput={(params) => {
+                      return <TextField {...params} label="Category" />;
+                    }}
+                  />
+                  <FormLabel>Thumb</FormLabel>
+                  <DropzoneArea
+                    initialFiles={[imageUrl]}
+                    onChange={handleChange}
+                    acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
+                    maxFileSize={5000000}
+                    filesLimit={1}
+                  />
+                </FormControl>
+              </Grid>
             </Grid>
-            <Grid item xs={6}>
-              <FormControl>
-                <Autocomplete
-                  disablePortal
-                  id="combo-box-demo"
-                  options={categories}
-                  onChange={(event, value) => setCategoriesUpdate(value)}
-                  value={categories[indexCategory]}
-                  getOptionLabel={(option: { name: string }) => option.name}
-                  renderInput={(params) => {
-                    return <TextField {...params} label="Category" />;
-                  }}
-                />
-                <FormLabel>Thumb</FormLabel>
-                <DropzoneArea
-                  initialFiles={[imageUrl]}
-                  onChange={handleChange}
-                  acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
-                  maxFileSize={5000000}
-                  filesLimit={1}
-                />
-              </FormControl>
-            </Grid>
-          </Grid>
+          )}
         </DialogContent>
         <DialogActions>
           <Button
