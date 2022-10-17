@@ -4,12 +4,13 @@ import { deleteBlog } from 'src/services/BlogService';
 import { NEWS_URL } from 'src/constants/url';
 import { mutate } from 'swr';
 import { useState, lazy } from 'react';
+import DeleteDialog from '../DeleteDialog';
 
 const EditBlogForm = lazy(() => import('src/components/EditBlogForm'));
 
 const ActiveTable = ({ params, rowId, setRowId }) => {
   const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);
-
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [id, setId] = useState<number>();
 
   const handleOpenUpdateModal = () => {
@@ -20,6 +21,12 @@ const ActiveTable = ({ params, rowId, setRowId }) => {
   const handelDeleteBlog = async (params) => {
     await deleteBlog(params.id);
     await mutate(NEWS_URL);
+  };
+  const handleCloseDeleteDialog = () => {
+    setOpenDeleteDialog(false);
+  };
+  const handleDeleteBlog = () => {
+    setOpenDeleteDialog(true);
   };
 
   return (
@@ -40,6 +47,12 @@ const ActiveTable = ({ params, rowId, setRowId }) => {
         id={id}
         open={isOpenUpdateModal}
         setIsOpenUpdateModal={setIsOpenUpdateModal}
+      />
+      <DeleteDialog
+        open={openDeleteDialog}
+        name="blog"
+        handleClose={handleCloseDeleteDialog}
+        handleDelete={handleDeleteBlog}
       />
     </>
   );
