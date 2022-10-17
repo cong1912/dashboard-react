@@ -112,21 +112,30 @@ const EditBlogForm = ({ open, id, setIsOpenUpdateModal }) => {
     const [article, articleCategory]: [IBlog, ICategories] =
       data as unknown as [IBlog, ICategories];
 
+    console.log(article, articleCategory);
+
     setTitle(article.value.article.title);
+    console.log(1);
+
     setSummary(article.value.article.summary);
+    console.log(2);
     setContent(article.value.article.content);
+    console.log(3);
     setImageUrl(
       `${
         process.env.REACT_APP_API_BACK_END +
         article.value.article.image.slice(7, article.value.article.image.length)
       }`
     );
+    console.log(4);
     setCategories(articleCategory.value.results);
+    console.log(5);
     setIndexCategory(
       articleCategory.value.results.findIndex(
         (element) => element.id == article.value.article.categoryId
       )
     );
+    console.log(6);
   }, [data, id]);
 
   const handleUpdateBlog = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -168,7 +177,7 @@ const EditBlogForm = ({ open, id, setIsOpenUpdateModal }) => {
     setImage(files);
   };
 
-  if (!multiFetcher) return <CircularProgress />;
+  if (!data) return <div></div>;
   return (
     <Dialog
       open={open}
@@ -176,7 +185,7 @@ const EditBlogForm = ({ open, id, setIsOpenUpdateModal }) => {
       fullWidth={true}
       maxWidth="xl"
     >
-      <DialogTitle>Create New Blog</DialogTitle>
+      <DialogTitle>Edit Blog</DialogTitle>
       <form className={classes.root} onSubmit={handleUpdateBlog}>
         <DialogContent>
           <Grid container>
