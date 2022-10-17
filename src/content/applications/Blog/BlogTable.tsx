@@ -64,9 +64,9 @@ const BlogTable = ({ blogs }) => {
   return (
     <Box
       sx={{
-        height: 570,
-        width: '97%',
-        mx: 2
+        height: 600,
+        width: '100%',
+        pb: 5
       }}
     >
       <Typography
