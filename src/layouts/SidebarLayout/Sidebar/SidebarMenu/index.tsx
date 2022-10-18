@@ -236,6 +236,30 @@ function SidebarMenu() {
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
+              Courses manager
+            </ListSubheader>
+          }
+        >
+          <SubMenuWrapper>
+            <List component="div">
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/management/courses"
+                  startIcon={<TableChartTwoToneIcon />}
+                >
+                  Courses List
+                </Button>
+              </ListItem>
+            </List>
+          </SubMenuWrapper>
+        </List>
+        <List
+          component="div"
+          subheader={
+            <ListSubheader component="div" disableSticky>
               Blog manager
             </ListSubheader>
           }
@@ -286,17 +310,6 @@ function SidebarMenu() {
                   startIcon={<TableChartTwoToneIcon />}
                 >
                   Transactions List
-                </Button>
-              </ListItem>
-              <ListItem component="div">
-                <Button
-                  disableRipple
-                  component={RouterLink}
-                  onClick={closeSidebar}
-                  to="/management/courses"
-                  startIcon={<TableChartTwoToneIcon />}
-                >
-                  Course List
                 </Button>
               </ListItem>
               <ListItem component="div">

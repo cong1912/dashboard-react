@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import {
   Grid,
   TextField,
@@ -18,7 +18,6 @@ import {
   DialogTitle
 } from '@material-ui/core';
 import QuillInput from '../QuillInput';
-
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     '& .MuiFormControl-root': {
@@ -45,19 +44,18 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-const CreateBlogForm = ({
+const EditCourseForm = ({
   open,
-  blog,
   handleClose,
-  handleChangeTitle,
-  handleChangeSummary,
-  handleChangeContent,
-  setImage,
-  handleCreateBlog,
+  handleCreateCourse,
+  handleChangeDescription,
   requesting,
+  setImage,
   categories,
   category,
-  setCategory
+  setCategory,
+  setTitle,
+  title
 }) => {
   const classes = useStyles();
 
@@ -68,7 +66,7 @@ const CreateBlogForm = ({
   return (
     <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="xl">
       <DialogTitle>Create New Blog</DialogTitle>
-      <form className={classes.root} onSubmit={handleCreateBlog}>
+      <form className={classes.root} onSubmit={handleCreateCourse}>
         <DialogContent>
           <Grid container>
             <Grid item xs={6}>
@@ -76,20 +74,14 @@ const CreateBlogForm = ({
                 variant="outlined"
                 label="Title"
                 name="title"
-                onChange={handleChangeTitle}
-                value={blog.title}
+                onChange={(e) => setTitle(e.target.value)}
+                value={title}
               />
-              <TextField
-                variant="outlined"
-                label="Description"
-                name="summary"
-                onChange={handleChangeSummary}
-                value={blog.summary}
-              />
+
               <Box>
                 <QuillInput
                   content=""
-                  handleChangeContent={handleChangeContent}
+                  handleChangeContent={handleChangeDescription}
                 />
               </Box>
             </Grid>
@@ -134,4 +126,4 @@ const CreateBlogForm = ({
   );
 };
 
-export default CreateBlogForm;
+export default EditCourseForm;

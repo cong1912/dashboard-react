@@ -1,87 +1,91 @@
-import { ChangeEvent, lazy, useContext, useState } from 'react';
-import useSWR, { mutate } from 'swr';
+import React, { lazy, useEffect, useState, useContext } from 'react';
 import { Helmet } from 'react-helmet-async';
 import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { Grid, Container } from '@mui/material';
+import { Grid, Container, CircularProgress } from '@mui/material';
 import Footer from 'src/components/Footer';
-import BlogTable from './BlogTable';
-
+import useSWR, { mutate } from 'swr';
+import { ICategory } from 'src/components/EditBlogForm';
+import { ARTICLE_CATEGORY, COURSE_URL } from 'src/constants/url';
 import { getData } from 'src/helpers/apiHandle';
-import { NEWS_URL } from 'src/constants/url';
-import { createBlog } from 'src/services/BlogService';
 
+//context
 import { ERROR_ACTION } from 'src/reduces/ErrorsReducer';
 import { AppContext } from 'src/AppProvider';
 import { AppContextType } from 'src/interfaces/AppContextType';
 import { SUCCESS_ACTION } from 'src/reduces/SuccessReducer';
+import { createCourse } from 'src/services/CourseService';
+import CourseTable from './CourseTable';
 
-const CreateBlogForm = lazy(() => import('src/components/CreateBlogForm'));
+const CreateCourseForm = lazy(() => import('src/components/CreateCourseForm'));
 
-interface IBlog {
+interface ICourses {
+  pageSize: number;
+  results: [ICourse];
+}
+interface ICourse {
+  id: number;
   title: string;
-  summary: string;
-  avatar: string;
+  creatorId: number;
+  image: string;
+  description: string;
 }
-interface IBlogs {
-  sizePage: number;
-  results: IBlog[];
+export interface ICategories {
+  results: ICategory[];
 }
 
-function BlogManager() {
+const Courses = () => {
   const [openDialog, setOpenDialog] = useState(false);
-
-  const [image, setImage] = useState([]);
-  const [content, setContent] = useState('');
-  const [blog, setBlog] = useState({
-    title: '',
-    summary: ''
-  });
+  const [description, setDescription] = useState('');
   const [requesting, setRequesting] = useState<boolean>(false);
+  const [image, setImage] = useState([]);
+  const [category, setCategory] = useState<ICategory>();
+  const [title, setTitle] = useState('');
+
+  // context
   const appContext = useContext(AppContext) as AppContextType;
   const { errorsReducer, successReducer } = appContext;
   const [errors, errorDispatch] = errorsReducer;
   const [success, successDispatch] = successReducer;
-  const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
-    setBlog({ ...blog, [e.target.name]: e.target.value });
-  };
 
-  const { data, error } = useSWR<IBlogs>(NEWS_URL, getData);
-  const objectEmpty = {
-    pageSize: 1,
-    results: [{ id: 1, image: 'public/uploads/file-1665731987187.png' }]
-  };
-  const response = data || objectEmpty;
+  //FETCH DATA
+  const { data: courses } = useSWR<ICourses>(COURSE_URL, getData);
+  const { data: categories } = useSWR<ICategories>(ARTICLE_CATEGORY, getData);
 
-  //dialog create,edit
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
+  useEffect(() => {
+    if (!categories) return;
+
+    setCategory(categories?.results[0]);
+  }, [categories]);
+
   const handleClickOpenDialog = () => {
     setOpenDialog(true);
   };
-  const handleCreateBlog = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
 
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  const handleCreateCourse = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault();
     try {
       const formData = new FormData();
       formData.append('file', image[0]);
-      formData.append('content', content);
-      formData.append('title', blog.title);
-      formData.append('summary', blog.summary);
+      formData.append('description', description);
+      formData.append('title', title);
+      formData.append('categoryId', category.id as unknown as string);
 
-      await createBlog(formData);
+      await createCourse(formData);
       successDispatch({
         type: SUCCESS_ACTION.SET_SUCCESS,
         success: 'Create Blog Success'
       });
-      await mutate(NEWS_URL);
+      await mutate(COURSE_URL);
       setOpenDialog(false);
-      setContent('');
-      setBlog({
-        title: '',
-        summary: ''
-      });
+      setDescription('');
+      setTitle('');
     } catch (error) {
       errorDispatch({
         type: ERROR_ACTION.SET_ERROR,
@@ -108,24 +112,30 @@ function BlogManager() {
           spacing={3}
         >
           <Grid item xs={12}>
-            <BlogTable blogs={response} />
+            {!courses ? <CircularProgress /> : <CourseTable course={courses} />}
           </Grid>
         </Grid>
       </Container>
       <Footer />
-      <CreateBlogForm
-        blog={blog}
-        open={openDialog}
-        handleClose={handleCloseDialog}
-        handleChangeTitle={handleChangeValue}
-        handleChangeSummary={handleChangeValue}
-        handleChangeContent={setContent}
-        setImage={setImage}
-        requesting={requesting}
-        handleCreateBlog={handleCreateBlog}
-      />
+      {!categories ? (
+        <CircularProgress />
+      ) : (
+        <CreateCourseForm
+          open={openDialog}
+          handleClose={handleCloseDialog}
+          setTitle={setTitle}
+          title={title}
+          handleChangeDescription={setDescription}
+          setImage={setImage}
+          requesting={requesting}
+          handleCreateCourse={handleCreateCourse}
+          categories={categories}
+          category={category}
+          setCategory={setCategory}
+        />
+      )}
     </>
   );
-}
+};
 
-export default BlogManager;
+export default Courses;

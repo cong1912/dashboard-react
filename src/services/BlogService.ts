@@ -13,6 +13,7 @@ export const createBlog = (data) => {
     }
   });
 };
+
 export const updateBlog = (data, id) => {
   const token = JSON.parse(localStorage.getItem('token') || 'null');
 

@@ -14,7 +14,7 @@ function PageHeader({ handleClickOpenDialog }) {
           Transactions
         </Typography>
         <Typography variant="subtitle2">
-          {user.name}, manage your blogs
+          {user.name}, manage your courses
         </Typography>
       </Grid>
       <Grid item>
@@ -24,7 +24,7 @@ function PageHeader({ handleClickOpenDialog }) {
           startIcon={<AddTwoToneIcon fontSize="small" />}
           onClick={handleClickOpenDialog}
         >
-          Create new Blog
+          Create new Course
         </Button>
       </Grid>
     </Grid>
