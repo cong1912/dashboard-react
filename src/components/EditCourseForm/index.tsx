@@ -26,12 +26,13 @@ import { AppContextType } from 'src/interfaces/AppContextType';
 import { ICategory } from '../EditBlogForm';
 import { getData } from 'src/helpers/apiHandle';
 import { ARTICLE_CATEGORY, COURSE_URL } from 'src/constants/url';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import {
   ICategories,
   ICourse,
   ICourses
 } from 'src/content/applications/Courses';
+import { updateCourse } from 'src/services/CourseService';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     '& .MuiFormControl-root': {
@@ -112,7 +113,33 @@ const EditCourseForm = ({ open, id, setIsOpenUpdateModal }) => {
   const handleUpdateCourse = async (
     event: React.FormEvent<HTMLFormElement>
   ) => {
-    console.log(1);
+    event.preventDefault();
+
+    try {
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('description', description);
+      if (categoriesUpdate)
+        formData.append('categoryId', categoriesUpdate.id as unknown as string);
+      if (image[0]) {
+        formData.append('file', image[0]);
+      }
+
+      await updateCourse(formData, id);
+      successDispatch({
+        type: SUCCESS_ACTION.SET_SUCCESS,
+        success: 'Edit Course Success'
+      });
+      await mutate(COURSE_URL);
+      await mutate(COURSE_URL + id);
+      setIsOpenUpdateModal(false);
+    } catch (error) {
+      errorDispatch({
+        type: ERROR_ACTION.SET_ERROR,
+        error: error.response.data.message
+      });
+      setRequesting(false);
+    }
   };
 
   const handleChange = (files) => {

@@ -13,3 +13,17 @@ export const createCourse = (data) => {
     }
   });
 };
+
+export const updateCourse = (data, id) => {
+  const token = JSON.parse(localStorage.getItem('token') || 'null');
+
+  return axios({
+    method: 'put',
+    url: `/courses/${id}`,
+    data: data,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Authorization: `Bearer ${token}`
+    }
+  });
+};
