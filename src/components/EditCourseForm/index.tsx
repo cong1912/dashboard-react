@@ -122,7 +122,8 @@ const EditCourseForm = ({ open, id, setIsOpenUpdateModal }) => {
     setIsOpenUpdateModal(false);
   };
 
-  if (!course && !articleCategory) return <div></div>;
+  if (!course) return <div></div>;
+  if (!articleCategory) return <div></div>;
   return (
     <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="xl">
       <DialogTitle>Update Course</DialogTitle>
