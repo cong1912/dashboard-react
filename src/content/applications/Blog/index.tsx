@@ -15,11 +15,8 @@ import { ERROR_ACTION } from 'src/reduces/ErrorsReducer';
 import { AppContext } from 'src/AppProvider';
 import { AppContextType } from 'src/interfaces/AppContextType';
 import { SUCCESS_ACTION } from 'src/reduces/SuccessReducer';
-import {
-  ICategories,
-  ICategory,
-  ICategoryFormData
-} from 'src/components/EditBlogForm';
+import { ICategory } from 'src/components/EditBlogForm';
+import { ICategories } from '../Courses';
 
 const CreateBlogForm = lazy(() => import('src/components/CreateBlogForm'));
 
@@ -53,6 +50,11 @@ function BlogManager() {
 
   const { data: article } = useSWR<IBlogs>(NEWS_URL, getData);
   const { data: categories } = useSWR<ICategories>(ARTICLE_CATEGORY, getData);
+  useEffect(() => {
+    if (!categories) return;
+
+    setCategory(categories?.results[0]);
+  }, [categories]);
   const objectEmpty = {
     pageSize: 1,
     results: [{ id: 1, image: 'public/uploads/file-1665731987187.png' }]
@@ -66,9 +68,7 @@ function BlogManager() {
   };
   const resCategories = categories || objectEmptyCategories;
 
-  // setCategory(resCategories.value.results[0]);
-
-  //dialog create,edit
+  //dialog create
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
