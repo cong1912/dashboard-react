@@ -6,7 +6,7 @@ import { mutate } from 'swr';
 import { useState, lazy } from 'react';
 import DeleteDialog from '../DeleteDialog';
 
-const EditBlogForm = lazy(() => import('src/components/EditBlogForm'));
+const EditCourseForm = lazy(() => import('src/components/EditCourseForm'));
 
 const ActiveCourseTable = ({ params, rowId, setRowId }) => {
   const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);
@@ -32,18 +32,18 @@ const ActiveCourseTable = ({ params, rowId, setRowId }) => {
   return (
     <>
       <Box>
-        <Tooltip title="Edit this room">
+        <Tooltip title="Edit this course">
           <IconButton onClick={handleOpenUpdateModal}>
             <Edit />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Delete this room">
+        <Tooltip title="Delete this course">
           <IconButton onClick={() => handelDeleteBlog(params)}>
             <Delete />
           </IconButton>
         </Tooltip>
       </Box>
-      <EditBlogForm
+      <EditCourseForm
         id={id}
         open={isOpenUpdateModal}
         setIsOpenUpdateModal={setIsOpenUpdateModal}

@@ -1,4 +1,4 @@
-import React, { useState, useContext, ChangeEvent, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
   Grid,
   TextField,
@@ -23,6 +23,7 @@ import { multiFetcher } from 'src/helpers/apiHandle';
 import { ARTICLE_CATEGORY, NEWS_URL } from 'src/constants/url';
 import useSWR, { mutate } from 'swr';
 import { updateBlog } from 'src/services/BlogService';
+
 import { SUCCESS_ACTION } from 'src/reduces/SuccessReducer';
 import { ERROR_ACTION } from 'src/reduces/ErrorsReducer';
 import { AppContext } from 'src/AppProvider';

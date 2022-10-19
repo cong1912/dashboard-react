@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
   Grid,
   TextField,
@@ -18,6 +18,20 @@ import {
   DialogTitle
 } from '@material-ui/core';
 import QuillInput from '../QuillInput';
+
+import { SUCCESS_ACTION } from 'src/reduces/SuccessReducer';
+import { ERROR_ACTION } from 'src/reduces/ErrorsReducer';
+import { AppContext } from 'src/AppProvider';
+import { AppContextType } from 'src/interfaces/AppContextType';
+import { ICategory } from '../EditBlogForm';
+import { getData } from 'src/helpers/apiHandle';
+import { ARTICLE_CATEGORY, COURSE_URL } from 'src/constants/url';
+import useSWR from 'swr';
+import {
+  ICategories,
+  ICourse,
+  ICourses
+} from 'src/content/applications/Courses';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     '& .MuiFormControl-root': {
@@ -44,29 +58,75 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-const EditCourseForm = ({
-  open,
-  handleClose,
-  handleCreateCourse,
-  handleChangeDescription,
-  requesting,
-  setImage,
-  categories,
-  category,
-  setCategory,
-  setTitle,
-  title
-}) => {
+const EditCourseForm = ({ open, id, setIsOpenUpdateModal }) => {
   const classes = useStyles();
+  const [requesting, setRequesting] = useState<boolean>(false);
+  const [categories, setCategories] = useState([]);
+  const [categoriesUpdate, setCategoriesUpdate] = useState<ICategory>();
+  const [image, setImage] = useState([]);
+  const [description, setDescription] = useState('');
+  const [title, setTitle] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+  const [indexCategory, setIndexCategory] = useState<number>();
+
+  const appContext = useContext(AppContext) as AppContextType;
+  const { errorsReducer, successReducer } = appContext;
+  const [errors, errorDispatch] = errorsReducer;
+  const [success, successDispatch] = successReducer;
+
+  const { data: course } = useSWR<ICourse>(
+    id ? COURSE_URL + id : null,
+    getData
+  );
+  console.log(course);
+  const { data: articleCategory } = useSWR<ICategories>(
+    ARTICLE_CATEGORY,
+    getData
+  );
+
+  useEffect(() => {
+    if (!id || !course) {
+      return;
+    } else {
+      setTitle(course.title);
+      setDescription(course.description);
+      if (!course) {
+        return;
+      } else {
+        setImageUrl(
+          `${
+            process.env.REACT_APP_API_BACK_END +
+            course.image.slice(7, course.image.length)
+          }`
+        );
+        setCategories(articleCategory.results);
+        setIndexCategory(
+          articleCategory.results.findIndex(
+            (element) => element.id == course.categoryId
+          )
+        );
+      }
+    }
+  }, [articleCategory, course, id]);
+
+  const handleUpdateCourse = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
+    console.log(1);
+  };
 
   const handleChange = (files) => {
     setImage(files);
   };
+  const handleClose = () => {
+    setIsOpenUpdateModal(false);
+  };
 
+  if (!course && !articleCategory) return <div></div>;
   return (
     <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="xl">
-      <DialogTitle>Create New Blog</DialogTitle>
-      <form className={classes.root} onSubmit={handleCreateCourse}>
+      <DialogTitle>Update Course</DialogTitle>
+      <form className={classes.root} onSubmit={handleUpdateCourse}>
         <DialogContent>
           <Grid container>
             <Grid item xs={6}>
@@ -80,8 +140,8 @@ const EditCourseForm = ({
 
               <Box>
                 <QuillInput
-                  content=""
-                  handleChangeContent={handleChangeDescription}
+                  content={description}
+                  handleChangeContent={setDescription}
                 />
               </Box>
             </Grid>
@@ -90,9 +150,9 @@ const EditCourseForm = ({
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
-                  options={categories.results}
-                  onChange={(event, value) => setCategory(value)}
-                  value={category}
+                  options={categories}
+                  onChange={(event, value) => setCategoriesUpdate(value)}
+                  value={categories[indexCategory]}
                   getOptionLabel={(option: { name: string }) => option.name}
                   renderInput={(params) => {
                     return <TextField {...params} label="Category" />;
@@ -100,6 +160,7 @@ const EditCourseForm = ({
                 />
                 <FormLabel>Thumb</FormLabel>
                 <DropzoneArea
+                  initialFiles={[imageUrl]}
                   onChange={handleChange}
                   acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
                   maxFileSize={5000000}

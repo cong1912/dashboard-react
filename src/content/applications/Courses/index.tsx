@@ -19,16 +19,17 @@ import CourseTable from './CourseTable';
 
 const CreateCourseForm = lazy(() => import('src/components/CreateCourseForm'));
 
-interface ICourses {
+export interface ICourses {
   pageSize: number;
   results: [ICourse];
 }
-interface ICourse {
+export interface ICourse {
   id: number;
   title: string;
   creatorId: number;
   image: string;
   description: string;
+  categoryId: number;
 }
 export interface ICategories {
   results: ICategory[];

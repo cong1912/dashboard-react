@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import { grey } from '@mui/material/colors';
-import ActiveTable from 'src/components/ActiveTable';
+import ActiveCourseTable from 'src/components/ActionCourseTable';
 
 const CourseTable = ({ course }) => {
   const [pageSize, setPageSize] = useState(course.pageSize);
@@ -48,7 +48,9 @@ const CourseTable = ({ course }) => {
         field: 'actions',
         headerName: 'Actions',
         type: 'actions',
-        renderCell: (params) => <ActiveTable {...{ params, rowId, setRowId }} />
+        renderCell: (params) => (
+          <ActiveCourseTable {...{ params, rowId, setRowId }} />
+        )
       }
     ],
     [rowId]
