@@ -56,7 +56,7 @@ const Courses = () => {
   useEffect(() => {
     if (!categories) return;
 
-    setCategory(categories?.results[0]);
+    setCategory(categories.results[0]);
   }, [categories]);
 
   const handleClickOpenDialog = () => {
@@ -76,7 +76,7 @@ const Courses = () => {
       formData.append('file', image[0]);
       formData.append('description', description);
       formData.append('title', title);
-      formData.append('categoryId', category.id as unknown as string);
+      formData.append('categoryId', category.id && ('1' as unknown as string));
 
       await createCourse(formData);
       successDispatch({
@@ -96,6 +96,8 @@ const Courses = () => {
     }
   };
 
+  if (!courses) return <></>;
+  if (!categories) return <></>;
   return (
     <>
       <Helmet>

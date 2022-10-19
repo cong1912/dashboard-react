@@ -27,11 +27,7 @@ import { ICategory } from '../EditBlogForm';
 import { getData } from 'src/helpers/apiHandle';
 import { ARTICLE_CATEGORY, COURSE_URL } from 'src/constants/url';
 import useSWR, { mutate } from 'swr';
-import {
-  ICategories,
-  ICourse,
-  ICourses
-} from 'src/content/applications/Courses';
+import { ICategories, ICourse } from 'src/content/applications/Courses';
 import { updateCourse } from 'src/services/CourseService';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -47,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       margin: theme.spacing(1)
     },
     '& .quill': {
-      height: 120
+      height: 180
     }
   },
   btn: {
@@ -79,7 +75,6 @@ const EditCourseForm = ({ open, id, setIsOpenUpdateModal }) => {
     id ? COURSE_URL + id : null,
     getData
   );
-  console.log(course);
   const { data: articleCategory } = useSWR<ICategories>(
     ARTICLE_CATEGORY,
     getData
@@ -101,10 +96,12 @@ const EditCourseForm = ({ open, id, setIsOpenUpdateModal }) => {
           }`
         );
         setCategories(articleCategory.results);
-        setIndexCategory(
-          articleCategory.results.findIndex(
-            (element) => element.id == course.categoryId
-          )
+        setCategoriesUpdate(
+          articleCategory.results[
+            articleCategory.results.findIndex(
+              (element) => element.id == course.categoryId
+            )
+          ]
         );
       }
     }
@@ -180,7 +177,7 @@ const EditCourseForm = ({ open, id, setIsOpenUpdateModal }) => {
                   id="combo-box-demo"
                   options={categories}
                   onChange={(event, value) => setCategoriesUpdate(value)}
-                  value={categories[indexCategory]}
+                  value={categoriesUpdate}
                   getOptionLabel={(option: { name: string }) => option.name}
                   renderInput={(params) => {
                     return <TextField {...params} label="Category" />;

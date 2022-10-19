@@ -64,6 +64,7 @@ const CreateBlogForm = ({
   const handleChange = (files) => {
     setImage(files);
   };
+  console.log(category);
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="xl">

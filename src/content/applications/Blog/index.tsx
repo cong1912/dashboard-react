@@ -50,6 +50,7 @@ function BlogManager() {
 
   const { data: article } = useSWR<IBlogs>(NEWS_URL, getData);
   const { data: categories } = useSWR<ICategories>(ARTICLE_CATEGORY, getData);
+  
   useEffect(() => {
     if (!categories) return;
 

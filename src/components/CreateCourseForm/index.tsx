@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       margin: theme.spacing(1)
     },
     '& .quill': {
-      height: 120
+      height: 180
     }
   },
   btn: {
@@ -65,7 +65,7 @@ const CreateCourseForm = ({
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="xl">
-      <DialogTitle>Create New Blog</DialogTitle>
+      <DialogTitle>Create New Course</DialogTitle>
       <form className={classes.root} onSubmit={handleCreateCourse}>
         <DialogContent>
           <Grid container>
