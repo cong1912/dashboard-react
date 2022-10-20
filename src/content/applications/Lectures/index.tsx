@@ -21,10 +21,10 @@ import { ERROR_ACTION } from 'src/reduces/ErrorsReducer';
 import { AppContext } from 'src/AppProvider';
 import { AppContextType } from 'src/interfaces/AppContextType';
 import { SUCCESS_ACTION } from 'src/reduces/SuccessReducer';
-import { createSection } from 'src/services/SessionService';
+import { createLecture } from 'src/services/LecturesService';
 
-const CreateSectionForm = lazy(
-  () => import('src/components/CreateSectionForm')
+const CreateLectureForm = lazy(
+  () => import('src/components/CreateLectureForm')
 );
 
 const Lectures = () => {
@@ -50,20 +50,22 @@ const Lectures = () => {
     setOpenDialog(false);
   };
 
-  const handleCreateLecto = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleCreateLecture = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
     try {
       const data = {
         name: name,
         content: content,
         sectionId: +sectionId,
-        price: price
+        price: +price
       };
 
-      await createSection(data);
+      await createLecture(data);
       successDispatch({
         type: SUCCESS_ACTION.SET_SUCCESS,
-        success: 'Create Section Success'
+        success: 'Create Lecture Success'
       });
       await mutate(COURSE_URL);
       setOpenDialog(false);
@@ -102,16 +104,18 @@ const Lectures = () => {
       </Container>
       <Footer />
 
-      {/* <CreateSectionForm
+      <CreateLectureForm
         open={openDialog}
-        handleClose={handleCloseDialog}
-        setTitle={setTitle}
-        setSummary={setSummary}
-        title={title}
-        summary={summary}
+        setContent={setContent}
+        setPrice={setPrice}
+        setName={setName}
+        price={price}
+        name={name}
+        content={content}
         requesting={requesting}
-        handleCreateSession={handleCreateSession}
-      /> */}
+        handleCreateLecture={handleCreateLecture}
+        handleClose={handleCloseDialog}
+      />
     </>
   );
 };
