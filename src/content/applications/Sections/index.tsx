@@ -1,4 +1,11 @@
-import React, { lazy, useEffect, useState, useContext } from 'react';
+import { useParams } from 'react-router';
+import React, {
+  lazy,
+  useEffect,
+  useState,
+  useContext,
+  ChangeEvent
+} from 'react';
 import { Helmet } from 'react-helmet-async';
 import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
@@ -14,34 +21,18 @@ import { ERROR_ACTION } from 'src/reduces/ErrorsReducer';
 import { AppContext } from 'src/AppProvider';
 import { AppContextType } from 'src/interfaces/AppContextType';
 import { SUCCESS_ACTION } from 'src/reduces/SuccessReducer';
-import { createCourse } from 'src/services/CourseService';
-import CourseTable from './CourseTable';
+import { createSection } from 'src/services/SessionService';
 
-const CreateCourseForm = lazy(() => import('src/components/CreateCourseForm'));
+const CreateSectionForm = lazy(
+  () => import('src/components/CreateSectionForm')
+);
 
-export interface ICourses {
-  pageSize: number;
-  results: [ICourse];
-}
-export interface ICourse {
-  id: number;
-  title: string;
-  creatorId: number;
-  image: string;
-  description: string;
-  categoryId: number;
-}
-export interface ICategories {
-  results: ICategory[];
-}
-
-const Courses = () => {
+const Sections = () => {
+  const { id } = useParams() as { id: string };
   const [openDialog, setOpenDialog] = useState(false);
-  const [description, setDescription] = useState('');
   const [requesting, setRequesting] = useState<boolean>(false);
-  const [image, setImage] = useState([]);
-  const [category, setCategory] = useState<ICategory>();
   const [title, setTitle] = useState('');
+  const [summary, setSummary] = useState('');
 
   // context
   const appContext = useContext(AppContext) as AppContextType;
@@ -49,43 +40,33 @@ const Courses = () => {
   const [errors, errorDispatch] = errorsReducer;
   const [success, successDispatch] = successReducer;
 
-  //FETCH DATA
-  const { data: courses } = useSWR<ICourses>(COURSE_URL, getData);
-  const { data: categories } = useSWR<ICategories>(ARTICLE_CATEGORY, getData);
-
-  useEffect(() => {
-    if (!categories) return;
-
-    setCategory(categories.results[0]);
-  }, [categories]);
-
+  // dialog create
   const handleClickOpenDialog = () => {
     setOpenDialog(true);
   };
-
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
 
-  const handleCreateCourse = async (
+  const handleCreateSession = async (
     event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
     try {
-      const formData = new FormData();
-      formData.append('file', image[0]);
-      formData.append('description', description);
-      formData.append('title', title);
-      formData.append('categoryId', category.id && ('1' as unknown as string));
+      const data = {
+        title: title,
+        summary: summary,
+        newsId: +id
+      };
 
-      await createCourse(formData);
+      await createSection(data);
       successDispatch({
         type: SUCCESS_ACTION.SET_SUCCESS,
-        success: 'Create Blog Success'
+        success: 'Create Section Success'
       });
       await mutate(COURSE_URL);
       setOpenDialog(false);
-      setDescription('');
+      setSummary('');
       setTitle('');
     } catch (error) {
       errorDispatch({
@@ -96,12 +77,10 @@ const Courses = () => {
     }
   };
 
-  if (!courses) return <></>;
-  if (!categories) return <></>;
   return (
     <>
       <Helmet>
-        <title>Course - Manager</title>
+        <title>Section - Manager</title>
       </Helmet>
       <PageTitleWrapper>
         <PageHeader handleClickOpenDialog={handleClickOpenDialog} />
@@ -115,30 +94,24 @@ const Courses = () => {
           spacing={3}
         >
           <Grid item xs={12}>
-            {!courses ? <CircularProgress /> : <CourseTable course={courses} />}
+            {/* {!courses ? <CircularProgress /> : <CourseTable course={courses} />} */}
           </Grid>
         </Grid>
       </Container>
       <Footer />
-      {!categories ? (
-        <CircularProgress />
-      ) : (
-        <CreateCourseForm
-          open={openDialog}
-          handleClose={handleCloseDialog}
-          setTitle={setTitle}
-          title={title}
-          handleChangeDescription={setDescription}
-          setImage={setImage}
-          requesting={requesting}
-          handleCreateCourse={handleCreateCourse}
-          categories={categories}
-          category={category}
-          setCategory={setCategory}
-        />
-      )}
+
+      <CreateSectionForm
+        open={openDialog}
+        handleClose={handleCloseDialog}
+        setTitle={setTitle}
+        setSummary={setSummary}
+        title={title}
+        summary={summary}
+        requesting={requesting}
+        handleCreateSession={handleCreateSession}
+      />
     </>
   );
 };
 
-export default Courses;
+export default Sections;
