@@ -1,19 +1,17 @@
 import { Box, IconButton, Tooltip } from '@mui/material';
-import { Delete, Edit, Preview } from '@mui/icons-material';
+import { Delete, Edit } from '@mui/icons-material';
 import { deleteBlog } from 'src/services/BlogService';
 import { NEWS_URL } from 'src/constants/url';
 import { mutate } from 'swr';
 import { useState, lazy } from 'react';
 import DeleteDialog from '../DeleteDialog';
-import { NavigateFunction, useNavigate } from 'react-router';
 
-const EditCourseForm = lazy(() => import('src/components/EditCourseForm'));
+const EditLectureForm = lazy(() => import('src/components/EditLectureForm'));
 
-const ActiveCourseTable = ({ params, rowId, setRowId }) => {
+const ActionLectureTable = ({ params, rowId, setRowId }) => {
   const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [id, setId] = useState<number>();
-  const navigate: NavigateFunction = useNavigate();
   const handleOpenUpdateModal = () => {
     setIsOpenUpdateModal(true);
     setId(params.id);
@@ -33,25 +31,18 @@ const ActiveCourseTable = ({ params, rowId, setRowId }) => {
   return (
     <>
       <Box>
-        <Tooltip title="View course sections">
-          <IconButton
-            onClick={() => navigate(`/management/course/${params.id}/sections`)}
-          >
-            <Preview />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Edit this course">
+        <Tooltip title="Edit this lecture">
           <IconButton onClick={handleOpenUpdateModal}>
             <Edit />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Delete this course">
+        <Tooltip title="Delete this lecture">
           <IconButton onClick={() => handelDeleteBlog(params)}>
             <Delete />
           </IconButton>
         </Tooltip>
       </Box>
-      <EditCourseForm
+      <EditLectureForm
         id={id}
         open={isOpenUpdateModal}
         setIsOpenUpdateModal={setIsOpenUpdateModal}
@@ -66,4 +57,4 @@ const ActiveCourseTable = ({ params, rowId, setRowId }) => {
   );
 };
 
-export default ActiveCourseTable;
+export default ActionLectureTable;

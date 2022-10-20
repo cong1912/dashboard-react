@@ -101,7 +101,7 @@ const Courses = () => {
   return (
     <>
       <Helmet>
-        <title>Blog - Manager</title>
+        <title>Course - Manager</title>
       </Helmet>
       <PageTitleWrapper>
         <PageHeader handleClickOpenDialog={handleClickOpenDialog} />

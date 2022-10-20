@@ -84,6 +84,12 @@ const BlogManager = Loader(lazy(() => import('src/content/applications/Blog')));
 
 //Courses
 const Courses = Loader(lazy(() => import('src/content/applications/Courses')));
+const Sections = Loader(
+  lazy(() => import('src/content/applications/Sections'))
+);
+const Lectures = Loader(
+  lazy(() => import('src/content/applications/Lectures'))
+);
 
 // FAQ
 const FAQ = Loader(lazy(() => import('src/content/applications/FAQs')));
@@ -175,6 +181,14 @@ const routes = (isLoggedIn: boolean) => [
       {
         path: 'category-blog',
         element: <CategoryBlog />
+      },
+      {
+        path: 'course/:id/sections',
+        element: <Sections />
+      },
+      {
+        path: 'section/:sectionId/lectures',
+        element: <Lectures />
       },
       {
         path: 'courses',
