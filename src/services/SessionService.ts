@@ -12,3 +12,16 @@ export const createSection = (data) => {
     }
   });
 };
+
+export const updateSection = (data, id) => {
+  const token = JSON.parse(localStorage.getItem('token') || 'null');
+
+  return axios({
+    method: 'put',
+    url: `/section/${id}`,
+    data: data,
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+};

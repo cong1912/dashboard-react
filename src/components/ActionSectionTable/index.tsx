@@ -7,7 +7,7 @@ import { useState, lazy } from 'react';
 import DeleteDialog from '../DeleteDialog';
 import { NavigateFunction, useNavigate } from 'react-router';
 
-const EditCourseForm = lazy(() => import('src/components/EditCourseForm'));
+const EditSectionForm = lazy(() => import('src/components/EditSectionForm'));
 
 const ActiveSectionTable = ({ params, rowId, setRowId }) => {
   const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);
@@ -53,7 +53,7 @@ const ActiveSectionTable = ({ params, rowId, setRowId }) => {
           </IconButton>
         </Tooltip>
       </Box>
-      <EditCourseForm
+      <EditSectionForm
         id={id}
         open={isOpenUpdateModal}
         setIsOpenUpdateModal={setIsOpenUpdateModal}

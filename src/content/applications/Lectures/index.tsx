@@ -1,19 +1,12 @@
 import { useParams } from 'react-router';
-import React, {
-  lazy,
-  useEffect,
-  useState,
-  useContext,
-  ChangeEvent
-} from 'react';
+import React, { lazy, useState, useContext } from 'react';
 import { Helmet } from 'react-helmet-async';
 import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Grid, Container, CircularProgress } from '@mui/material';
 import Footer from 'src/components/Footer';
 import useSWR, { mutate } from 'swr';
-import { ICategory } from 'src/components/EditBlogForm';
-import { ARTICLE_CATEGORY, COURSE_URL, LECTURE_URL } from 'src/constants/url';
+import { LECTURE_URL } from 'src/constants/url';
 import { getData } from 'src/helpers/apiHandle';
 
 //context
@@ -27,6 +20,12 @@ import LecturesTable from './LecturesTable';
 const CreateLectureForm = lazy(
   () => import('src/components/CreateLectureForm')
 );
+
+export interface Ilecture {
+  content: string;
+  name: string;
+  price: string;
+}
 
 const Lectures = () => {
   const { sectionId } = useParams() as { sectionId: string };

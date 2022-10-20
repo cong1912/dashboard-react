@@ -24,7 +24,7 @@ function PageHeader({ handleClickOpenDialog }) {
           startIcon={<AddTwoToneIcon fontSize="small" />}
           onClick={handleClickOpenDialog}
         >
-          Create New Session
+          Create New Lecture
         </Button>
       </Grid>
     </Grid>

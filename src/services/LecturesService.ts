@@ -12,3 +12,16 @@ export const createLecture = (data) => {
     }
   });
 };
+
+export const updateLecture = (data, id) => {
+  const token = JSON.parse(localStorage.getItem('token') || 'null');
+
+  return axios({
+    method: 'put',
+    url: `/post/${id}`,
+    data: data,
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+};

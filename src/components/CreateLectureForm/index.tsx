@@ -67,6 +67,7 @@ const CreateLectureForm = ({
             variant="outlined"
             label="Price"
             name="price"
+            type="number"
             onChange={(e) => {
               setPrice(e.target.value);
             }}

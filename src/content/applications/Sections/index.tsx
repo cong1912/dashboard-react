@@ -76,7 +76,7 @@ const Sections = () => {
       await createSection(data);
       successDispatch({
         type: SUCCESS_ACTION.SET_SUCCESS,
-        success: 'Create Section Success'
+        success: 'Edit Section Success'
       });
       await mutate(SECTION_URL);
       setOpenDialog(false);
