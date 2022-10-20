@@ -13,7 +13,7 @@ import { Grid, Container, CircularProgress } from '@mui/material';
 import Footer from 'src/components/Footer';
 import useSWR, { mutate } from 'swr';
 import { ICategory } from 'src/components/EditBlogForm';
-import { ARTICLE_CATEGORY, COURSE_URL } from 'src/constants/url';
+import { ARTICLE_CATEGORY, COURSE_URL, LECTURE_URL } from 'src/constants/url';
 import { getData } from 'src/helpers/apiHandle';
 
 //context
@@ -22,14 +22,14 @@ import { AppContext } from 'src/AppProvider';
 import { AppContextType } from 'src/interfaces/AppContextType';
 import { SUCCESS_ACTION } from 'src/reduces/SuccessReducer';
 import { createLecture } from 'src/services/LecturesService';
+import LecturesTable from './LecturesTable';
 
 const CreateLectureForm = lazy(
   () => import('src/components/CreateLectureForm')
 );
 
 const Lectures = () => {
-  const { id, sectionId } = useParams() as { id: string; sectionId: string };
-  console.log(sectionId);
+  const { sectionId } = useParams() as { sectionId: string };
   const [openDialog, setOpenDialog] = useState(false);
   const [requesting, setRequesting] = useState<boolean>(false);
   const [name, setName] = useState('');
@@ -41,6 +41,9 @@ const Lectures = () => {
   const { errorsReducer, successReducer } = appContext;
   const [errors, errorDispatch] = errorsReducer;
   const [success, successDispatch] = successReducer;
+
+  // fetch data
+  const { data: lectures } = useSWR(LECTURE_URL, getData);
 
   // dialog create
   const handleClickOpenDialog = () => {
@@ -67,7 +70,7 @@ const Lectures = () => {
         type: SUCCESS_ACTION.SET_SUCCESS,
         success: 'Create Lecture Success'
       });
-      await mutate(COURSE_URL);
+      await mutate(LECTURE_URL);
       setOpenDialog(false);
       setContent('');
       setName('');
@@ -81,6 +84,7 @@ const Lectures = () => {
     }
   };
 
+  if (!lectures) return <CircularProgress />;
   return (
     <>
       <Helmet>
@@ -98,7 +102,11 @@ const Lectures = () => {
           spacing={3}
         >
           <Grid item xs={12}>
-            {/* {!courses ? <CircularProgress /> : <CourseTable course={courses} />} */}
+            {!lectures ? (
+              <CircularProgress />
+            ) : (
+              <LecturesTable lectures={lectures} />
+            )}
           </Grid>
         </Grid>
       </Container>

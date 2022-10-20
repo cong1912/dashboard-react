@@ -187,7 +187,7 @@ const routes = (isLoggedIn: boolean) => [
         element: <Sections />
       },
       {
-        path: 'course/:id/section/:sectionId/lectures',
+        path: 'section/:sectionId/lectures',
         element: <Lectures />
       },
       {

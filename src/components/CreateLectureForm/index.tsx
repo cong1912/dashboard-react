@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       margin: theme.spacing(1)
     },
     '& .MuiDialogContent-root': {
-      height: 400
+      height: 420
     },
     '& .MuiBox-root': {
       width: '90%',

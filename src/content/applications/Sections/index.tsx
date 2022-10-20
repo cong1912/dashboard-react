@@ -13,7 +13,7 @@ import { Grid, Container, CircularProgress } from '@mui/material';
 import Footer from 'src/components/Footer';
 import useSWR, { mutate } from 'swr';
 import { ICategory } from 'src/components/EditBlogForm';
-import { ARTICLE_CATEGORY, COURSE_URL } from 'src/constants/url';
+import { ARTICLE_CATEGORY, COURSE_URL, SECTION_URL } from 'src/constants/url';
 import { getData } from 'src/helpers/apiHandle';
 
 //context
@@ -22,6 +22,17 @@ import { AppContext } from 'src/AppProvider';
 import { AppContextType } from 'src/interfaces/AppContextType';
 import { SUCCESS_ACTION } from 'src/reduces/SuccessReducer';
 import { createSection } from 'src/services/SessionService';
+import SectionsTable from './SectionsTable';
+
+export interface ISection {
+  id: number;
+  summary: string;
+  title: string;
+}
+
+export interface ISections {
+  results: [ISection];
+}
 
 const CreateSectionForm = lazy(
   () => import('src/components/CreateSectionForm')
@@ -39,6 +50,9 @@ const Sections = () => {
   const { errorsReducer, successReducer } = appContext;
   const [errors, errorDispatch] = errorsReducer;
   const [success, successDispatch] = successReducer;
+
+  // fetch data
+  const { data: sections } = useSWR<ISections>(SECTION_URL, getData);
 
   // dialog create
   const handleClickOpenDialog = () => {
@@ -64,7 +78,7 @@ const Sections = () => {
         type: SUCCESS_ACTION.SET_SUCCESS,
         success: 'Create Section Success'
       });
-      await mutate(COURSE_URL);
+      await mutate(SECTION_URL);
       setOpenDialog(false);
       setSummary('');
       setTitle('');
@@ -77,6 +91,7 @@ const Sections = () => {
     }
   };
 
+  if (!sections) return <CircularProgress />;
   return (
     <>
       <Helmet>
@@ -94,7 +109,11 @@ const Sections = () => {
           spacing={3}
         >
           <Grid item xs={12}>
-            {/* {!courses ? <CircularProgress /> : <CourseTable course={courses} />} */}
+            {!sections ? (
+              <CircularProgress />
+            ) : (
+              <SectionsTable sections={sections} />
+            )}
           </Grid>
         </Grid>
       </Container>
