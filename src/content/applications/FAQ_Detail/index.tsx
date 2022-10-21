@@ -121,17 +121,15 @@ export default function FaqDetail() {
                           height={60}
                           onClick={() =>
                             handleOpenModalImage(
-                              `http://139.59.104.129:8000/${con.imgUrl1.replace(
-                                'public/',
-                                ''
-                              )}`
+                              `${
+                                process.env.REACT_APP_API_BACK_END
+                              }${con.imgUrl1.replace('public/', '')}`
                             )
                           }
                           crossOrigin="anonymous"
-                          src={`http://139.59.104.129:8000/${con.imgUrl1.replace(
-                            'public/',
-                            ''
-                          )}`}
+                          src={`${
+                            process.env.REACT_APP_API_BACK_END
+                          }${con.imgUrl1.replace('public/', '')}`}
                           loading="lazy"
                         />
                       )}
@@ -139,19 +137,17 @@ export default function FaqDetail() {
                         <img
                           onClick={() =>
                             handleOpenModalImage(
-                              `http://139.59.104.129:8000/${con.imgUrl1.replace(
-                                'public/',
-                                ''
-                              )}`
+                              `${
+                                process.env.REACT_APP_API_BACK_END
+                              }${con.imgUrl1.replace('public/', '')}`
                             )
                           }
                           width={60}
                           height={60}
                           crossOrigin="anonymous"
-                          src={`http://139.59.104.129:8000/${con.imgUrl2.replace(
-                            'public/',
-                            ''
-                          )}`}
+                          src={`${
+                            process.env.REACT_APP_API_BACK_END
+                          }${con.imgUrl2.replace('public/', '')}`}
                           loading="lazy"
                         />
                       )}
@@ -172,17 +168,15 @@ export default function FaqDetail() {
                           height={60}
                           onClick={() =>
                             handleOpenModalImage(
-                              `http://139.59.104.129:8000/${con.imgUrl1.replace(
-                                'public/',
-                                ''
-                              )}`
+                              `${
+                                process.env.REACT_APP_API_BACK_END
+                              }${con.imgUrl1.replace('public/', '')}`
                             )
                           }
                           crossOrigin="anonymous"
-                          src={`http://139.59.104.129:8000/${con.imgUrl1.replace(
-                            'public/',
-                            ''
-                          )}`}
+                          src={`${
+                            process.env.REACT_APP_API_BACK_END
+                          }${con.imgUrl1.replace('public/', '')}`}
                           loading="lazy"
                         />
                       )}
@@ -190,19 +184,17 @@ export default function FaqDetail() {
                         <img
                           onClick={() =>
                             handleOpenModalImage(
-                              `http://139.59.104.129:8000/${con.imgUrl1.replace(
-                                'public/',
-                                ''
-                              )}`
+                              `${
+                                process.env.REACT_APP_API_BACK_END
+                              }${con.imgUrl1.replace('public/', '')}`
                             )
                           }
                           width={60}
                           height={60}
                           crossOrigin="anonymous"
-                          src={`http://139.59.104.129:8000/${con.imgUrl2.replace(
-                            'public/',
-                            ''
-                          )}`}
+                          src={`${
+                            process.env.REACT_APP_API_BACK_END
+                          }${con.imgUrl2.replace('public/', '')}`}
                           loading="lazy"
                         />
                       )}
