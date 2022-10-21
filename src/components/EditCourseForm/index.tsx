@@ -162,27 +162,28 @@ const EditCourseForm = ({ open, id, setIsOpenUpdateModal }) => {
                 onChange={(e) => setTitle(e.target.value)}
                 value={title}
               />
-
-              <Box>
-                <QuillInput
-                  content={description}
-                  handleChangeContent={setDescription}
-                />
-              </Box>
+              <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                options={categories}
+                onChange={(event, value) => setCategoriesUpdate(value)}
+                value={categoriesUpdate}
+                getOptionLabel={(option: { name: string }) => option.name}
+                renderInput={(params) => {
+                  return <TextField {...params} label="Category" />;
+                }}
+              />
+              <TextField
+                label="Content"
+                multiline
+                rows={5}
+                name="content"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
             </Grid>
             <Grid item xs={6}>
               <FormControl>
-                <Autocomplete
-                  disablePortal
-                  id="combo-box-demo"
-                  options={categories}
-                  onChange={(event, value) => setCategoriesUpdate(value)}
-                  value={categoriesUpdate}
-                  getOptionLabel={(option: { name: string }) => option.name}
-                  renderInput={(params) => {
-                    return <TextField {...params} label="Category" />;
-                  }}
-                />
                 <FormLabel>Thumb</FormLabel>
                 <DropzoneArea
                   initialFiles={[imageUrl]}

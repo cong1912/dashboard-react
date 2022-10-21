@@ -48,7 +48,8 @@ const CreateCourseForm = ({
   open,
   handleClose,
   handleCreateCourse,
-  handleChangeDescription,
+  description,
+  setDescription,
   requesting,
   setImage,
   categories,
@@ -77,27 +78,28 @@ const CreateCourseForm = ({
                 onChange={(e) => setTitle(e.target.value)}
                 value={title}
               />
-
-              <Box>
-                <QuillInput
-                  content=""
-                  handleChangeContent={handleChangeDescription}
-                />
-              </Box>
+              <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                options={categories.results}
+                onChange={(event, value) => setCategory(value)}
+                value={category}
+                getOptionLabel={(option: { name: string }) => option.name}
+                renderInput={(params) => {
+                  return <TextField {...params} label="Category" />;
+                }}
+              />
+              <TextField
+                label="Content"
+                multiline
+                rows={5}
+                name="content"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
             </Grid>
             <Grid item xs={6}>
               <FormControl>
-                <Autocomplete
-                  disablePortal
-                  id="combo-box-demo"
-                  options={categories.results}
-                  onChange={(event, value) => setCategory(value)}
-                  value={category}
-                  getOptionLabel={(option: { name: string }) => option.name}
-                  renderInput={(params) => {
-                    return <TextField {...params} label="Category" />;
-                  }}
-                />
                 <FormLabel>Thumb</FormLabel>
                 <DropzoneArea
                   onChange={handleChange}

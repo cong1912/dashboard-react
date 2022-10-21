@@ -128,7 +128,8 @@ const Courses = () => {
           handleClose={handleCloseDialog}
           setTitle={setTitle}
           title={title}
-          handleChangeDescription={setDescription}
+          setDescription={setDescription}
+          description={description}
           setImage={setImage}
           requesting={requesting}
           handleCreateCourse={handleCreateCourse}
