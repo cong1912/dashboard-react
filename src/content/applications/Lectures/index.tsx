@@ -42,7 +42,10 @@ const Lectures = () => {
   const [success, successDispatch] = successReducer;
 
   // fetch data
-  const { data: lectures } = useSWR(LECTURE_URL, getData);
+  const { data: lectures } = useSWR(
+    sectionId ? LECTURE_URL + `?sectionId=${sectionId}` : null,
+    getData
+  );
 
   // dialog create
   const handleClickOpenDialog = () => {
@@ -69,7 +72,7 @@ const Lectures = () => {
         type: SUCCESS_ACTION.SET_SUCCESS,
         success: 'Create Lecture Success'
       });
-      await mutate(LECTURE_URL);
+      await mutate(LECTURE_URL + `?sectionId=${sectionId}`);
       setOpenDialog(false);
       setContent('');
       setName('');

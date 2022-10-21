@@ -47,10 +47,11 @@ function BlogManager() {
   const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     setBlog({ ...blog, [e.target.name]: e.target.value });
   };
+  const [page, setPage] = useState(0);
 
-  const { data: article } = useSWR<IBlogs>(NEWS_URL, getData);
+  const { data: article } = useSWR<IBlogs>(NEWS_URL + `?page=${page}`, getData);
   const { data: categories } = useSWR<ICategories>(ARTICLE_CATEGORY, getData);
-  
+  console.log(article);
   useEffect(() => {
     if (!categories) return;
 
