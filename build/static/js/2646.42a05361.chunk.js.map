@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/2646.42a05361.chunk.js","mappings":"sMAMA,UAJmB,WACjB,OAAO","sources":["content/applications/Categories/index.tsx"],"sourcesContent":["import React from 'react';\r\n\r\nconst Categories = () => {\r\n  return <div>index</div>;\r\n};\r\n\r\nexport default Categories;\r\n"],"names":[],"sourceRoot":""}
