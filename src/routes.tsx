@@ -94,6 +94,9 @@ const Lectures = Loader(
 // FAQ
 const FAQ = Loader(lazy(() => import('src/content/applications/FAQs')));
 
+// FAQ Detail
+const FAQDetail = Loader(lazy(() => import('src/content/applications/FAQ_Detail')));
+
 // UserManager
 const UserManager = Loader(
   lazy(() => import('src/content/applications/UserManager'))
@@ -196,7 +199,17 @@ const routes = (isLoggedIn: boolean) => [
       },
       {
         path: 'faqs',
-        element: <FAQ />
+        children: [
+          {
+            path: '',
+            element: <FAQ />
+          },
+          {
+            path: 'detail/:id',
+            element: <FAQDetail />
+          }
+
+        ]
       },
       {
         path: 'user-manager',
