@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import PageHeader from './PageHeader';
-import { Box, Card, styled, Container } from '@mui/material';
+import { Box, Card, styled, Container, Modal, Dialog } from '@mui/material';
 
 import FaqFormModal from './FaqFormModal';
 import { getFaqDetail } from 'src/services/FaqService';
@@ -29,6 +29,7 @@ const CardWrapperSecondary = styled(Card)(
         border-top-left-radius: ${theme.general.borderRadius};
         max-width: 380px;
         display: inline-flex;
+        flex-direction: column;
   `
 );
 
@@ -46,6 +47,16 @@ const style = {
 
 export default function FaqDetail() {
   const { id } = useParams();
+  const [imgModal, setImgModal] = React.useState('');
+  const [openModalImage, setOpenModalImage] = React.useState(false);
+  const handleOpenModalImage = (imgUrl) => {
+    setImgModal(imgUrl);
+    setOpenModalImage(true);
+  };
+  const handleCloseModalImage = () => {
+    setImgModal('');
+    setOpenModalImage(false);
+  };
 
   const [open, setOpen] = React.useState(false);
 
@@ -84,19 +95,120 @@ export default function FaqDetail() {
             <Box
               key={con.id}
               display="flex"
-              alignItems={`flex-${con.status === 0 ? 'start' : 'end'}"`}
-              justifyContent={`flex-${con.status === 0 ? 'start' : 'end'}"`}
-              py={3}
-              px={6}
+              alignItems="flex-start"
+              justifyContent={con.status === 1 ? 'flex-start' : 'flex-end'}
+              py={1}
+              px={2}
             >
               <Box
                 display="flex"
-                alignItems={`flex-${con.status === 0 ? 'start' : 'end'}"`}
-                justifyContent={`flex-${con.status === 0 ? 'start' : 'end'}"`}
+                alignItems="flex-end"
+                justifyContent="flex-end"
                 flexDirection="column"
-                mr={2}
               >
-                <CardWrapperSecondary>{con.content}</CardWrapperSecondary>
+                {con.status === 1 ? (
+                  <CardWrapperSecondary>
+                    {con.content}
+                    <Box
+                      display="flex"
+                      flexDirection="row"
+                      alignItems="flex-start"
+                      justifyContent="space-between"
+                    >
+                      {con.imgUrl1 != '' && (
+                        <img
+                          width={60}
+                          height={60}
+                          onClick={() =>
+                            handleOpenModalImage(
+                              `http://139.59.104.129:8000/${con.imgUrl1.replace(
+                                'public/',
+                                ''
+                              )}`
+                            )
+                          }
+                          crossOrigin="anonymous"
+                          src={`http://139.59.104.129:8000/${con.imgUrl1.replace(
+                            'public/',
+                            ''
+                          )}`}
+                          loading="lazy"
+                        />
+                      )}
+                      {con.imgUrl2 != '' && (
+                        <img
+                          onClick={() =>
+                            handleOpenModalImage(
+                              `http://139.59.104.129:8000/${con.imgUrl1.replace(
+                                'public/',
+                                ''
+                              )}`
+                            )
+                          }
+                          width={60}
+                          height={60}
+                          crossOrigin="anonymous"
+                          src={`http://139.59.104.129:8000/${con.imgUrl2.replace(
+                            'public/',
+                            ''
+                          )}`}
+                          loading="lazy"
+                        />
+                      )}
+                    </Box>
+                  </CardWrapperSecondary>
+                ) : (
+                  <CardWrapperPrimary>
+                    {con.content}
+                    <Box
+                      display="flex"
+                      flexDirection="row"
+                      alignItems="flex-start"
+                      justifyContent="space-between"
+                    >
+                      {con.imgUrl1 != '' && (
+                        <img
+                          width={60}
+                          height={60}
+                          onClick={() =>
+                            handleOpenModalImage(
+                              `http://139.59.104.129:8000/${con.imgUrl1.replace(
+                                'public/',
+                                ''
+                              )}`
+                            )
+                          }
+                          crossOrigin="anonymous"
+                          src={`http://139.59.104.129:8000/${con.imgUrl1.replace(
+                            'public/',
+                            ''
+                          )}`}
+                          loading="lazy"
+                        />
+                      )}
+                      {con.imgUrl2 != '' && (
+                        <img
+                          onClick={() =>
+                            handleOpenModalImage(
+                              `http://139.59.104.129:8000/${con.imgUrl1.replace(
+                                'public/',
+                                ''
+                              )}`
+                            )
+                          }
+                          width={60}
+                          height={60}
+                          crossOrigin="anonymous"
+                          src={`http://139.59.104.129:8000/${con.imgUrl2.replace(
+                            'public/',
+                            ''
+                          )}`}
+                          loading="lazy"
+                        />
+                      )}
+                    </Box>
+                  </CardWrapperPrimary>
+                )}
               </Box>
             </Box>
           );
@@ -106,6 +218,17 @@ export default function FaqDetail() {
       {/* Dialog */}
       {open && <FaqFormModal open={open} close={handleClose} />}
       {/* End Dialog */}
+
+      {/* Modal Image */}
+      <Dialog
+        open={openModalImage}
+        onClose={handleCloseModalImage}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <img crossOrigin="anonymous" src={imgModal} loading="lazy" />
+      </Dialog>
+      {/* End Modal Image */}
     </>
   );
 }

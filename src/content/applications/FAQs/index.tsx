@@ -14,7 +14,7 @@ export default function BasicTable() {
     try {
       getFaqs().then((response) => {
         console.log(response);
-        setListFaq(response.data.result.results);
+        setListFaq(response.data.results);
       });
     } catch (error) {
       console.log(error);
