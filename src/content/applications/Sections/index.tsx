@@ -52,7 +52,10 @@ const Sections = () => {
   const [success, successDispatch] = successReducer;
 
   // fetch data
-  const { data: sections } = useSWR<ISections>(SECTION_URL, getData);
+  const { data: sections } = useSWR<ISections>(
+    id ? SECTION_URL + `?newsId=${id}` : null,
+    getData
+  );
 
   // dialog create
   const handleClickOpenDialog = () => {
@@ -78,7 +81,7 @@ const Sections = () => {
         type: SUCCESS_ACTION.SET_SUCCESS,
         success: 'Edit Section Success'
       });
-      await mutate(SECTION_URL);
+      await mutate(SECTION_URL + `?newsId=${id}`);
       setOpenDialog(false);
       setSummary('');
       setTitle('');
