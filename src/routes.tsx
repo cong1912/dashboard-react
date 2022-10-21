@@ -109,9 +109,13 @@ const Answer = Loader(
 const FAQ = Loader(lazy(() => import('src/content/applications/FAQs')));
 
 // FAQ Detail
+<<<<<<< HEAD
 const FAQDetail = Loader(
   lazy(() => import('src/content/applications/FAQ_Detail'))
 );
+=======
+const FAQDetail = Loader(lazy(() => import('src/content/applications/FAQ_Detail')));
+>>>>>>> 2edf273 (add faq screen)
 
 // UserManager
 const UserManager = Loader(
@@ -236,6 +240,10 @@ const routes = (isLoggedIn: boolean) => [
             path: 'detail/:id',
             element: <FAQDetail />
           }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2edf273 (add faq screen)
         ]
       },
       {
