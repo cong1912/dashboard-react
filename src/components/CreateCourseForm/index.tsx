@@ -17,7 +17,7 @@ import {
   DialogContent,
   DialogTitle
 } from '@material-ui/core';
-import QuillInput from '../QuillInput';
+
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     '& .MuiFormControl-root': {
