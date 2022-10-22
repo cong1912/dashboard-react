@@ -180,7 +180,7 @@ function SidebarMenu() {
   return (
     <>
       <MenuWrapper>
-        <List component="div">
+        {/* <List component="div">
           <SubMenuWrapper>
             <List component="div">
               <ListItem component="div">
@@ -196,7 +196,7 @@ function SidebarMenu() {
               </ListItem>
             </List>
           </SubMenuWrapper>
-        </List>
+        </List> */}
         <List
           component="div"
           subheader={
@@ -218,7 +218,7 @@ function SidebarMenu() {
                   Cryptocurrency
                 </Button>
               </ListItem>
-              <ListItem component="div">
+              {/* <ListItem component="div">
                 <Button
                   disableRipple
                   component={RouterLink}
@@ -228,7 +228,7 @@ function SidebarMenu() {
                 >
                   Messenger
                 </Button>
-              </ListItem>
+              </ListItem> */}
             </List>
           </SubMenuWrapper>
         </List>
@@ -301,7 +301,7 @@ function SidebarMenu() {
         >
           <SubMenuWrapper>
             <List component="div">
-              <ListItem component="div">
+              {/* <ListItem component="div">
                 <Button
                   disableRipple
                   component={RouterLink}
@@ -311,7 +311,7 @@ function SidebarMenu() {
                 >
                   Transactions List
                 </Button>
-              </ListItem>
+              </ListItem> */}
               <ListItem component="div">
                 <Button
                   disableRipple
@@ -323,7 +323,7 @@ function SidebarMenu() {
                   FAQ List
                 </Button>
               </ListItem>
-              <ListItem component="div">
+              {/* <ListItem component="div">
                 <Button
                   disableRipple
                   component={RouterLink}
@@ -333,11 +333,11 @@ function SidebarMenu() {
                 >
                   User List
                 </Button>
-              </ListItem>
+              </ListItem> */}
             </List>
           </SubMenuWrapper>
         </List>
-        <List
+        {/* <List
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
@@ -371,8 +371,8 @@ function SidebarMenu() {
               </ListItem>
             </List>
           </SubMenuWrapper>
-        </List>
-        <List
+        </List> */}
+        {/* <List
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
@@ -483,8 +483,8 @@ function SidebarMenu() {
               </ListItem>
             </List>
           </SubMenuWrapper>
-        </List>
-        <List
+        </List> */}
+        {/* <List
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
@@ -540,7 +540,7 @@ function SidebarMenu() {
               </ListItem>
             </List>
           </SubMenuWrapper>
-        </List>
+        </List> */}
       </MenuWrapper>
     </>
   );
