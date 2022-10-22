@@ -23,7 +23,7 @@ import { SUCCESS_ACTION } from 'src/reduces/SuccessReducer';
 import { ERROR_ACTION } from 'src/reduces/ErrorsReducer';
 import { AppContext } from 'src/AppProvider';
 import { AppContextType } from 'src/interfaces/AppContextType';
-import { ICategory } from '../EditBlogForm';
+import { ICategory } from '../EditArticleForm';
 import { getData } from 'src/helpers/apiHandle';
 import { ARTICLE_CATEGORY, COURSE_URL } from 'src/constants/url';
 import useSWR, { mutate } from 'swr';

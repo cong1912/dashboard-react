@@ -3,54 +3,23 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import { grey } from '@mui/material/colors';
-import ActiveCourseTable from 'src/components/ActionCourseTable';
+import ActionQuestionTable from 'src/components/ActionQuestionTable';
 
-const CourseTable = ({ course }) => {
-  const [pageSize, setPageSize] = useState(course.pageSize);
+const QuestionTable = ({ questions }) => {
+  const [pageSize, setPageSize] = useState(questions.pageSize);
   const [rowId, setRowId] = useState(null);
 
   const columns = useMemo(
     () => [
       { field: 'id', headerName: 'Id', width: 220 },
       { field: 'title', headerName: 'Title', width: 170 },
-      { field: 'description', headerName: 'Description', width: 200 },
+      { field: 'content', headerName: 'Content', width: 500 },
       {
-        field: 'image',
-        headerName: 'Image',
-        width: 200,
-        renderCell: (params) => {
-          const newImage = params.row.image.slice(7, params.value.length);
-
-          return (
-            <img
-              crossOrigin="anonymous"
-              src={process.env.REACT_APP_API_BACK_END + newImage}
-              loading="lazy"
-              width="30%"
-            />
-          );
-        },
-        sortable: false,
-        filterable: false
-      },
-      { field: 'viewed', headerName: 'Viewed', width: 200 },
-      { field: 'shared', headerName: 'Shared', width: 200 },
-
-      {
-        field: 'status',
-        headerName: 'status',
-        width: 100,
-        type: 'boolean'
-        // editable: true
-      },
-
-      {
-        width: 200,
         field: 'actions',
         headerName: 'Actions',
         type: 'actions',
         renderCell: (params) => (
-          <ActiveCourseTable {...{ params, rowId, setRowId }} />
+          <ActionQuestionTable {...{ params, rowId, setRowId }} />
         )
       }
     ],
@@ -69,11 +38,11 @@ const CourseTable = ({ course }) => {
         component="h3"
         sx={{ textAlign: 'center', mt: 3, mb: 3 }}
       >
-        Manage Course
+        Manage Questions
       </Typography>
       <DataGrid
         columns={columns}
-        rows={course.results}
+        rows={questions.results}
         getRowId={(row) => row.id}
         rowsPerPageOptions={[5, 10, 20]}
         pageSize={pageSize}
@@ -94,4 +63,4 @@ const CourseTable = ({ course }) => {
   );
 };
 
-export default CourseTable;
+export default QuestionTable;

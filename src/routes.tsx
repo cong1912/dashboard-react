@@ -80,10 +80,13 @@ const StatusMaintenance = Loader(
 const CategoryBlog = Loader(
   lazy(() => import('src/content/applications/Categories'))
 );
-const BlogManager = Loader(lazy(() => import('src/content/applications/Blog')));
+const BlogManager = Loader(
+  lazy(() => import('src/content/applications/Article'))
+);
 
 //Courses
 const Courses = Loader(lazy(() => import('src/content/applications/Courses')));
+
 const Sections = Loader(
   lazy(() => import('src/content/applications/Sections'))
 );
@@ -91,11 +94,19 @@ const Lectures = Loader(
   lazy(() => import('src/content/applications/Lectures'))
 );
 
+const Questions = Loader(
+  lazy(() => import('src/content/applications/Questions'))
+);
+const Answer = Loader(
+  lazy(() => import('src/content/applications/QuizAnswer'))
+);
 // FAQ
 const FAQ = Loader(lazy(() => import('src/content/applications/FAQs')));
 
 // FAQ Detail
-const FAQDetail = Loader(lazy(() => import('src/content/applications/FAQ_Detail')));
+const FAQDetail = Loader(
+  lazy(() => import('src/content/applications/FAQ_Detail'))
+);
 
 // UserManager
 const UserManager = Loader(
@@ -178,7 +189,7 @@ const routes = (isLoggedIn: boolean) => [
         element: <Transactions />
       },
       {
-        path: 'blog',
+        path: 'articles',
         element: <BlogManager />
       },
       {
@@ -188,6 +199,14 @@ const routes = (isLoggedIn: boolean) => [
       {
         path: 'course/:id/sections',
         element: <Sections />
+      },
+      {
+        path: 'course/:id/questions',
+        element: <Questions />
+      },
+      {
+        path: 'question/:id/answers',
+        element: <Answer />
       },
       {
         path: 'section/:sectionId/lectures',
@@ -208,7 +227,6 @@ const routes = (isLoggedIn: boolean) => [
             path: 'detail/:id',
             element: <FAQDetail />
           }
-
         ]
       },
       {

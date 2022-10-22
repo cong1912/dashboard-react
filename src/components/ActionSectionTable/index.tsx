@@ -1,6 +1,6 @@
 import { Box, IconButton, Tooltip } from '@mui/material';
 import { Delete, Edit, Preview } from '@mui/icons-material';
-import { deleteBlog } from 'src/services/BlogService';
+import { deleteBlog } from 'src/services/ArticleService';
 import { NEWS_URL } from 'src/constants/url';
 import { mutate } from 'swr';
 import { useState, lazy } from 'react';
@@ -56,6 +56,7 @@ const ActiveSectionTable = ({ params, rowId, setRowId }) => {
       <EditSectionForm
         id={id}
         open={isOpenUpdateModal}
+        newId={params.row.newsId}
         setIsOpenUpdateModal={setIsOpenUpdateModal}
       />
       <DeleteDialog

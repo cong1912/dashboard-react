@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-const EditSessionForm = ({ open, setIsOpenUpdateModal, id }) => {
+const EditSessionForm = ({ open, setIsOpenUpdateModal, id, newId }) => {
   const classes = useStyles();
   const [title, setTitle] = useState('');
   const [summary, setSummary] = useState('');
@@ -83,7 +83,7 @@ const EditSessionForm = ({ open, setIsOpenUpdateModal, id }) => {
       const data = {
         title: title,
         summary: summary,
-        newsId: +id
+        newsId: +newId
       };
 
       await updateSection(data, id);
@@ -92,9 +92,8 @@ const EditSessionForm = ({ open, setIsOpenUpdateModal, id }) => {
         success: 'Create Section Success'
       });
       await mutate(SECTION_URL);
+      await mutate(SECTION_URL + `?newsId=${newId}`);
       setIsOpenUpdateModal(false);
-      setSummary('');
-      setTitle('');
     } catch (error) {
       errorDispatch({
         type: ERROR_ACTION.SET_ERROR,

@@ -9,16 +9,16 @@ import BlogTable from './BlogTable';
 
 import { getData } from 'src/helpers/apiHandle';
 import { ARTICLE_CATEGORY, NEWS_URL } from 'src/constants/url';
-import { createBlog } from 'src/services/BlogService';
+import { createBlog } from 'src/services/ArticleService';
 
 import { ERROR_ACTION } from 'src/reduces/ErrorsReducer';
 import { AppContext } from 'src/AppProvider';
 import { AppContextType } from 'src/interfaces/AppContextType';
 import { SUCCESS_ACTION } from 'src/reduces/SuccessReducer';
-import { ICategory } from 'src/components/EditBlogForm';
+import { ICategory } from 'src/components/EditArticleForm';
 import { ICategories } from '../Courses';
 
-const CreateBlogForm = lazy(() => import('src/components/CreateBlogForm'));
+const CreateBlogForm = lazy(() => import('src/components/CreateArticleForm'));
 
 interface IBlog {
   title: string;
@@ -49,9 +49,9 @@ function BlogManager() {
   };
   const [page, setPage] = useState(0);
 
-  const { data: article } = useSWR<IBlogs>(NEWS_URL + `?page=${page}`, getData);
+  const { data: article } = useSWR<IBlogs>(NEWS_URL, getData);
   const { data: categories } = useSWR<ICategories>(ARTICLE_CATEGORY, getData);
-  console.log(article);
+
   useEffect(() => {
     if (!categories) return;
 
@@ -91,7 +91,7 @@ function BlogManager() {
       await createBlog(formData);
       successDispatch({
         type: SUCCESS_ACTION.SET_SUCCESS,
-        success: 'Create Blog Success'
+        success: 'Create Article Success'
       });
       await mutate(NEWS_URL);
       setOpenDialog(false);
@@ -112,7 +112,7 @@ function BlogManager() {
   return (
     <>
       <Helmet>
-        <title>Blog - Manager</title>
+        <title>Article - Manager</title>
       </Helmet>
       <PageTitleWrapper>
         <PageHeader handleClickOpenDialog={handleClickOpenDialog} />

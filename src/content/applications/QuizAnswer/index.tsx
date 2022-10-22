@@ -1,19 +1,12 @@
 import { useParams } from 'react-router';
-import React, {
-  lazy,
-  useEffect,
-  useState,
-  useContext,
-  ChangeEvent
-} from 'react';
+import React, { lazy, useState, useContext } from 'react';
 import { Helmet } from 'react-helmet-async';
 import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Grid, Container, CircularProgress } from '@mui/material';
 import Footer from 'src/components/Footer';
 import useSWR, { mutate } from 'swr';
-import { ICategory } from 'src/components/EditArticleForm';
-import { ARTICLE_CATEGORY, COURSE_URL, SECTION_URL } from 'src/constants/url';
+import { QUIZ_ANSWER_URL } from 'src/constants/url';
 import { getData } from 'src/helpers/apiHandle';
 
 //context
@@ -21,29 +14,29 @@ import { ERROR_ACTION } from 'src/reduces/ErrorsReducer';
 import { AppContext } from 'src/AppProvider';
 import { AppContextType } from 'src/interfaces/AppContextType';
 import { SUCCESS_ACTION } from 'src/reduces/SuccessReducer';
-import { createSection } from 'src/services/SessionService';
-import SectionsTable from './SectionsTable';
+import QuestionTable from './QuizAnswerTable';
+import { createAnswer } from 'src/services/AnswerService';
 
-export interface ISection {
+export interface IAnswer {
   id: number;
-  summary: string;
-  title: string;
+  content: string;
+  correct: boolean;
 }
 
-export interface ISections {
-  results: [ISection];
+export interface IAnswers {
+  results: [IAnswer];
 }
 
-const CreateSectionForm = lazy(
-  () => import('src/components/CreateSectionForm')
+const CreateQuizAnswerForm = lazy(
+  () => import('src/components/CreateQuizAnswerForm')
 );
 
-const Sections = () => {
+const QuizAnswer = () => {
   const { id } = useParams() as { id: string };
   const [openDialog, setOpenDialog] = useState(false);
   const [requesting, setRequesting] = useState<boolean>(false);
-  const [title, setTitle] = useState('');
-  const [summary, setSummary] = useState('');
+  const [content, setContent] = useState('');
+  const [correct, setCorrect] = useState<Boolean>();
 
   // context
   const appContext = useContext(AppContext) as AppContextType;
@@ -52,11 +45,10 @@ const Sections = () => {
   const [success, successDispatch] = successReducer;
 
   // fetch data
-  const { data: sections } = useSWR<ISections>(
-    id ? SECTION_URL + `?newsId=${id}` : null,
+  const { data: questions } = useSWR<IAnswers>(
+    id ? QUIZ_ANSWER_URL + `?questionId=${id}` : null,
     getData
   );
-
   // dialog create
   const handleClickOpenDialog = () => {
     setOpenDialog(true);
@@ -65,26 +57,26 @@ const Sections = () => {
     setOpenDialog(false);
   };
 
-  const handleCreateSession = async (
+  const handleCreateQuestion = async (
     event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
     try {
       const data = {
-        title: title,
-        summary: summary,
-        newsId: +id
+        content: content,
+        correct: correct,
+        questionId: +id
       };
 
-      await createSection(data);
+      await createAnswer(data);
       successDispatch({
         type: SUCCESS_ACTION.SET_SUCCESS,
-        success: 'Edit Section Success'
+        success: 'Create Answer Success'
       });
-      await mutate(SECTION_URL + `?newsId=${id}`);
+      await mutate(QUIZ_ANSWER_URL + `?questionId=${id}`);
       setOpenDialog(false);
-      setSummary('');
-      setTitle('');
+      setContent('');
+      setCorrect(false);
     } catch (error) {
       errorDispatch({
         type: ERROR_ACTION.SET_ERROR,
@@ -94,11 +86,11 @@ const Sections = () => {
     }
   };
 
-  if (!sections) return <CircularProgress />;
+  if (!questions) return <CircularProgress />;
   return (
     <>
       <Helmet>
-        <title>Section - Manager</title>
+        <title>Quiz Answers - Manager</title>
       </Helmet>
       <PageTitleWrapper>
         <PageHeader handleClickOpenDialog={handleClickOpenDialog} />
@@ -112,28 +104,28 @@ const Sections = () => {
           spacing={3}
         >
           <Grid item xs={12}>
-            {!sections ? (
+            {!questions ? (
               <CircularProgress />
             ) : (
-              <SectionsTable sections={sections} />
+              <QuestionTable questions={questions} />
             )}
           </Grid>
         </Grid>
       </Container>
       <Footer />
 
-      <CreateSectionForm
+      <CreateQuizAnswerForm
         open={openDialog}
         handleClose={handleCloseDialog}
-        setTitle={setTitle}
-        setSummary={setSummary}
-        title={title}
-        summary={summary}
         requesting={requesting}
-        handleCreateSession={handleCreateSession}
+        handleCreateQuestion={handleCreateQuestion}
+        setContent={setContent}
+        content={content}
+        correct={correct}
+        setCorrect={setCorrect}
       />
     </>
   );
 };
 
-export default Sections;
+export default QuizAnswer;

@@ -1,25 +1,26 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Grid, TextField, Theme, Button } from '@mui/material';
+import React, { useState, useContext, useEffect } from 'react';
+import { TextField, Theme, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Box } from '@mui/system';
+
 import {
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle
 } from '@material-ui/core';
-import QuillInput from '../QuillInput';
-import { updateLecture } from 'src/services/LecturesService';
-
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import { updateAnswer } from 'src/services/AnswerService';
+import { Grid, Container, CircularProgress } from '@mui/material';
 //context
 import { ERROR_ACTION } from 'src/reduces/ErrorsReducer';
 import { AppContext } from 'src/AppProvider';
 import { AppContextType } from 'src/interfaces/AppContextType';
 import { SUCCESS_ACTION } from 'src/reduces/SuccessReducer';
-import { LECTURE_URL } from 'src/constants/url';
 import useSWR, { mutate } from 'swr';
+import { QUIZ_ANSWER_URL } from 'src/constants/url';
 import { getData } from 'src/helpers/apiHandle';
-import { ILecture } from 'src/content/applications/Lectures';
+import { IAnswer } from 'src/content/applications/QuizAnswer';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       margin: theme.spacing(1)
     },
     '& .MuiDialogContent-root': {
-      height: 420
+      height: 200
     },
     '& .MuiBox-root': {
       width: '90%',
@@ -47,11 +48,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-const CreateLectureForm = ({ open, setIsOpenUpdateModal, id, sectionId }) => {
+const EditQuizAnswerForm = ({ open, setIsOpenUpdateModal, id, questionId }) => {
   const classes = useStyles();
   const [requesting, setRequesting] = useState(false);
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
+  const [correct, setCorrect] = useState(false);
   const [content, setContent] = useState('');
 
   // context
@@ -61,37 +61,35 @@ const CreateLectureForm = ({ open, setIsOpenUpdateModal, id, sectionId }) => {
   const [success, successDispatch] = successReducer;
 
   //fetch data
-  const { data: lecture } = useSWR<ILecture>(
-    id ? LECTURE_URL + id : null,
+  const { data: answer } = useSWR<IAnswer>(
+    id ? QUIZ_ANSWER_URL + id : null,
     getData
   );
 
   useEffect(() => {
-    if (!id || !lecture) {
+    if (!id || !answer) {
       return;
     } else {
-      setContent(lecture.content);
-      setName(lecture.name);
-      setPrice(lecture.price);
+      setContent(answer.content);
+      setCorrect(answer.correct);
     }
-  }, [lecture, id]);
+  }, [answer, id]);
 
-  const handleEditLecture = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleEditAnswer = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       const data = {
-        name: name,
         content: content,
-        sectionId: +sectionId,
-        price: +price
+        correct: correct,
+        questionId: +questionId
       };
 
-      await updateLecture(data, id);
+      await updateAnswer(data, id);
       successDispatch({
         type: SUCCESS_ACTION.SET_SUCCESS,
-        success: 'Create Lecture Success'
+        success: 'Edit Answer Success'
       });
-      await mutate(LECTURE_URL + `?sectionId=${sectionId}`);
+      await mutate(QUIZ_ANSWER_URL + `?questionId=${questionId}`);
       setIsOpenUpdateModal(false);
     } catch (error) {
       errorDispatch({
@@ -106,33 +104,29 @@ const CreateLectureForm = ({ open, setIsOpenUpdateModal, id, sectionId }) => {
     setIsOpenUpdateModal(false);
   };
 
+  if (!answer) return <CircularProgress />;
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="sm">
-      <DialogTitle>Create New Session</DialogTitle>
-      <form className={classes.root} onSubmit={handleEditLecture}>
+    <Dialog open={open} onClose={handleClose} maxWidth="xs">
+      <DialogTitle>Edit New Answer</DialogTitle>
+      <form className={classes.root} onSubmit={handleEditAnswer}>
         <DialogContent>
           <TextField
             variant="outlined"
-            label="name"
-            name="name"
+            label="content"
+            multiline
+            name="content"
             onChange={(e) => {
-              setName(e.target.value);
+              setContent(e.target.value);
             }}
-            value={name}
+            value={content}
           />
-          <TextField
-            variant="outlined"
-            label="Price"
-            name="price"
-            type="number"
+          <FormControlLabel
+            control={<Checkbox checked={correct} />}
             onChange={(e) => {
-              setPrice(e.target.value);
+              setCorrect(!correct);
             }}
-            value={price}
+            label="This is the correct answer:"
           />
-          <Box>
-            <QuillInput content={content} handleChangeContent={setContent} />
-          </Box>
         </DialogContent>
         <DialogActions>
           <Button
@@ -151,4 +145,4 @@ const CreateLectureForm = ({ open, setIsOpenUpdateModal, id, sectionId }) => {
   );
 };
 
-export default CreateLectureForm;
+export default EditQuizAnswerForm;

@@ -1,12 +1,12 @@
 import { Box, IconButton, Tooltip } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
-import { deleteBlog } from 'src/services/BlogService';
+import { deleteBlog } from 'src/services/ArticleService';
 import { NEWS_URL } from 'src/constants/url';
 import { mutate } from 'swr';
 import { useState, lazy } from 'react';
 import DeleteDialog from '../DeleteDialog';
 
-const EditBlogForm = lazy(() => import('src/components/EditBlogForm'));
+const EditBlogForm = lazy(() => import('src/components/EditArticleForm'));
 
 const ActiveTable = ({ params, rowId, setRowId }) => {
   const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);

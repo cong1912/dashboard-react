@@ -21,7 +21,7 @@ const CreateLectureForm = lazy(
   () => import('src/components/CreateLectureForm')
 );
 
-export interface Ilecture {
+export interface ILecture {
   content: string;
   name: string;
   price: string;

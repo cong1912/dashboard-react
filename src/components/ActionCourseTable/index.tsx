@@ -1,6 +1,6 @@
 import { Box, IconButton, Tooltip } from '@mui/material';
-import { Delete, Edit, Preview } from '@mui/icons-material';
-import { deleteBlog } from 'src/services/BlogService';
+import { Delete, Edit, Preview, Quiz } from '@mui/icons-material';
+import { deleteBlog } from 'src/services/ArticleService';
 import { NEWS_URL } from 'src/constants/url';
 import { mutate } from 'swr';
 import { useState, lazy } from 'react';
@@ -33,11 +33,13 @@ const ActiveCourseTable = ({ params, rowId, setRowId }) => {
   return (
     <>
       <Box>
-        <Tooltip title="View course sections">
+        <Tooltip title="View Question">
           <IconButton
-            onClick={() => navigate(`/management/course/${params.id}/sections`)}
+            onClick={() =>
+              navigate(`/management/course/${params.id}/questions`)
+            }
           >
-            <Preview />
+            <Quiz />
           </IconButton>
         </Tooltip>
         <Tooltip title="Edit this course">

@@ -3,17 +3,17 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import { grey } from '@mui/material/colors';
-import ActiveCourseTable from 'src/components/ActionCourseTable';
+import ActiveTable from 'src/components/ActiveTable';
 
-const CourseTable = ({ course }) => {
-  const [pageSize, setPageSize] = useState(course.pageSize);
+const BlogTable = ({ blogs }) => {
+  const [pageSize, setPageSize] = useState(20);
   const [rowId, setRowId] = useState(null);
 
   const columns = useMemo(
     () => [
       { field: 'id', headerName: 'Id', width: 220 },
       { field: 'title', headerName: 'Title', width: 170 },
-      { field: 'description', headerName: 'Description', width: 200 },
+      { field: 'summary', headerName: 'Summary', width: 200 },
       {
         field: 'image',
         headerName: 'Image',
@@ -35,23 +35,19 @@ const CourseTable = ({ course }) => {
       },
       { field: 'viewed', headerName: 'Viewed', width: 200 },
       { field: 'shared', headerName: 'Shared', width: 200 },
-
       {
         field: 'status',
         headerName: 'status',
         width: 100,
-        type: 'boolean'
-        // editable: true
+        type: 'boolean',
+        editable: true
       },
 
       {
-        width: 200,
         field: 'actions',
         headerName: 'Actions',
         type: 'actions',
-        renderCell: (params) => (
-          <ActiveCourseTable {...{ params, rowId, setRowId }} />
-        )
+        renderCell: (params) => <ActiveTable {...{ params, rowId, setRowId }} />
       }
     ],
     [rowId]
@@ -69,11 +65,11 @@ const CourseTable = ({ course }) => {
         component="h3"
         sx={{ textAlign: 'center', mt: 3, mb: 3 }}
       >
-        Manage Course
+        Article Blogs
       </Typography>
       <DataGrid
         columns={columns}
-        rows={course.results}
+        rows={blogs.results}
         getRowId={(row) => row.id}
         rowsPerPageOptions={[5, 10, 20]}
         pageSize={pageSize}
@@ -94,4 +90,4 @@ const CourseTable = ({ course }) => {
   );
 };
 
-export default CourseTable;
+export default BlogTable;

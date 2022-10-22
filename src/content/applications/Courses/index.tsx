@@ -5,7 +5,7 @@ import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Grid, Container, CircularProgress } from '@mui/material';
 import Footer from 'src/components/Footer';
 import useSWR, { mutate } from 'swr';
-import { ICategory } from 'src/components/EditBlogForm';
+import { ICategory } from 'src/components/EditArticleForm';
 import { ARTICLE_CATEGORY, COURSE_URL } from 'src/constants/url';
 import { getData } from 'src/helpers/apiHandle';
 

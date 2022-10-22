@@ -12,8 +12,7 @@ import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Grid, Container, CircularProgress } from '@mui/material';
 import Footer from 'src/components/Footer';
 import useSWR, { mutate } from 'swr';
-import { ICategory } from 'src/components/EditArticleForm';
-import { ARTICLE_CATEGORY, COURSE_URL, SECTION_URL } from 'src/constants/url';
+import { QUESTION_URL } from 'src/constants/url';
 import { getData } from 'src/helpers/apiHandle';
 
 //context
@@ -21,29 +20,29 @@ import { ERROR_ACTION } from 'src/reduces/ErrorsReducer';
 import { AppContext } from 'src/AppProvider';
 import { AppContextType } from 'src/interfaces/AppContextType';
 import { SUCCESS_ACTION } from 'src/reduces/SuccessReducer';
-import { createSection } from 'src/services/SessionService';
-import SectionsTable from './SectionsTable';
+import { createQuestion } from 'src/services/QuestionService';
+import QuestionTable from './QuestionTable';
 
-export interface ISection {
+export interface IQuestion {
   id: number;
-  summary: string;
+  content: string;
   title: string;
 }
 
-export interface ISections {
-  results: [ISection];
+export interface IQuestions {
+  results: [IQuestion];
 }
 
-const CreateSectionForm = lazy(
-  () => import('src/components/CreateSectionForm')
+const CreateQuestionForm = lazy(
+  () => import('src/components/CreateQuestionForm')
 );
 
-const Sections = () => {
+const Question = () => {
   const { id } = useParams() as { id: string };
   const [openDialog, setOpenDialog] = useState(false);
   const [requesting, setRequesting] = useState<boolean>(false);
   const [title, setTitle] = useState('');
-  const [summary, setSummary] = useState('');
+  const [content, setContent] = useState('');
 
   // context
   const appContext = useContext(AppContext) as AppContextType;
@@ -52,10 +51,11 @@ const Sections = () => {
   const [success, successDispatch] = successReducer;
 
   // fetch data
-  const { data: sections } = useSWR<ISections>(
-    id ? SECTION_URL + `?newsId=${id}` : null,
+  const { data: questions } = useSWR<IQuestions>(
+    id ? QUESTION_URL + `?newsId=${id}` : null,
     getData
   );
+  console.log('questions', questions);
 
   // dialog create
   const handleClickOpenDialog = () => {
@@ -65,25 +65,25 @@ const Sections = () => {
     setOpenDialog(false);
   };
 
-  const handleCreateSession = async (
+  const handleCreateQuestion = async (
     event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
     try {
       const data = {
         title: title,
-        summary: summary,
+        content: content,
         newsId: +id
       };
 
-      await createSection(data);
+      await createQuestion(data);
       successDispatch({
         type: SUCCESS_ACTION.SET_SUCCESS,
-        success: 'Edit Section Success'
+        success: 'Create Question Success'
       });
-      await mutate(SECTION_URL + `?newsId=${id}`);
+      await mutate(QUESTION_URL + `?newsId=${id}`);
       setOpenDialog(false);
-      setSummary('');
+      setContent('');
       setTitle('');
     } catch (error) {
       errorDispatch({
@@ -94,11 +94,11 @@ const Sections = () => {
     }
   };
 
-  if (!sections) return <CircularProgress />;
+  if (!questions) return <CircularProgress />;
   return (
     <>
       <Helmet>
-        <title>Section - Manager</title>
+        <title>Question - Manager</title>
       </Helmet>
       <PageTitleWrapper>
         <PageHeader handleClickOpenDialog={handleClickOpenDialog} />
@@ -112,28 +112,28 @@ const Sections = () => {
           spacing={3}
         >
           <Grid item xs={12}>
-            {!sections ? (
+            {!questions ? (
               <CircularProgress />
             ) : (
-              <SectionsTable sections={sections} />
+              <QuestionTable questions={questions} />
             )}
           </Grid>
         </Grid>
       </Container>
       <Footer />
 
-      <CreateSectionForm
+      <CreateQuestionForm
         open={openDialog}
         handleClose={handleCloseDialog}
-        setTitle={setTitle}
-        setSummary={setSummary}
-        title={title}
-        summary={summary}
         requesting={requesting}
-        handleCreateSession={handleCreateSession}
+        handleCreateQuestion={handleCreateQuestion}
+        setContent={setContent}
+        content={content}
+        title={title}
+        setTitle={setTitle}
       />
     </>
   );
 };
 
-export default Sections;
+export default Question;

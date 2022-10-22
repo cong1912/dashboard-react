@@ -6,9 +6,11 @@ import { mutate } from 'swr';
 import { useState, lazy } from 'react';
 import DeleteDialog from '../DeleteDialog';
 
-const EditLectureForm = lazy(() => import('src/components/EditLectureForm'));
+const EditQuizAnswerForm = lazy(
+  () => import('src/components/EditQuizAnswerForm')
+);
 
-const ActionLectureTable = ({ params, rowId, setRowId }) => {
+const ActionAnswerTable = ({ params, rowId, setRowId }) => {
   const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [id, setId] = useState<number>();
@@ -31,21 +33,21 @@ const ActionLectureTable = ({ params, rowId, setRowId }) => {
   return (
     <>
       <Box>
-        <Tooltip title="Edit this lecture">
+        <Tooltip title="Edit this answer">
           <IconButton onClick={handleOpenUpdateModal}>
             <Edit />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Delete this lecture">
+        <Tooltip title="Delete this answer">
           <IconButton onClick={() => handelDeleteBlog(params)}>
             <Delete />
           </IconButton>
         </Tooltip>
       </Box>
-      <EditLectureForm
+      <EditQuizAnswerForm
         id={id}
         open={isOpenUpdateModal}
-        sectionId={params.row.sectionId}
+        questionId={params.row.questionId}
         setIsOpenUpdateModal={setIsOpenUpdateModal}
       />
       <DeleteDialog
@@ -58,4 +60,4 @@ const ActionLectureTable = ({ params, rowId, setRowId }) => {
   );
 };
 
-export default ActionLectureTable;
+export default ActionAnswerTable;

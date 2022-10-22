@@ -22,7 +22,7 @@ import QuillInput from '../QuillInput';
 import { multiFetcher } from 'src/helpers/apiHandle';
 import { ARTICLE_CATEGORY, NEWS_URL } from 'src/constants/url';
 import useSWR, { mutate } from 'swr';
-import { updateBlog } from 'src/services/BlogService';
+import { updateBlog } from 'src/services/ArticleService';
 
 import { SUCCESS_ACTION } from 'src/reduces/SuccessReducer';
 import { ERROR_ACTION } from 'src/reduces/ErrorsReducer';
@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-const EditBlogForm = ({ open, id, setIsOpenUpdateModal }) => {
+const EditArticleForm = ({ open, id, setIsOpenUpdateModal }) => {
   const classes = useStyles();
   const [requesting, setRequesting] = useState<boolean>(false);
   const appContext = useContext(AppContext) as AppContextType;
@@ -175,7 +175,7 @@ const EditBlogForm = ({ open, id, setIsOpenUpdateModal }) => {
       fullWidth={true}
       maxWidth="xl"
     >
-      <DialogTitle>Edit Blog</DialogTitle>
+      <DialogTitle>Edit Article</DialogTitle>
       <form className={classes.root} onSubmit={handleUpdateBlog}>
         <DialogContent>
           {!data ? (
@@ -247,4 +247,4 @@ const EditBlogForm = ({ open, id, setIsOpenUpdateModal }) => {
   );
 };
 
-export default EditBlogForm;
+export default EditArticleForm;

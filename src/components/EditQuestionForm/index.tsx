@@ -1,25 +1,23 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Grid, TextField, Theme, Button } from '@mui/material';
+import React, { useEffect, useState, useContext } from 'react';
+import { TextField, Theme, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Box } from '@mui/system';
 import {
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle
 } from '@material-ui/core';
-import QuillInput from '../QuillInput';
-import { updateLecture } from 'src/services/LecturesService';
+import { QUESTION_URL } from 'src/constants/url';
+import { getData } from 'src/helpers/apiHandle';
+import useSWR, { mutate } from 'swr';
+import { updateQuestion } from 'src/services/QuestionService';
 
 //context
 import { ERROR_ACTION } from 'src/reduces/ErrorsReducer';
 import { AppContext } from 'src/AppProvider';
 import { AppContextType } from 'src/interfaces/AppContextType';
 import { SUCCESS_ACTION } from 'src/reduces/SuccessReducer';
-import { LECTURE_URL } from 'src/constants/url';
-import useSWR, { mutate } from 'swr';
-import { getData } from 'src/helpers/apiHandle';
-import { ILecture } from 'src/content/applications/Lectures';
+import { IQuestion } from 'src/content/applications/Questions';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -28,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       margin: theme.spacing(1)
     },
     '& .MuiDialogContent-root': {
-      height: 420
+      height: 250
     },
     '& .MuiBox-root': {
       width: '90%',
@@ -47,12 +45,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-const CreateLectureForm = ({ open, setIsOpenUpdateModal, id, sectionId }) => {
+const CreateQuestionForm = ({ open, setIsOpenUpdateModal, id, newsId }) => {
   const classes = useStyles();
-  const [requesting, setRequesting] = useState(false);
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
+  const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [requesting, setRequesting] = useState(false);
 
   // context
   const appContext = useContext(AppContext) as AppContextType;
@@ -60,38 +57,41 @@ const CreateLectureForm = ({ open, setIsOpenUpdateModal, id, sectionId }) => {
   const [errors, errorDispatch] = errorsReducer;
   const [success, successDispatch] = successReducer;
 
-  //fetch data
-  const { data: lecture } = useSWR<ILecture>(
-    id ? LECTURE_URL + id : null,
+  // fetch data
+  const { data: questions } = useSWR<IQuestion>(
+    id ? QUESTION_URL + id : null,
     getData
   );
 
   useEffect(() => {
-    if (!id || !lecture) {
+    if (!id || !questions) {
       return;
     } else {
-      setContent(lecture.content);
-      setName(lecture.name);
-      setPrice(lecture.price);
+      setTitle(questions.title);
+      setContent(questions.content);
     }
-  }, [lecture, id]);
+  }, [questions, id]);
 
-  const handleEditLecture = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleClose = () => {
+    setIsOpenUpdateModal(false);
+  };
+  const handleEditQuestion = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
     try {
       const data = {
-        name: name,
+        title: title,
         content: content,
-        sectionId: +sectionId,
-        price: +price
+        newsId: +newsId
       };
 
-      await updateLecture(data, id);
+      await updateQuestion(data, id);
       successDispatch({
         type: SUCCESS_ACTION.SET_SUCCESS,
-        success: 'Create Lecture Success'
+        success: 'Edit Question Success'
       });
-      await mutate(LECTURE_URL + `?sectionId=${sectionId}`);
+      await mutate(QUESTION_URL + `?newsId=${newsId}`);
       setIsOpenUpdateModal(false);
     } catch (error) {
       errorDispatch({
@@ -102,37 +102,28 @@ const CreateLectureForm = ({ open, setIsOpenUpdateModal, id, sectionId }) => {
     }
   };
 
-  const handleClose = () => {
-    setIsOpenUpdateModal(false);
-  };
-
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm">
-      <DialogTitle>Create New Session</DialogTitle>
-      <form className={classes.root} onSubmit={handleEditLecture}>
+      <DialogTitle>Edit Question</DialogTitle>
+      <form className={classes.root} onSubmit={handleEditQuestion}>
         <DialogContent>
           <TextField
             variant="outlined"
-            label="name"
-            name="name"
+            label="Title"
+            name="title"
             onChange={(e) => {
-              setName(e.target.value);
+              setTitle(e.target.value);
             }}
-            value={name}
+            value={title}
           />
           <TextField
-            variant="outlined"
-            label="Price"
-            name="price"
-            type="number"
-            onChange={(e) => {
-              setPrice(e.target.value);
-            }}
-            value={price}
+            label="Content"
+            multiline
+            rows={5}
+            name="content"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
           />
-          <Box>
-            <QuillInput content={content} handleChangeContent={setContent} />
-          </Box>
         </DialogContent>
         <DialogActions>
           <Button
@@ -151,4 +142,4 @@ const CreateLectureForm = ({ open, setIsOpenUpdateModal, id, sectionId }) => {
   );
 };
 
-export default CreateLectureForm;
+export default CreateQuestionForm;
