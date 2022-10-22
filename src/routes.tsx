@@ -121,7 +121,7 @@ const routes = (isLoggedIn: boolean) => [
     children: [
       {
         path: '/',
-        element: <Overview />
+        element: <Navigate to="dashboards/crypto" replace />
       },
       {
         path: 'overview',
