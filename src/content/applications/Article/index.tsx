@@ -24,6 +24,7 @@ interface IBlog {
   title: string;
   summary: string;
   avatar: string;
+  highlight: boolean;
 }
 interface IBlogs {
   sizePage: number;
@@ -44,6 +45,8 @@ function BlogManager() {
   const { errorsReducer, successReducer } = appContext;
   const [errors, errorDispatch] = errorsReducer;
   const [success, successDispatch] = successReducer;
+  const [highlight, setHighlight] = useState<boolean>(false);
+
   const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     setBlog({ ...blog, [e.target.name]: e.target.value });
   };
@@ -86,6 +89,7 @@ function BlogManager() {
       formData.append('content', content);
       formData.append('title', blog.title);
       formData.append('summary', blog.summary);
+      formData.append('highlight', highlight as unknown as string);
       formData.append('categoryId', category.id as unknown as string);
 
       await createBlog(formData);
@@ -135,6 +139,8 @@ function BlogManager() {
       <CreateBlogForm
         blog={blog}
         open={openDialog}
+        highlight={highlight}
+        setHighlight={setHighlight}
         handleClose={handleCloseDialog}
         handleChangeTitle={handleChangeValue}
         handleChangeSummary={handleChangeValue}

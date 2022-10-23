@@ -1,47 +1,32 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import {
   Grid,
   TextField,
   Theme,
   Button,
-  FormControl,
   FormLabel,
   Autocomplete
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Box } from '@mui/system';
 import { DropzoneArea } from 'material-ui-dropzone';
 import {
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle
+  DialogTitle,
+  FormControlLabel
 } from '@material-ui/core';
 import QuillInput from '../QuillInput';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     '& .MuiFormControl-root': {
-      width: '90%',
-      margin: theme.spacing(1)
+      width: '100%'
     },
-    '& .MuiDialogContent-root': {
-      height: 400
-    },
-    '& .MuiBox-root': {
-      width: '90%',
-      margin: theme.spacing(1)
-    },
-    '& .quill': {
-      height: 120
+    '& .ql-container': {
+      height: 290
     }
-  },
-  btn: {
-    margin: theme.spacing(0.5)
-  },
-  label: {
-    textTransform: 'none',
-    margin: theme.spacing(0.5)
   }
 }));
 
@@ -57,7 +42,9 @@ const CreateBlogForm = ({
   requesting,
   categories,
   category,
-  setCategory
+  setCategory,
+  highlight,
+  setHighlight
 }) => {
   const classes = useStyles();
 
@@ -70,8 +57,8 @@ const CreateBlogForm = ({
       <DialogTitle>Tạo tin tức mới</DialogTitle>
       <form className={classes.root} onSubmit={handleCreateBlog}>
         <DialogContent>
-          <Grid container>
-            <Grid item xs={6}>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
               <TextField
                 variant="outlined"
                 label="Title"
@@ -79,6 +66,8 @@ const CreateBlogForm = ({
                 onChange={handleChangeTitle}
                 value={blog.title}
               />
+            </Grid>
+            <Grid item xs={12}>
               <TextField
                 variant="outlined"
                 label="Description"
@@ -86,34 +75,44 @@ const CreateBlogForm = ({
                 onChange={handleChangeSummary}
                 value={blog.summary}
               />
-              <Box>
-                <QuillInput
-                  content=""
-                  handleChangeContent={handleChangeContent}
-                />
-              </Box>
             </Grid>
-            <Grid item xs={6}>
-              <FormControl>
-                <Autocomplete
-                  disablePortal
-                  id="combo-box-demo"
-                  options={categories.results}
-                  onChange={(event, value) => setCategory(value)}
-                  value={category}
-                  getOptionLabel={(option: { name: string }) => option.name}
-                  renderInput={(params) => {
-                    return <TextField {...params} label="Category" />;
-                  }}
-                />
-                <FormLabel>Thumb</FormLabel>
-                <DropzoneArea
-                  onChange={handleChange}
-                  acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
-                  maxFileSize={5000000}
-                  filesLimit={1}
-                />
-              </FormControl>
+            <Grid item xs={12}>
+              <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                options={categories.results}
+                onChange={(event, value) => setCategory(value)}
+                value={category}
+                getOptionLabel={(option: { name: string }) => option.name}
+                renderInput={(params) => {
+                  return <TextField {...params} label="Category" />;
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <QuillInput
+                content=""
+                handleChangeContent={handleChangeContent}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormLabel>Thumb</FormLabel>
+              <DropzoneArea
+                onChange={handleChange}
+                acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
+                maxFileSize={5000000}
+                filesLimit={1}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={<Checkbox checked={highlight} />}
+                onChange={(e) => {
+                  setHighlight(!highlight);
+                }}
+                labelPlacement="start"
+                label="This is the highlight:"
+              />
             </Grid>
           </Grid>
         </DialogContent>
@@ -122,7 +121,6 @@ const CreateBlogForm = ({
             color="primary"
             size="large"
             type="submit"
-            className={classes.label}
             disabled={requesting}
           >
             Submit

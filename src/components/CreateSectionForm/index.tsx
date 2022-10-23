@@ -1,37 +1,18 @@
 import React from 'react';
-import { Grid, TextField, Theme, Button } from '@mui/material';
+import { TextField, Theme, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Box } from '@mui/system';
 import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle
+  DialogTitle,
+  Grid
 } from '@material-ui/core';
-import QuillInput from '../QuillInput';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     '& .MuiFormControl-root': {
-      width: '90%',
-      margin: theme.spacing(1)
-    },
-    '& .MuiDialogContent-root': {
-      height: 400
-    },
-    '& .MuiBox-root': {
-      width: '90%',
-      margin: theme.spacing(1)
-    },
-    '& .quill': {
-      height: 180
+      width: '100%'
     }
-  },
-  btn: {
-    margin: theme.spacing(0.5)
-  },
-  label: {
-    textTransform: 'none',
-    margin: theme.spacing(0.5)
   }
 }));
 
@@ -52,25 +33,35 @@ const CreateSessionForm = ({
       <DialogTitle>Tạo section mới</DialogTitle>
       <form className={classes.root} onSubmit={handleCreateSession}>
         <DialogContent>
-          <TextField
-            variant="outlined"
-            label="Title"
-            name="title"
-            onChange={(e) => {
-              setTitle(e.target.value);
-            }}
-            value={title}
-          />
-          <Box>
-            <QuillInput content={summary} handleChangeContent={setSummary} />
-          </Box>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                label="Title"
+                name="title"
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                }}
+                value={title}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Content"
+                multiline
+                rows={5}
+                name="content"
+                value={summary}
+                onChange={(e) => setSummary(e.target.value)}
+              />
+            </Grid>
+          </Grid>
         </DialogContent>
         <DialogActions>
           <Button
             color="primary"
             size="large"
             type="submit"
-            className={classes.label}
             disabled={requesting}
           >
             Submit

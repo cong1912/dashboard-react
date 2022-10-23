@@ -12,26 +12,11 @@ import QuillInput from '../QuillInput';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     '& .MuiFormControl-root': {
-      width: '90%',
-      margin: theme.spacing(1)
+      width: '100%'
     },
-    '& .MuiDialogContent-root': {
-      height: 420
-    },
-    '& .MuiBox-root': {
-      width: '90%',
-      margin: theme.spacing(1)
-    },
-    '& .quill': {
-      height: 180
+    '& .ql-container': {
+      height: 200
     }
-  },
-  btn: {
-    margin: theme.spacing(0.5)
-  },
-  label: {
-    textTransform: 'none',
-    margin: theme.spacing(0.5)
   }
 }));
 
@@ -50,39 +35,44 @@ const CreateLectureForm = ({
   const classes = useStyles();
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="sm">
+    <Dialog open={open} onClose={handleClose} maxWidth="xl">
       <DialogTitle>Tạo mới bài học</DialogTitle>
       <form className={classes.root} onSubmit={handleCreateLecture}>
         <DialogContent>
-          <TextField
-            variant="outlined"
-            label="name"
-            name="name"
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
-            value={name}
-          />
-          <TextField
-            variant="outlined"
-            label="Price"
-            name="price"
-            type="number"
-            onChange={(e) => {
-              setPrice(e.target.value);
-            }}
-            value={price}
-          />
-          <Box>
-            <QuillInput content={content} handleChangeContent={setContent} />
-          </Box>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                label="name"
+                name="name"
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+                value={name}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                label="Price"
+                name="price"
+                type="number"
+                onChange={(e) => {
+                  setPrice(e.target.value);
+                }}
+                value={price}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <QuillInput content={content} handleChangeContent={setContent} />
+            </Grid>
+          </Grid>
         </DialogContent>
         <DialogActions>
           <Button
             color="primary"
             size="large"
             type="submit"
-            className={classes.label}
             disabled={requesting}
           >
             Submit

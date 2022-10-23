@@ -5,7 +5,8 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle
+  DialogTitle,
+  Grid
 } from '@material-ui/core';
 import { QUESTION_URL } from 'src/constants/url';
 import { getData } from 'src/helpers/apiHandle';
@@ -22,26 +23,8 @@ import { IQuestion } from 'src/content/applications/Questions';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     '& .MuiFormControl-root': {
-      width: '90%',
-      margin: theme.spacing(1)
-    },
-    '& .MuiDialogContent-root': {
-      height: 250
-    },
-    '& .MuiBox-root': {
-      width: '90%',
-      margin: theme.spacing(1)
-    },
-    '& .quill': {
-      height: 180
+      width: '100%'
     }
-  },
-  btn: {
-    margin: theme.spacing(0.5)
-  },
-  label: {
-    textTransform: 'none',
-    margin: theme.spacing(0.5)
   }
 }));
 
@@ -107,30 +90,35 @@ const CreateQuestionForm = ({ open, setIsOpenUpdateModal, id, newsId }) => {
       <DialogTitle>Chỉnh sửa câu hỏi</DialogTitle>
       <form className={classes.root} onSubmit={handleEditQuestion}>
         <DialogContent>
-          <TextField
-            variant="outlined"
-            label="Title"
-            name="title"
-            onChange={(e) => {
-              setTitle(e.target.value);
-            }}
-            value={title}
-          />
-          <TextField
-            label="Content"
-            multiline
-            rows={5}
-            name="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                label="Title"
+                name="title"
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                }}
+                value={title}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Content"
+                multiline
+                rows={5}
+                name="content"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+              />
+            </Grid>
+          </Grid>
         </DialogContent>
         <DialogActions>
           <Button
             color="primary"
             size="large"
             type="submit"
-            className={classes.label}
             disabled={requesting}
           >
             Submit

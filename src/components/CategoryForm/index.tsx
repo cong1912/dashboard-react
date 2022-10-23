@@ -6,26 +6,8 @@ import { makeStyles } from '@mui/styles';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     '& .MuiFormControl-root': {
-      width: '90%',
-      margin: theme.spacing(1)
-    },
-    '& .MuiDialogContent-root': {
-      height: 250
-    },
-    '& .MuiBox-root': {
-      width: '90%',
-      margin: theme.spacing(1)
-    },
-    '& .quill': {
-      height: 180
+      width: '100%'
     }
-  },
-  btn: {
-    margin: theme.spacing(0.5)
-  },
-  label: {
-    textTransform: 'none',
-    margin: theme.spacing(0.5)
   }
 }));
 
@@ -43,22 +25,26 @@ const CategoryForm = ({
     <>
       <form className={classes.root} onSubmit={handleSubmitForm}>
         <DialogContent>
-          <Grid container>
-            <TextField
-              variant="outlined"
-              label="Name"
-              name="name"
-              onChange={(e) => setName(e.target.value)}
-              value={name}
-            />
-            <TextField
-              label="Description"
-              multiline
-              rows={5}
-              name="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                label="Name"
+                name="name"
+                onChange={(e) => setName(e.target.value)}
+                value={name}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Description"
+                multiline
+                rows={5}
+                name="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
@@ -66,7 +52,6 @@ const CategoryForm = ({
             color="primary"
             size="large"
             type="submit"
-            className={classes.label}
             disabled={requesting}
           >
             Submit

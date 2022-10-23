@@ -4,19 +4,19 @@ import {
   TextField,
   Theme,
   Button,
-  FormControl,
   FormLabel,
   Autocomplete,
   CircularProgress
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Box } from '@mui/system';
 import { DropzoneArea } from 'material-ui-dropzone';
 import {
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle
+  DialogTitle,
+  FormControlLabel
 } from '@material-ui/core';
 import QuillInput from '../QuillInput';
 import { multiFetcher } from 'src/helpers/apiHandle';
@@ -37,6 +37,7 @@ interface IBlog {
       content: string;
       categoryId: number;
       image: string;
+      highlight: boolean;
     };
   };
 }
@@ -60,32 +61,18 @@ export interface ICategoryFormData {
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     '& .MuiFormControl-root': {
-      width: '90%',
-      margin: theme.spacing(1)
+      width: '100%'
     },
-    '& .MuiDialogContent-root': {
-      height: 400
-    },
-    '& .MuiBox-root': {
-      width: '90%',
-      margin: theme.spacing(1)
-    },
-    '& .quill': {
-      height: 120
+    '& .ql-container': {
+      height: 300
     }
-  },
-  btn: {
-    margin: theme.spacing(0.5)
-  },
-  label: {
-    textTransform: 'none',
-    margin: theme.spacing(0.5)
   }
 }));
 
 const EditArticleForm = ({ open, id, setIsOpenUpdateModal }) => {
   const classes = useStyles();
   const [requesting, setRequesting] = useState<boolean>(false);
+  const [highlight, setHighlight] = useState<boolean>(false);
   const appContext = useContext(AppContext) as AppContextType;
   const { errorsReducer, successReducer } = appContext;
   const [errors, errorDispatch] = errorsReducer;
@@ -113,6 +100,7 @@ const EditArticleForm = ({ open, id, setIsOpenUpdateModal }) => {
       data as unknown as [IBlog, ICategories];
 
     setTitle(article.value.article.title);
+    setHighlight(article.value.article.highlight);
     setSummary(article.value.article.summary);
     setContent(article.value.article.content);
     setImageUrl(
@@ -137,6 +125,7 @@ const EditArticleForm = ({ open, id, setIsOpenUpdateModal }) => {
       formData.append('content', content);
       formData.append('title', title);
       formData.append('summary', summary);
+      formData.append('highlight', highlight as unknown as string);
       if (categoriesUpdate) formData.append('categoryId', categoriesUpdate.id);
       if (image[0]) {
         formData.append('file', image[0]);
@@ -181,8 +170,8 @@ const EditArticleForm = ({ open, id, setIsOpenUpdateModal }) => {
           {!data ? (
             <CircularProgress />
           ) : (
-            <Grid container>
-              <Grid item xs={6}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
                 <TextField
                   variant="outlined"
                   label="Title"
@@ -190,6 +179,8 @@ const EditArticleForm = ({ open, id, setIsOpenUpdateModal }) => {
                   onChange={(e) => setTitle(e.target.value)}
                   value={title}
                 />
+              </Grid>
+              <Grid item xs={12}>
                 <TextField
                   variant="outlined"
                   label="Description"
@@ -197,35 +188,46 @@ const EditArticleForm = ({ open, id, setIsOpenUpdateModal }) => {
                   onChange={(e) => setSummary(e.target.value)}
                   value={summary}
                 />
-                <Box>
-                  <QuillInput
-                    content={content}
-                    handleChangeContent={setContent}
-                  />
-                </Box>
               </Grid>
-              <Grid item xs={6}>
-                <FormControl>
-                  <Autocomplete
-                    disablePortal
-                    id="combo-box-demo"
-                    options={categories}
-                    onChange={(event, value) => setCategoriesUpdate(value)}
-                    value={categories[indexCategory]}
-                    getOptionLabel={(option: { name: string }) => option.name}
-                    renderInput={(params) => {
-                      return <TextField {...params} label="Category" />;
-                    }}
-                  />
-                  <FormLabel>Thumb</FormLabel>
-                  <DropzoneArea
-                    initialFiles={[imageUrl]}
-                    onChange={handleChange}
-                    acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
-                    maxFileSize={5000000}
-                    filesLimit={1}
-                  />
-                </FormControl>
+              <Grid item xs={12}>
+                {' '}
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+                  options={categories}
+                  onChange={(event, value) => setCategoriesUpdate(value)}
+                  value={categories[indexCategory]}
+                  getOptionLabel={(option: { name: string }) => option.name}
+                  renderInput={(params) => {
+                    return <TextField {...params} label="Category" />;
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <QuillInput
+                  content={content}
+                  handleChangeContent={setContent}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormLabel>Thumb</FormLabel>
+                <DropzoneArea
+                  initialFiles={[imageUrl]}
+                  onChange={handleChange}
+                  acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
+                  maxFileSize={5000000}
+                  filesLimit={1}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={<Checkbox checked={highlight} />}
+                  onChange={(e) => {
+                    setHighlight(!highlight);
+                  }}
+                  labelPlacement="start"
+                  label="This is the highlight:"
+                />
               </Grid>
             </Grid>
           )}
@@ -235,7 +237,6 @@ const EditArticleForm = ({ open, id, setIsOpenUpdateModal }) => {
             color="primary"
             size="large"
             type="submit"
-            className={classes.label}
             disabled={requesting}
           >
             Submit

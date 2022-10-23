@@ -110,23 +110,30 @@ const EditQuizAnswerForm = ({ open, setIsOpenUpdateModal, id, questionId }) => {
       <DialogTitle>Chỉnh sửa đáp án</DialogTitle>
       <form className={classes.root} onSubmit={handleEditAnswer}>
         <DialogContent>
-          <TextField
-            variant="outlined"
-            label="content"
-            multiline
-            name="content"
-            onChange={(e) => {
-              setContent(e.target.value);
-            }}
-            value={content}
-          />
-          <FormControlLabel
-            control={<Checkbox checked={correct} />}
-            onChange={(e) => {
-              setCorrect(!correct);
-            }}
-            label="This is the correct answer:"
-          />
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                label="content"
+                multiline
+                name="content"
+                onChange={(e) => {
+                  setContent(e.target.value);
+                }}
+                value={content}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={<Checkbox checked={correct} />}
+                onChange={(e) => {
+                  setCorrect(!correct);
+                }}
+                labelPlacement="start"
+                label="This is the correct answer:"
+              />
+            </Grid>
+          </Grid>
         </DialogContent>
         <DialogActions>
           <Button
