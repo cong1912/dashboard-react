@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 
-import { NavLink } from 'react-router-dom';
+import { NavigateFunction, NavLink, useNavigate } from 'react-router-dom';
 
 import {
   Avatar,
@@ -64,7 +64,7 @@ function HeaderUserbox() {
     avatar: '/static/images/avatars/1.jpg',
     jobtitle: 'Project Manager'
   };
-
+  const navigate: NavigateFunction = useNavigate();
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
 
@@ -74,6 +74,12 @@ function HeaderUserbox() {
 
   const handleClose = (): void => {
     setOpen(false);
+  };
+
+  const handelSignOut = () => {
+    localStorage.removeItem('token');
+
+    navigate('/login');
   };
 
   return (
@@ -135,7 +141,7 @@ function HeaderUserbox() {
         </List>
         <Divider />
         <Box sx={{ m: 1 }}>
-          <Button color="primary" fullWidth>
+          <Button color="primary" fullWidth onClick={handelSignOut}>
             <LockOpenTwoToneIcon sx={{ mr: 1 }} />
             Sign out
           </Button>

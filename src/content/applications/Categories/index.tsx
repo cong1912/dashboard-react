@@ -44,7 +44,6 @@ const Categories = () => {
 
   // fetch data
   const { data: categories } = useSWR<ICategories>(CATEGORIES_URL, getData);
-  console.log(categories);
   // dialog create
   const handleClickOpenDialog = () => {
     setOpenDialog(true);
