@@ -33,12 +33,18 @@ const ActionCategoryArticleTable = ({ params, rowId, setRowId }) => {
     <>
       <Box>
         <Tooltip title="Chỉnh sửa danh mục này">
-          <IconButton onClick={handleOpenUpdateModal}>
+          <IconButton
+            onClick={handleOpenUpdateModal}
+            disabled={params.row.specific === 1 ? true : false}
+          >
             <Edit />
           </IconButton>
         </Tooltip>
         <Tooltip title="Xóa danh mục này">
-          <IconButton onClick={() => handelDeleteBlog(params)}>
+          <IconButton
+            onClick={() => handelDeleteBlog(params)}
+            disabled={params.row.specific === 1 ? true : false}
+          >
             <Delete />
           </IconButton>
         </Tooltip>
