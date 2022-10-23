@@ -66,7 +66,7 @@ const CreateCourseForm = ({
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="xl">
-      <DialogTitle>Create New Course</DialogTitle>
+      <DialogTitle>Tạo mới khóa học</DialogTitle>
       <form className={classes.root} onSubmit={handleCreateCourse}>
         <DialogContent>
           <Grid container>

@@ -39,7 +39,7 @@ const SectionsTable = ({ sections }) => {
         component="h3"
         sx={{ textAlign: 'center', mt: 3, mb: 3 }}
       >
-        Manage Sections
+        Danh sách section
       </Typography>
       <DataGrid
         columns={columns}

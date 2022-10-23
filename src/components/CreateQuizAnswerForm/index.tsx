@@ -51,7 +51,7 @@ const CreateQuizAnswerForm = ({
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="xs">
-      <DialogTitle>Create New Answer</DialogTitle>
+      <DialogTitle>Tạo câu trả lời mới</DialogTitle>
       <form className={classes.root} onSubmit={handleCreateQuestion}>
         <DialogContent>
           <TextField

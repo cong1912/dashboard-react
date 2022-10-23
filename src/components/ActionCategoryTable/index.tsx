@@ -31,12 +31,12 @@ const ActionCategoryTable = ({ params, rowId, setRowId }) => {
   return (
     <>
       <Box>
-        <Tooltip title="Edit this Category">
+        <Tooltip title="Chỉnh sửa danh mục này">
           <IconButton onClick={handleOpenUpdateModal}>
             <Edit />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Delete this Category">
+        <Tooltip title="Xóa danh mục này">
           <IconButton onClick={() => handelDeleteBlog(params)}>
             <Delete />
           </IconButton>

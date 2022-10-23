@@ -7,7 +7,7 @@ function PageHeader({ handleClickOpenDialog }) {
     <Grid container justifyContent="space-between" alignItems="center">
       <Grid item>
         <Typography variant="h3" component="h3" gutterBottom>
-          Sections List
+          Danh sách section
         </Typography>
       </Grid>
       <Grid item>
@@ -17,7 +17,7 @@ function PageHeader({ handleClickOpenDialog }) {
           startIcon={<AddTwoToneIcon fontSize="small" />}
           onClick={handleClickOpenDialog}
         >
-          Create New Session
+          Tạo section mới
         </Button>
       </Grid>
     </Grid>

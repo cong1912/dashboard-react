@@ -67,7 +67,7 @@ const CreateBlogForm = ({
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="xl">
-      <DialogTitle>Create New Article</DialogTitle>
+      <DialogTitle>Tạo tin tức mới</DialogTitle>
       <form className={classes.root} onSubmit={handleCreateBlog}>
         <DialogContent>
           <Grid container>

@@ -33,7 +33,7 @@ const ActiveCourseTable = ({ params, rowId, setRowId }) => {
   return (
     <>
       <Box>
-        <Tooltip title="View Question">
+        <Tooltip title="Xem danh sách câu hỏi">
           <IconButton
             onClick={() =>
               navigate(`/management/course/${params.id}/questions`)
@@ -42,12 +42,19 @@ const ActiveCourseTable = ({ params, rowId, setRowId }) => {
             <Quiz />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Edit this course">
+        <Tooltip title="Xem các sections">
+          <IconButton
+            onClick={() => navigate(`/management/course/${params.id}/sections`)}
+          >
+            <Preview />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Chỉnh sửa khóa học này">
           <IconButton onClick={handleOpenUpdateModal}>
             <Edit />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Delete this course">
+        <Tooltip title="Xóa khóa học này">
           <IconButton onClick={() => handelDeleteBlog(params)}>
             <Delete />
           </IconButton>

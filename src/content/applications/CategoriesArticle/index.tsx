@@ -1,48 +1,40 @@
-import { useParams } from 'react-router';
-import React, {
-  lazy,
-  useEffect,
-  useState,
-  useContext,
-  ChangeEvent
-} from 'react';
+import React, { lazy, useState, useContext } from 'react';
 import { Helmet } from 'react-helmet-async';
 import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { Grid, Container, CircularProgress } from '@mui/material';
+import { Grid, Container, CircularProgress, Dialog } from '@mui/material';
 import Footer from 'src/components/Footer';
 import useSWR, { mutate } from 'swr';
-import { QUESTION_URL } from 'src/constants/url';
+import { ARTICLE_CATEGORY } from 'src/constants/url';
 import { getData } from 'src/helpers/apiHandle';
+import { DialogTitle } from '@material-ui/core';
 
 //context
 import { ERROR_ACTION } from 'src/reduces/ErrorsReducer';
 import { AppContext } from 'src/AppProvider';
 import { AppContextType } from 'src/interfaces/AppContextType';
 import { SUCCESS_ACTION } from 'src/reduces/SuccessReducer';
-import { createQuestion } from 'src/services/QuestionService';
-import QuestionTable from './QuestionTable';
+import CategoryTable from './CategoryTable';
+import { createCategoryArticle } from 'src/services/CategoryArticleService';
 
-export interface IQuestion {
+export interface ICategory {
   id: number;
-  content: string;
-  title: string;
+  name: string;
+  description: string;
 }
 
-export interface IQuestions {
-  results: [IQuestion];
+export interface ICategories {
+  sizePage: number;
+  results: ICategory[];
 }
 
-const CreateQuestionForm = lazy(
-  () => import('src/components/CreateQuestionForm')
-);
+const CategoryForm = lazy(() => import('src/components/CategoryForm'));
 
-const Question = () => {
-  const { id } = useParams() as { id: string };
+const Categories = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [requesting, setRequesting] = useState<boolean>(false);
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
 
   // context
   const appContext = useContext(AppContext) as AppContextType;
@@ -51,11 +43,7 @@ const Question = () => {
   const [success, successDispatch] = successReducer;
 
   // fetch data
-  const { data: questions } = useSWR<IQuestions>(
-    id ? QUESTION_URL + `?newsId=${id}` : null,
-    getData
-  );
-
+  const { data: categories } = useSWR<ICategories>(ARTICLE_CATEGORY, getData);
   // dialog create
   const handleClickOpenDialog = () => {
     setOpenDialog(true);
@@ -64,26 +52,27 @@ const Question = () => {
     setOpenDialog(false);
   };
 
-  const handleCreateQuestion = async (
+  const handleCreateCategory = async (
     event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
     try {
       const data = {
-        title: title,
-        content: content,
-        newsId: +id
+        name: name,
+        description: description
       };
 
-      await createQuestion(data);
+      await createCategoryArticle(data);
+
       successDispatch({
         type: SUCCESS_ACTION.SET_SUCCESS,
-        success: 'Create Question Success'
+        success: 'Create Answer Success'
       });
-      await mutate(QUESTION_URL + `?newsId=${id}`);
+
+      await mutate(ARTICLE_CATEGORY);
       setOpenDialog(false);
-      setContent('');
-      setTitle('');
+      setName('');
+      setDescription('');
     } catch (error) {
       errorDispatch({
         type: ERROR_ACTION.SET_ERROR,
@@ -93,11 +82,11 @@ const Question = () => {
     }
   };
 
-  if (!questions) return <CircularProgress />;
+  if (!categories) return <CircularProgress />;
   return (
     <>
       <Helmet>
-        <title>Question - Manager</title>
+        <title>Categories - Manager</title>
       </Helmet>
       <PageTitleWrapper>
         <PageHeader handleClickOpenDialog={handleClickOpenDialog} />
@@ -111,28 +100,30 @@ const Question = () => {
           spacing={3}
         >
           <Grid item xs={12}>
-            {!questions ? (
+            {!categories ? (
               <CircularProgress />
             ) : (
-              <QuestionTable questions={questions} />
+              <CategoryTable categories={categories} />
             )}
           </Grid>
         </Grid>
       </Container>
       <Footer />
 
-      <CreateQuestionForm
-        open={openDialog}
-        handleClose={handleCloseDialog}
-        requesting={requesting}
-        handleCreateQuestion={handleCreateQuestion}
-        setContent={setContent}
-        content={content}
-        title={title}
-        setTitle={setTitle}
-      />
+      <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm">
+        <DialogTitle>Tạo danh mục mới</DialogTitle>
+        <CategoryForm
+          handleSubmitForm={handleCreateCategory}
+          handleClose={handleCloseDialog}
+          name={name}
+          setName={setName}
+          description={description}
+          setDescription={setDescription}
+          requesting={requesting}
+        />
+      </Dialog>
     </>
   );
 };
 
-export default Question;
+export default Categories;

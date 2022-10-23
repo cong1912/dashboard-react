@@ -38,7 +38,7 @@ const QuestionTable = ({ questions }) => {
         component="h3"
         sx={{ textAlign: 'center', mt: 3, mb: 3 }}
       >
-        Quiz Answers Sections
+        Danh sách đáp án
       </Typography>
       <DataGrid
         columns={columns}

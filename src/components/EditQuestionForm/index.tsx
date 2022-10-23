@@ -104,7 +104,7 @@ const CreateQuestionForm = ({ open, setIsOpenUpdateModal, id, newsId }) => {
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm">
-      <DialogTitle>Edit Question</DialogTitle>
+      <DialogTitle>Chỉnh sửa câu hỏi</DialogTitle>
       <form className={classes.root} onSubmit={handleEditQuestion}>
         <DialogContent>
           <TextField

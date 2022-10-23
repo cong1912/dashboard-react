@@ -33,7 +33,7 @@ const ActiveQuestionTable = ({ params, rowId, setRowId }) => {
   return (
     <>
       <Box>
-        <Tooltip title="View answers">
+        <Tooltip title="Xem danh sách đáp án">
           <IconButton
             onClick={() =>
               navigate(`/management/question/${params.id}/answers`)
@@ -42,12 +42,12 @@ const ActiveQuestionTable = ({ params, rowId, setRowId }) => {
             <Preview />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Edit this course">
+        <Tooltip title="Sửa câu hỏi này">
           <IconButton onClick={handleOpenUpdateModal}>
             <Edit />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Delete this course">
+        <Tooltip title="Xóa câu hỏi này">
           <IconButton onClick={() => handelDeleteBlog(params)}>
             <Delete />
           </IconButton>

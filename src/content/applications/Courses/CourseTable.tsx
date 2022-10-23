@@ -11,9 +11,9 @@ const CourseTable = ({ course }) => {
 
   const columns = useMemo(
     () => [
-      { field: 'id', headerName: 'Id', width: 220 },
-      { field: 'title', headerName: 'Title', width: 170 },
-      { field: 'description', headerName: 'Description', width: 200 },
+      { field: 'id', headerName: 'Id', width: 130 },
+      { field: 'title', headerName: 'Title', width: 270 },
+      { field: 'description', headerName: 'Description', width: 350 },
       {
         field: 'image',
         headerName: 'Image',
@@ -33,17 +33,6 @@ const CourseTable = ({ course }) => {
         sortable: false,
         filterable: false
       },
-      { field: 'viewed', headerName: 'Viewed', width: 200 },
-      { field: 'shared', headerName: 'Shared', width: 200 },
-
-      {
-        field: 'status',
-        headerName: 'status',
-        width: 100,
-        type: 'boolean'
-        // editable: true
-      },
-
       {
         width: 200,
         field: 'actions',
@@ -69,7 +58,7 @@ const CourseTable = ({ course }) => {
         component="h3"
         sx={{ textAlign: 'center', mt: 3, mb: 3 }}
       >
-        Manage Course
+        Danh sách khóa học
       </Typography>
       <DataGrid
         columns={columns}

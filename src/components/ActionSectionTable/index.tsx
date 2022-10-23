@@ -33,7 +33,7 @@ const ActiveSectionTable = ({ params, rowId, setRowId }) => {
   return (
     <>
       <Box>
-        <Tooltip title="View sections lecture">
+        <Tooltip title="Xem danh sách bài học">
           <IconButton
             onClick={() =>
               navigate(`/management/section/${params.id}/lectures`)
@@ -42,12 +42,12 @@ const ActiveSectionTable = ({ params, rowId, setRowId }) => {
             <Preview />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Edit this course">
+        <Tooltip title="Chỉnh sửa section này">
           <IconButton onClick={handleOpenUpdateModal}>
             <Edit />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Delete this course">
+        <Tooltip title="Xóa section này">
           <IconButton onClick={() => handelDeleteBlog(params)}>
             <Delete />
           </IconButton>

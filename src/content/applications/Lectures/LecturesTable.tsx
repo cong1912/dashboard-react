@@ -39,7 +39,7 @@ const LecturesTable = ({ lectures }) => {
         component="h3"
         sx={{ textAlign: 'center', mt: 3, mb: 3 }}
       >
-        Manage Lectures
+        Danh sách bài học
       </Typography>
       <DataGrid
         columns={columns}

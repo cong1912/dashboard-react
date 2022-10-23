@@ -3,42 +3,24 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import { grey } from '@mui/material/colors';
-import ActiveTable from 'src/components/ActiveTable';
+import ActionCategoryArticleTable from 'src/components/ActionCategoryArticleTable';
 
-const BlogTable = ({ blogs }) => {
-  const [pageSize, setPageSize] = useState(20);
+const CategoryTable = ({ categories }) => {
+  const [pageSize, setPageSize] = useState(categories.pageSize);
   const [rowId, setRowId] = useState(null);
 
   const columns = useMemo(
     () => [
       { field: 'id', headerName: 'Id', width: 220 },
-      { field: 'title', headerName: 'Title', width: 170 },
-      { field: 'summary', headerName: 'Summary', width: 450 },
-      {
-        field: 'image',
-        headerName: 'Image',
-        width: 200,
-        renderCell: (params) => {
-          const newImage = params.row.image.slice(7, params.value.length);
-
-          return (
-            <img
-              crossOrigin="anonymous"
-              src={process.env.REACT_APP_API_BACK_END + newImage}
-              loading="lazy"
-              width="30%"
-            />
-          );
-        },
-        sortable: false,
-        filterable: false
-      },
-
+      { field: 'name', headerName: 'Name', width: 200 },
+      { field: 'description', headerName: 'Description', width: 500 },
       {
         field: 'actions',
         headerName: 'Actions',
         type: 'actions',
-        renderCell: (params) => <ActiveTable {...{ params, rowId, setRowId }} />
+        renderCell: (params) => (
+          <ActionCategoryArticleTable {...{ params, rowId, setRowId }} />
+        )
       }
     ],
     [rowId]
@@ -56,11 +38,11 @@ const BlogTable = ({ blogs }) => {
         component="h3"
         sx={{ textAlign: 'center', mt: 3, mb: 3 }}
       >
-        Các tin tức
+        Danh mục tin tức
       </Typography>
       <DataGrid
         columns={columns}
-        rows={blogs.results}
+        rows={categories.results}
         getRowId={(row) => row.id}
         rowsPerPageOptions={[5, 10, 20]}
         pageSize={pageSize}
@@ -81,4 +63,4 @@ const BlogTable = ({ blogs }) => {
   );
 };
 
-export default BlogTable;
+export default CategoryTable;

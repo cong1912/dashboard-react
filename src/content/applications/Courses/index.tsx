@@ -6,7 +6,11 @@ import { Grid, Container, CircularProgress } from '@mui/material';
 import Footer from 'src/components/Footer';
 import useSWR, { mutate } from 'swr';
 import { ICategory } from 'src/components/EditArticleForm';
-import { ARTICLE_CATEGORY, COURSE_URL } from 'src/constants/url';
+import {
+  ARTICLE_CATEGORY,
+  CATEGORIES_URL,
+  COURSE_URL
+} from 'src/constants/url';
 import { getData } from 'src/helpers/apiHandle';
 
 //context
@@ -51,7 +55,7 @@ const Courses = () => {
 
   //FETCH DATA
   const { data: courses } = useSWR<ICourses>(COURSE_URL, getData);
-  const { data: categories } = useSWR<ICategories>(ARTICLE_CATEGORY, getData);
+  const { data: categories } = useSWR<ICategories>(CATEGORIES_URL, getData);
 
   useEffect(() => {
     if (!categories) return;

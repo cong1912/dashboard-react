@@ -33,12 +33,12 @@ const ActionAnswerTable = ({ params, rowId, setRowId }) => {
   return (
     <>
       <Box>
-        <Tooltip title="Edit this answer">
+        <Tooltip title="Chỉnh sửa đáp án này">
           <IconButton onClick={handleOpenUpdateModal}>
             <Edit />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Delete this answer">
+        <Tooltip title="Xóa đáp án này">
           <IconButton onClick={() => handelDeleteBlog(params)}>
             <Delete />
           </IconButton>

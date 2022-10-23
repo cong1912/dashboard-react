@@ -175,7 +175,7 @@ const EditArticleForm = ({ open, id, setIsOpenUpdateModal }) => {
       fullWidth={true}
       maxWidth="xl"
     >
-      <DialogTitle>Edit Article</DialogTitle>
+      <DialogTitle>Chỉnh sửa tin tức</DialogTitle>
       <form className={classes.root} onSubmit={handleUpdateBlog}>
         <DialogContent>
           {!data ? (

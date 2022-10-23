@@ -106,7 +106,7 @@ const EditSessionForm = ({ open, setIsOpenUpdateModal, id, newId }) => {
   if (!section) return <CircularProgress />;
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm">
-      <DialogTitle>Create New Session</DialogTitle>
+      <DialogTitle>Chỉnh sửa section</DialogTitle>
       <form className={classes.root} onSubmit={handleEditSection}>
         <DialogContent>
           <TextField

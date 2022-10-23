@@ -9,7 +9,6 @@ import {
   Autocomplete
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Box } from '@mui/system';
 import { DropzoneArea } from 'material-ui-dropzone';
 import {
   Dialog,
@@ -17,7 +16,6 @@ import {
   DialogContent,
   DialogTitle
 } from '@material-ui/core';
-import QuillInput from '../QuillInput';
 
 import { SUCCESS_ACTION } from 'src/reduces/SuccessReducer';
 import { ERROR_ACTION } from 'src/reduces/ErrorsReducer';
@@ -25,7 +23,7 @@ import { AppContext } from 'src/AppProvider';
 import { AppContextType } from 'src/interfaces/AppContextType';
 import { ICategory } from '../EditArticleForm';
 import { getData } from 'src/helpers/apiHandle';
-import { ARTICLE_CATEGORY, COURSE_URL } from 'src/constants/url';
+import { CATEGORIES_URL, COURSE_URL } from 'src/constants/url';
 import useSWR, { mutate } from 'swr';
 import { ICategories, ICourse } from 'src/content/applications/Courses';
 import { updateCourse } from 'src/services/CourseService';
@@ -64,7 +62,6 @@ const EditCourseForm = ({ open, id, setIsOpenUpdateModal }) => {
   const [description, setDescription] = useState('');
   const [title, setTitle] = useState('');
   const [imageUrl, setImageUrl] = useState('');
-  const [indexCategory, setIndexCategory] = useState<number>();
 
   const appContext = useContext(AppContext) as AppContextType;
   const { errorsReducer, successReducer } = appContext;
@@ -76,7 +73,7 @@ const EditCourseForm = ({ open, id, setIsOpenUpdateModal }) => {
     getData
   );
   const { data: articleCategory } = useSWR<ICategories>(
-    ARTICLE_CATEGORY,
+    CATEGORIES_URL,
     getData
   );
 
@@ -150,7 +147,7 @@ const EditCourseForm = ({ open, id, setIsOpenUpdateModal }) => {
   if (!articleCategory) return <div></div>;
   return (
     <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="xl">
-      <DialogTitle>Update Course</DialogTitle>
+      <DialogTitle>Chỉnh sửa khóa học</DialogTitle>
       <form className={classes.root} onSubmit={handleUpdateCourse}>
         <DialogContent>
           <Grid container>

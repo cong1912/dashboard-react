@@ -107,7 +107,7 @@ const EditQuizAnswerForm = ({ open, setIsOpenUpdateModal, id, questionId }) => {
   if (!answer) return <CircularProgress />;
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="xs">
-      <DialogTitle>Edit New Answer</DialogTitle>
+      <DialogTitle>Chỉnh sửa đáp án</DialogTitle>
       <form className={classes.root} onSubmit={handleEditAnswer}>
         <DialogContent>
           <TextField

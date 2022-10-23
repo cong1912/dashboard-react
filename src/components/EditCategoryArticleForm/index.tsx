@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Box } from '@mui/system';
 import { Dialog, DialogTitle } from '@material-ui/core';
 
 //context
@@ -9,12 +8,12 @@ import { ERROR_ACTION } from 'src/reduces/ErrorsReducer';
 import { AppContext } from 'src/AppProvider';
 import { AppContextType } from 'src/interfaces/AppContextType';
 import { SUCCESS_ACTION } from 'src/reduces/SuccessReducer';
-import { CATEGORIES_URL } from 'src/constants/url';
+import { ARTICLE_CATEGORY } from 'src/constants/url';
 import useSWR, { mutate } from 'swr';
 import { getData } from 'src/helpers/apiHandle';
 import CategoryForm from '../CategoryForm';
 import { ICategory } from 'src/content/applications/CategoriesCourse';
-import { updateCategory } from 'src/services/CategoryService';
+import { updateCategoryArticle } from 'src/services/CategoryArticleService';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -42,7 +41,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-const EditCategoryForm = ({ open, setIsOpenUpdateModal, id, sectionId }) => {
+const EditCategoryArticleForm = ({
+  open,
+  setIsOpenUpdateModal,
+  id,
+  sectionId
+}) => {
   const classes = useStyles();
   const [requesting, setRequesting] = useState(false);
   const [name, setName] = useState('');
@@ -56,10 +60,9 @@ const EditCategoryForm = ({ open, setIsOpenUpdateModal, id, sectionId }) => {
 
   //fetch data
   const { data: category } = useSWR<ICategory>(
-    id ? CATEGORIES_URL + id : null,
+    id ? ARTICLE_CATEGORY + id : null,
     getData
   );
-  console.log('data', category);
 
   useEffect(() => {
     if (!id || !category) {
@@ -80,13 +83,13 @@ const EditCategoryForm = ({ open, setIsOpenUpdateModal, id, sectionId }) => {
         description: description
       };
 
-      await updateCategory(data, id);
+      await updateCategoryArticle(data, id);
       successDispatch({
         type: SUCCESS_ACTION.SET_SUCCESS,
         success: 'Create Lecture Success'
       });
-      await mutate(CATEGORIES_URL + id);
-      await mutate(CATEGORIES_URL);
+      await mutate(ARTICLE_CATEGORY + id);
+      await mutate(ARTICLE_CATEGORY);
       setIsOpenUpdateModal(false);
     } catch (error) {
       errorDispatch({
@@ -117,4 +120,4 @@ const EditCategoryForm = ({ open, setIsOpenUpdateModal, id, sectionId }) => {
   );
 };
 
-export default EditCategoryForm;
+export default EditCategoryArticleForm;

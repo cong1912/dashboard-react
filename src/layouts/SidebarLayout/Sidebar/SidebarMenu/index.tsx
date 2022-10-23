@@ -215,7 +215,7 @@ function SidebarMenu() {
                   to="/dashboards/crypto"
                   startIcon={<BrightnessLowTwoToneIcon />}
                 >
-                  Cryptocurrency
+                  Dashboard
                 </Button>
               </ListItem>
               {/* <ListItem component="div">
@@ -250,7 +250,18 @@ function SidebarMenu() {
                   to="/management/courses"
                   startIcon={<TableChartTwoToneIcon />}
                 >
-                  Courses List
+                  Danh sách khóa học
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/management/category-courses"
+                  startIcon={<TableChartTwoToneIcon />}
+                >
+                  Danh mục khóa học
                 </Button>
               </ListItem>
             </List>
@@ -274,7 +285,7 @@ function SidebarMenu() {
                   to="/management/articles"
                   startIcon={<TableChartTwoToneIcon />}
                 >
-                  Article List
+                  Danh sách bài báo
                 </Button>
               </ListItem>
               <ListItem component="div">
@@ -282,10 +293,10 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/management/category-blog"
+                  to="/management/category-articles"
                   startIcon={<TableChartTwoToneIcon />}
                 >
-                  Category BLog
+                  Danh mục bài báo
                 </Button>
               </ListItem>
             </List>
@@ -295,7 +306,7 @@ function SidebarMenu() {
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
-              Management
+              FAQ Management
             </ListSubheader>
           }
         >
@@ -320,7 +331,7 @@ function SidebarMenu() {
                   to="/management/faqs"
                   startIcon={<TableChartTwoToneIcon />}
                 >
-                  FAQ List
+                  Hỏi đáp
                 </Button>
               </ListItem>
               {/* <ListItem component="div">

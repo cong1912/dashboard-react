@@ -51,7 +51,7 @@ const CreateLectureForm = ({
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm">
-      <DialogTitle>Create New Session</DialogTitle>
+      <DialogTitle>Tạo mới bài học</DialogTitle>
       <form className={classes.root} onSubmit={handleCreateLecture}>
         <DialogContent>
           <TextField

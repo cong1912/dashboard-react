@@ -47,7 +47,7 @@ const CreateQuestionForm = ({
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm">
-      <DialogTitle>Create New Session</DialogTitle>
+      <DialogTitle>Tạo mới câu hỏi</DialogTitle>
       <form className={classes.root} onSubmit={handleCreateQuestion}>
         <DialogContent>
           <TextField

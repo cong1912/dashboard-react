@@ -32,12 +32,12 @@ const ActiveTable = ({ params, rowId, setRowId }) => {
   return (
     <>
       <Box>
-        <Tooltip title="Edit this room">
+        <Tooltip title="Chỉnh sửa tin tức này">
           <IconButton onClick={handleOpenUpdateModal}>
             <Edit />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Delete this room">
+        <Tooltip title="Xóa tin tức này">
           <IconButton onClick={() => handelDeleteBlog(params)}>
             <Delete />
           </IconButton>

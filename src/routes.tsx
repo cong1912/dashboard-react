@@ -77,9 +77,14 @@ const StatusMaintenance = Loader(
 );
 
 // Categories
-const CategoryBlog = Loader(
-  lazy(() => import('src/content/applications/Categories'))
+const CategoryCourse = Loader(
+  lazy(() => import('src/content/applications/CategoriesCourse'))
 );
+
+const CategoryArticle = Loader(
+  lazy(() => import('src/content/applications/CategoriesArticle'))
+);
+
 const BlogManager = Loader(
   lazy(() => import('src/content/applications/Article'))
 );
@@ -193,8 +198,12 @@ const routes = (isLoggedIn: boolean) => [
         element: <BlogManager />
       },
       {
-        path: 'category-blog',
-        element: <CategoryBlog />
+        path: 'category-courses',
+        element: <CategoryCourse />
+      },
+      {
+        path: 'category-articles',
+        element: <CategoryArticle />
       },
       {
         path: 'course/:id/sections',

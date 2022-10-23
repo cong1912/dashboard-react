@@ -3,7 +3,7 @@ import useSWR, { mutate } from 'swr';
 import { Helmet } from 'react-helmet-async';
 import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { Grid, Container } from '@mui/material';
+import { Grid, Container, CircularProgress } from '@mui/material';
 import Footer from 'src/components/Footer';
 import BlogTable from './BlogTable';
 
@@ -108,7 +108,8 @@ function BlogManager() {
       setRequesting(false);
     }
   };
-
+  if (!article) return <CircularProgress />;
+  if (!categories) return <CircularProgress />;
   return (
     <>
       <Helmet>

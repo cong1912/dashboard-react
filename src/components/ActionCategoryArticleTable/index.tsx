@@ -5,10 +5,11 @@ import { NEWS_URL } from 'src/constants/url';
 import { mutate } from 'swr';
 import { useState, lazy } from 'react';
 import DeleteDialog from '../DeleteDialog';
+import EditCategoryArticleForm from '../EditCategoryArticleForm';
 
-const EditLectureForm = lazy(() => import('src/components/EditLectureForm'));
+const EditCategoryForm = lazy(() => import('src/components/EditCategoryForm'));
 
-const ActionLectureTable = ({ params, rowId, setRowId }) => {
+const ActionCategoryArticleTable = ({ params, rowId, setRowId }) => {
   const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [id, setId] = useState<number>();
@@ -31,18 +32,18 @@ const ActionLectureTable = ({ params, rowId, setRowId }) => {
   return (
     <>
       <Box>
-        <Tooltip title="Chỉnh sửa bài học này">
+        <Tooltip title="Chỉnh sửa danh mục này">
           <IconButton onClick={handleOpenUpdateModal}>
             <Edit />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Xóa bài học này">
+        <Tooltip title="Xóa danh mục này">
           <IconButton onClick={() => handelDeleteBlog(params)}>
             <Delete />
           </IconButton>
         </Tooltip>
       </Box>
-      <EditLectureForm
+      <EditCategoryArticleForm
         id={id}
         open={isOpenUpdateModal}
         sectionId={params.row.sectionId}
@@ -58,4 +59,4 @@ const ActionLectureTable = ({ params, rowId, setRowId }) => {
   );
 };
 
-export default ActionLectureTable;
+export default ActionCategoryArticleTable;

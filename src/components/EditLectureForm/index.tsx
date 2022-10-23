@@ -108,7 +108,7 @@ const CreateLectureForm = ({ open, setIsOpenUpdateModal, id, sectionId }) => {
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm">
-      <DialogTitle>Create New Session</DialogTitle>
+      <DialogTitle>Chỉnh sửa bài học</DialogTitle>
       <form className={classes.root} onSubmit={handleEditLecture}>
         <DialogContent>
           <TextField

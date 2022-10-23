@@ -49,7 +49,7 @@ const CreateSessionForm = ({
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm">
-      <DialogTitle>Create New Session</DialogTitle>
+      <DialogTitle>Tạo section mới</DialogTitle>
       <form className={classes.root} onSubmit={handleCreateSession}>
         <DialogContent>
           <TextField
