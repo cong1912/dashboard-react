@@ -6,6 +6,7 @@ export const login = (data: UserInput) => {
     method: 'post',
     url: '/auth/login',
     data: data,
+    withCredentials: false,
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json'
