@@ -55,19 +55,20 @@ export default function FaqDetail() {
 
   const handleClose = () => {
     setOpen(false);
+    fetchData();
   };
 
   const [detailFaq, setDetailFaq] = useState<any>({});
 
+  const fetchData = () => {
+    getFaqDetail(id).then((response) => {
+      console.log(response);
+      setDetailFaq(response.data);
+    });
+  };
+
   useEffect(() => {
-    try {
-      getFaqDetail(id).then((response) => {
-        console.log(response);
-        setDetailFaq(response.data);
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    fetchData();
   }, []);
 
   return (
@@ -104,7 +105,13 @@ export default function FaqDetail() {
       </Container>
 
       {/* Dialog */}
-      {open && <FaqFormModal open={open} close={handleClose} />}
+      {open && (
+        <FaqFormModal
+          open={open}
+          close={handleClose}
+          title={detailFaq.question.title}
+        />
+      )}
       {/* End Dialog */}
     </>
   );
