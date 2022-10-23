@@ -38,7 +38,7 @@ const CategoryTable = ({ categories }) => {
         component="h3"
         sx={{ textAlign: 'center', mt: 3, mb: 3 }}
       >
-        Quiz Answers Sections
+        Danh mục khóa học
       </Typography>
       <DataGrid
         columns={columns}

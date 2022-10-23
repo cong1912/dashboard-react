@@ -111,7 +111,7 @@ const Categories = () => {
       <Footer />
 
       <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm">
-        <DialogTitle>Create New Category</DialogTitle>
+        <DialogTitle>Tạo danh mục mới</DialogTitle>
         <CategoryForm
           handleSubmitForm={handleCreateCategory}
           handleClose={handleCloseDialog}

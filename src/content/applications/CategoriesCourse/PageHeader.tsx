@@ -7,7 +7,7 @@ function PageHeader({ handleClickOpenDialog }) {
     <Grid container justifyContent="space-between" alignItems="center">
       <Grid item>
         <Typography variant="h3" component="h3" gutterBottom>
-          Categories List
+          Danh sách danh mục
         </Typography>
       </Grid>
       <Grid item>
@@ -17,7 +17,7 @@ function PageHeader({ handleClickOpenDialog }) {
           startIcon={<AddTwoToneIcon fontSize="small" />}
           onClick={handleClickOpenDialog}
         >
-          Create New Categories
+          Tạo danh mục mới
         </Button>
       </Grid>
     </Grid>
