@@ -225,7 +225,7 @@ const EditArticleForm = ({ open, id, setIsOpenUpdateModal }) => {
                     setHighlight(!highlight);
                   }}
                   labelPlacement="start"
-                  label="This is the highlight:"
+                  label="Tin nổi bật:"
                 />
               </Grid>
             </Grid>

@@ -111,7 +111,7 @@ const CreateBlogForm = ({
                   setHighlight(!highlight);
                 }}
                 labelPlacement="start"
-                label="This is the highlight:"
+                label="Tin nổi bật:"
               />
             </Grid>
           </Grid>
