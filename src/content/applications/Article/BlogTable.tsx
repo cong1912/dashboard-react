@@ -59,7 +59,7 @@ const BlogTable = ({ blogs }) => {
       >
         Các tin tức
       </Typography>
-      <FormControl fullWidth sx={{ textAlign: 'right', mt: 3, mb: 3 }}>
+      {/* <FormControl fullWidth sx={{ textAlign: 'right', mt: 3, mb: 3 }}>
         <InputLabel id="demo-simple-select-label">Age</InputLabel>
         <Select
           labelId="demo-simple-select-label"
@@ -72,7 +72,7 @@ const BlogTable = ({ blogs }) => {
           <MenuItem value={20}>Twenty</MenuItem>
           <MenuItem value={30}>Thirty</MenuItem>
         </Select>
-      </FormControl>
+      </FormControl> */}
       <DataGrid
         columns={columns}
         rows={blogs.results}
