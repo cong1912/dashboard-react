@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunktokyo_free_white_react_admin_dashboard=self.webpackChunktokyo_free_white_react_admin_dashboard||[]).push([[777],{57777:function(e,a,r){r.r(a);r(72791);var t=r(80184);a.default=function(){return(0,t.jsx)("div",{children:"index"})}}}]);
+//# sourceMappingURL=777.b3a4fb68.chunk.js.map

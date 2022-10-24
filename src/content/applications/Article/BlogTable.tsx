@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import { grey } from '@mui/material/colors';
 import ActiveTable from 'src/components/ActiveTable';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
 const BlogTable = ({ blogs }) => {
   const [pageSize, setPageSize] = useState(20);
@@ -58,6 +59,20 @@ const BlogTable = ({ blogs }) => {
       >
         Các tin tức
       </Typography>
+      <FormControl fullWidth sx={{ textAlign: 'right', mt: 3, mb: 3 }}>
+        <InputLabel id="demo-simple-select-label">Age</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          // value={age}
+          label="Age"
+          // onChange={handleChange}
+        >
+          <MenuItem value={10}>Ten</MenuItem>
+          <MenuItem value={20}>Twenty</MenuItem>
+          <MenuItem value={30}>Thirty</MenuItem>
+        </Select>
+      </FormControl>
       <DataGrid
         columns={columns}
         rows={blogs.results}
