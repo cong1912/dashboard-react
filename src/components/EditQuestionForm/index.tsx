@@ -1,5 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { TextField, Theme, Button } from '@mui/material';
+import {
+  TextField,
+  Theme,
+  Button,
+  FormLabel,
+  CircularProgress
+} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import {
   Dialog,
@@ -19,6 +25,7 @@ import { AppContext } from 'src/AppProvider';
 import { AppContextType } from 'src/interfaces/AppContextType';
 import { SUCCESS_ACTION } from 'src/reduces/SuccessReducer';
 import { IQuestion } from 'src/content/applications/Questions';
+import { DropzoneArea } from 'material-ui-dropzone';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -33,6 +40,8 @@ const CreateQuestionForm = ({ open, setIsOpenUpdateModal, id, newsId }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [requesting, setRequesting] = useState(false);
+  const [image, setImage] = useState([]);
+  const [imageUrl, setImageUrl] = useState('');
 
   // context
   const appContext = useContext(AppContext) as AppContextType;
@@ -50,8 +59,14 @@ const CreateQuestionForm = ({ open, setIsOpenUpdateModal, id, newsId }) => {
     if (!id || !questions) {
       return;
     } else {
+      const newImage =
+        questions.imgUrl == null
+          ? null
+          : process.env.REACT_APP_API_BACK_END +
+            questions.imgUrl.replace('public/', '');
       setTitle(questions.title);
       setContent(questions.content);
+      setImageUrl(newImage);
     }
   }, [questions, id]);
 
@@ -63,13 +78,16 @@ const CreateQuestionForm = ({ open, setIsOpenUpdateModal, id, newsId }) => {
   ) => {
     event.preventDefault();
     try {
-      const data = {
-        title: title,
-        content: content,
-        newsId: +newsId
-      };
+      const formData = new FormData();
+      formData.append('content', content);
+      formData.append('title', title);
+      formData.append('newsId', +newsId as unknown as string);
 
-      await updateQuestion(data, id);
+      if (image[0]) {
+        formData.append('file', image[0]);
+      }
+
+      await updateQuestion(formData, id);
       successDispatch({
         type: SUCCESS_ACTION.SET_SUCCESS,
         success: 'Edit Question Success'
@@ -84,7 +102,11 @@ const CreateQuestionForm = ({ open, setIsOpenUpdateModal, id, newsId }) => {
       setRequesting(false);
     }
   };
+  const handleChange = (files) => {
+    setImage(files);
+  };
 
+  if (!questions) return <CircularProgress />;
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm">
       <DialogTitle>Chỉnh sửa câu hỏi</DialogTitle>
@@ -110,6 +132,16 @@ const CreateQuestionForm = ({ open, setIsOpenUpdateModal, id, newsId }) => {
                 name="content"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormLabel>Thumb</FormLabel>
+              <DropzoneArea
+                initialFiles={[imageUrl]}
+                onChange={handleChange}
+                acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
+                maxFileSize={5000000}
+                filesLimit={1}
               />
             </Grid>
           </Grid>

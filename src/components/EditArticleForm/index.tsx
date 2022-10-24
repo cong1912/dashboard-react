@@ -190,7 +190,6 @@ const EditArticleForm = ({ open, id, setIsOpenUpdateModal }) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                {' '}
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"

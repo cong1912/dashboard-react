@@ -27,6 +27,7 @@ export interface IQuestion {
   id: number;
   content: string;
   title: string;
+  imgUrl: string;
 }
 
 export interface IQuestions {
@@ -43,6 +44,7 @@ const Question = () => {
   const [requesting, setRequesting] = useState<boolean>(false);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [image, setImage] = useState([]);
 
   // context
   const appContext = useContext(AppContext) as AppContextType;
@@ -55,7 +57,6 @@ const Question = () => {
     id ? QUESTION_URL + `?newsId=${id}` : null,
     getData
   );
-
   // dialog create
   const handleClickOpenDialog = () => {
     setOpenDialog(true);
@@ -69,13 +70,15 @@ const Question = () => {
   ) => {
     event.preventDefault();
     try {
-      const data = {
-        title: title,
-        content: content,
-        newsId: +id
-      };
+      const formData = new FormData();
+      formData.append('content', content);
+      formData.append('title', title);
+      formData.append('newsId', +id as unknown as string);
+      if (image[0]) {
+        formData.append('file', image[0]);
+      }
 
-      await createQuestion(data);
+      await createQuestion(formData);
       successDispatch({
         type: SUCCESS_ACTION.SET_SUCCESS,
         success: 'Create Question Success'
@@ -130,6 +133,7 @@ const Question = () => {
         content={content}
         title={title}
         setTitle={setTitle}
+        setImage={setImage}
       />
     </>
   );

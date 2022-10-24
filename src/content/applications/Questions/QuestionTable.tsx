@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import { grey } from '@mui/material/colors';
 import ActionQuestionTable from 'src/components/ActionQuestionTable';
+import { CircularProgress } from '@mui/material';
 
 const QuestionTable = ({ questions }) => {
   const [pageSize, setPageSize] = useState(questions.pageSize);
@@ -13,7 +14,29 @@ const QuestionTable = ({ questions }) => {
     () => [
       { field: 'id', headerName: 'Id', width: 220 },
       { field: 'title', headerName: 'Title', width: 170 },
-      { field: 'content', headerName: 'Content', width: 500 },
+      { field: 'content', headerName: 'Content', width: 450 },
+      {
+        field: 'image',
+        headerName: 'Image',
+        width: 200,
+        renderCell: (params) => {
+          const newImage =
+            params.row.imgUrl == null
+              ? ''
+              : params.row.imgUrl.replace('public/', '');
+
+          return (
+            <img
+              crossOrigin="anonymous"
+              src={process.env.REACT_APP_API_BACK_END + newImage}
+              loading="lazy"
+              width="30%"
+            />
+          );
+        },
+        sortable: false,
+        filterable: false
+      },
       {
         field: 'actions',
         headerName: 'Actions',
@@ -40,25 +63,29 @@ const QuestionTable = ({ questions }) => {
       >
         Danh sách câu hỏi
       </Typography>
-      <DataGrid
-        columns={columns}
-        rows={questions.results}
-        getRowId={(row) => row.id}
-        rowsPerPageOptions={[5, 10, 20]}
-        pageSize={pageSize}
-        onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-        getRowSpacing={(params) => ({
-          top: params.isFirstVisible ? 0 : 5,
-          bottom: params.isLastVisible ? 0 : 5
-        })}
-        sx={{
-          [`& .${gridClasses.row}`]: {
-            bgcolor: (theme) =>
-              theme.palette.mode === 'light' ? grey[200] : grey[900]
-          }
-        }}
-        onCellEditCommit={(params) => setRowId(params.id)}
-      />
+      {!questions ? (
+        <CircularProgress />
+      ) : (
+        <DataGrid
+          columns={columns}
+          rows={questions.results}
+          getRowId={(row) => row.id}
+          rowsPerPageOptions={[5, 10, 20]}
+          pageSize={pageSize}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+          getRowSpacing={(params) => ({
+            top: params.isFirstVisible ? 0 : 5,
+            bottom: params.isLastVisible ? 0 : 5
+          })}
+          sx={{
+            [`& .${gridClasses.row}`]: {
+              bgcolor: (theme) =>
+                theme.palette.mode === 'light' ? grey[200] : grey[900]
+            }
+          }}
+          onCellEditCommit={(params) => setRowId(params.id)}
+        />
+      )}
     </Box>
   );
 };

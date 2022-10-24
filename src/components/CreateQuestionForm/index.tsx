@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextField, Theme, Button } from '@mui/material';
+import { TextField, Theme, Button, FormLabel } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import {
   Dialog,
@@ -8,6 +8,7 @@ import {
   DialogTitle,
   Grid
 } from '@material-ui/core';
+import { DropzoneArea } from 'material-ui-dropzone';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     '& .MuiFormControl-root': {
@@ -24,9 +25,14 @@ const CreateQuestionForm = ({
   setContent,
   content,
   title,
-  setTitle
+  setTitle,
+  setImage
 }) => {
   const classes = useStyles();
+
+  const handleChange = (files) => {
+    setImage(files);
+  };
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm">
@@ -53,6 +59,15 @@ const CreateQuestionForm = ({
                 name="content"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormLabel>Thumb</FormLabel>
+              <DropzoneArea
+                onChange={handleChange}
+                acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
+                maxFileSize={5000000}
+                filesLimit={1}
               />
             </Grid>
           </Grid>
