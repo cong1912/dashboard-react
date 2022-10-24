@@ -36,7 +36,7 @@ const QuizAnswer = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [requesting, setRequesting] = useState<boolean>(false);
   const [content, setContent] = useState('');
-  const [correct, setCorrect] = useState<Boolean>();
+  const [correct, setCorrect] = useState<Boolean>(false);
 
   // context
   const appContext = useContext(AppContext) as AppContextType;
@@ -49,6 +49,7 @@ const QuizAnswer = () => {
     id ? QUIZ_ANSWER_URL + `?questionId=${id}` : null,
     getData
   );
+
   // dialog create
   const handleClickOpenDialog = () => {
     setOpenDialog(true);

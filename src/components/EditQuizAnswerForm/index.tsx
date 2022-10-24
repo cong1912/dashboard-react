@@ -130,7 +130,7 @@ const EditQuizAnswerForm = ({ open, setIsOpenUpdateModal, id, questionId }) => {
                   setCorrect(!correct);
                 }}
                 labelPlacement="start"
-                label="This is the correct answer:"
+                label="Đây là đáp án đúng:"
               />
             </Grid>
           </Grid>
