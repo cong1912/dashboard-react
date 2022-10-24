@@ -13,7 +13,8 @@ export default function BasicTable() {
   useEffect(() => {
     try {
       getFaqs().then((response) => {
-        setListFaq(response.data.results);
+        console.log(response);
+        setListFaq(response.data.result.results);
       });
     } catch (error) {
       console.log(error);

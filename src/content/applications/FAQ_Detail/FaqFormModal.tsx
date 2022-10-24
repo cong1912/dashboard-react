@@ -2,6 +2,7 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import { readAsDataUrl } from 'src/utils/file';
 import {
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
@@ -25,8 +26,9 @@ const style = {
   p: 4
 };
 
-export default function FaqFormModal({ open, close }) {
+export default function FaqFormModal({ open, close, title }) {
   const { id } = useParams();
+  const [valueCheckBox, setValueCheckBox] = React.useState(false);
 
   const [form, setForm] = React.useState({
     title: '',
@@ -56,7 +58,8 @@ export default function FaqFormModal({ open, close }) {
   const handleSubmitFormFaq = () => {
     let formData = new FormData();
 
-    formData.append('tile', form.title);
+    formData.append('tile', title);
+    formData.append('send_push', valueCheckBox.toString());
     formData.append('content', form.content);
     for (let i = 0; i < form.files.length; i++) {
       formData.append('files', form.files[i]);
@@ -80,7 +83,7 @@ export default function FaqFormModal({ open, close }) {
             type="text"
             fullWidth
             variant="standard"
-            value={form.title}
+            value={title}
             onChange={handleChange}
           />
           <TextField
@@ -102,7 +105,7 @@ export default function FaqFormModal({ open, close }) {
             type="file"
             onChange={handleChangeImage}
           />
-          <ImageList sx={{ width: 500, height: 250 }} cols={3} rowHeight={164}>
+          <ImageList sx={{ width: 500, height: 150 }} cols={3} rowHeight={164}>
             {listImage.map((item) => (
               <ImageListItem key={item}>
                 <img
@@ -114,6 +117,11 @@ export default function FaqFormModal({ open, close }) {
               </ImageListItem>
             ))}
           </ImageList>
+          <Checkbox
+            value={valueCheckBox}
+            onChange={() => setValueCheckBox(!valueCheckBox)}
+          />
+          Send Notification
         </DialogContent>
         <DialogActions>
           <Button onClick={close}>Cancel</Button>
