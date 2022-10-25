@@ -1,7 +1,6 @@
 import { Box, IconButton, Tooltip } from '@mui/material';
 import { Delete, Edit, Preview, Quiz } from '@mui/icons-material';
-import { deleteBlog } from 'src/services/ArticleService';
-import { COURSE_URL, NEWS_URL } from 'src/constants/url';
+import { COURSE_URL } from 'src/constants/url';
 import { mutate } from 'swr';
 import { useState, lazy } from 'react';
 import DeleteDialog from '../DeleteDialog';
@@ -22,12 +21,12 @@ const ActiveCourseTable = ({ params, rowId, setRowId }) => {
 
   const handelDelete = async (params) => {
     await deleteCourse(params.id);
-    await mutate(COURSE_URL);
+    location.reload();
   };
   const handleCloseDeleteDialog = () => {
     setOpenDeleteDialog(false);
   };
-  const handleOpenDelete = () => {
+  const handleOpenDeleteDialog = () => {
     setOpenDeleteDialog(true);
   };
 
@@ -56,7 +55,7 @@ const ActiveCourseTable = ({ params, rowId, setRowId }) => {
           </IconButton>
         </Tooltip>
         <Tooltip title="Xóa khóa học này">
-          <IconButton onClick={handleOpenDelete}>
+          <IconButton onClick={handleOpenDeleteDialog}>
             <Delete />
           </IconButton>
         </Tooltip>

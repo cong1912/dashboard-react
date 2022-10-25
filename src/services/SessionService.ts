@@ -25,3 +25,15 @@ export const updateSection = (data, id) => {
     }
   });
 };
+
+export const deleteSection = ( id) => {
+  const token = JSON.parse(localStorage.getItem('token') || 'null');
+
+  return axios({
+    method: 'delete',
+    url: `/section/${id}`,
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+};

@@ -25,3 +25,15 @@ export const updateAnswer = (data, id) => {
     }
   });
 };
+
+export const deleteAnswer = (id) => {
+  const token = JSON.parse(localStorage.getItem('token') || 'null');
+
+  return axios({
+    method: 'delete',
+    url: `/quizanswer/${id}`,
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+};

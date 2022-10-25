@@ -31,7 +31,7 @@ export const deleteQuestion = (id) => {
 
   return axios({
     method: 'delete',
-    url: `/courses/${id}`,
+    url: `/question/${id}`,
     headers: {
       Authorization: `Bearer ${token}`
     }

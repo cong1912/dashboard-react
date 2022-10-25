@@ -1,6 +1,5 @@
 import { Box, IconButton, Tooltip } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
-import { deleteBlog } from 'src/services/ArticleService';
 import { CATEGORIES_URL } from 'src/constants/url';
 import { mutate } from 'swr';
 import { useState, lazy } from 'react';
@@ -20,12 +19,12 @@ const ActionCategoryTable = ({ params, rowId, setRowId }) => {
 
   const handelDelete = async (params) => {
     await deleteCategory(params.id);
-    await mutate(CATEGORIES_URL);
+    location.reload();
   };
   const handleCloseDeleteDialog = () => {
     setOpenDeleteDialog(false);
   };
-  const handleOpenDelete = () => {
+  const handleOpenDeleteDialog = () => {
     setOpenDeleteDialog(true);
   };
 
@@ -38,7 +37,7 @@ const ActionCategoryTable = ({ params, rowId, setRowId }) => {
           </IconButton>
         </Tooltip>
         <Tooltip title="Xóa danh mục này">
-          <IconButton onClick={handleOpenDelete}>
+          <IconButton onClick={handleOpenDeleteDialog}>
             <Delete />
           </IconButton>
         </Tooltip>
