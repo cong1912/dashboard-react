@@ -63,7 +63,7 @@ const BlogTable = ({
         pb: 5
       }}
     >
-      <Grid container>
+      <Grid container sx={{ mb: 2 }}>
         <Grid item xs={4}></Grid>
         <Grid item xs={4}>
           <Typography
@@ -79,6 +79,7 @@ const BlogTable = ({
             <CircularProgress />
           ) : (
             <Autocomplete
+              sx={{ mt: 8 }}
               disablePortal
               id="combo-box-demo"
               options={categories.results}
