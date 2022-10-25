@@ -4,8 +4,17 @@ import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Grid, Container, CircularProgress } from '@mui/material';
 import Footer from 'src/components/Footer';
+import { getData } from 'src/helpers/apiHandle';
+import { USERS_URL } from 'src/constants/url';
+import useSWR from 'swr';
+import { Users } from 'src/interfaces/User';
+import UserTable from './UserTable';
 
 const index = () => {
+  // fetch data
+  const { data: users } = useSWR<Users>(USERS_URL, getData);
+
+  if (!users) return <CircularProgress />;
   return (
     <>
       <Helmet>
@@ -23,11 +32,7 @@ const index = () => {
           spacing={3}
         >
           <Grid item xs={12}>
-            {/* {!questions ? (
-              <CircularProgress />
-            ) : (
-              <QuestionTable questions={questions} />
-            )} */}
+            {!users ? <CircularProgress /> : <UserTable users={users} />}
           </Grid>
         </Grid>
       </Container>

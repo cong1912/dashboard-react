@@ -3,23 +3,45 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import { grey } from '@mui/material/colors';
+import Avatar from '@mui/material/Avatar';
 
-const UserTable = () => {
+const UserTable = ({ users }) => {
   const [pageSize, setPageSize] = useState();
   const [rowId, setRowId] = useState(null);
   const columns = useMemo(
     () => [
-      { field: 'id', headerName: 'Id', width: 220 },
-      { field: 'content', headerName: 'Content', width: 500 },
-      { field: 'correct', headerName: 'isCorrect', width: 170 },
+      { field: 'email', headerName: 'Email', width: 400 },
       {
-        field: 'actions',
-        headerName: 'Actions',
-        type: 'actions'
-        // renderCell: (params) => (
-        //   <ActionAnswerTable {...{ params, rowId, setRowId }} />
-        // )
-      }
+        field: 'fullName',
+        headerName: 'Tên',
+        width: 300,
+        renderCell: (params) => {
+          return (
+            <Typography>
+              {params.row.fullName == null ? 'Unknown' : params.row.fullName}
+            </Typography>
+          );
+        }
+      },
+      {
+        field: 'avatar',
+        headerName: 'AVatar',
+        width: 200,
+        renderCell: (params) => {
+          return (
+            <Avatar
+              src={
+                params.row.image == null
+                  ? '/defaulAvatar.png'
+                  : params.row.image
+              }
+            />
+          );
+        },
+        sortable: false,
+        filterable: false
+      },
+      { field: 'amount', headerName: 'Amount', width: 170 }
     ],
     [rowId]
   );
@@ -41,7 +63,7 @@ const UserTable = () => {
       </Typography>
       <DataGrid
         columns={columns}
-        rows={[]}
+        rows={users.results}
         getRowId={(row) => row.id}
         rowsPerPageOptions={[5, 10, 20]}
         pageSize={pageSize}

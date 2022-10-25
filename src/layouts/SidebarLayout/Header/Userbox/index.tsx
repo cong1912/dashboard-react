@@ -31,6 +31,7 @@ import { ERROR_ACTION } from 'src/reduces/ErrorsReducer';
 import { AppContext } from 'src/AppProvider';
 import { AppContextType } from 'src/interfaces/AppContextType';
 import { SUCCESS_ACTION } from 'src/reduces/SuccessReducer';
+import { changePassword } from 'src/services/AuthService';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -120,14 +121,18 @@ function HeaderUserbox() {
     validationSchema: validationSchema,
     onSubmit: async (values, { resetForm }) => {
       setRequesting(true);
-      console.log(values);
+      const data = {
+        currentPass: values.currentPassword,
+        newPass: values.newPassword
+      };
       try {
-        console.log(1);
-        // const response: { data: UserSession } = await login(values);
-        // localStorage.setItem('token', JSON.stringify(response.data.token));
-        // localStorage.setItem('userSession', JSON.stringify(response.data.user));
-        // navigate('/');
-        // resetForm();
+        await changePassword(data, getUser.id);
+        successDispatch({
+          type: SUCCESS_ACTION.SET_SUCCESS,
+          success: 'Change Password Success'
+        });
+        resetForm();
+        setRequesting(false);
       } catch (error) {
         errorDispatch({
           type: ERROR_ACTION.SET_ERROR,

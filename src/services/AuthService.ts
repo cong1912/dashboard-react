@@ -13,3 +13,16 @@ export const login = (data: UserInput) => {
     }
   });
 };
+
+export const changePassword = (data, id) => {
+  const token = JSON.parse(localStorage.getItem('token') || 'null');
+
+  return axios({
+    method: 'post',
+    url: `/users/${id}`,
+    data: data,
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+};
