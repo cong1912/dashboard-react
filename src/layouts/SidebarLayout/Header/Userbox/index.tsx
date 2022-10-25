@@ -133,7 +133,7 @@ function HeaderUserbox() {
         });
         resetForm();
         setRequesting(false);
-        setOpen(false);
+        setOpenDialog(false);
       } catch (error) {
         errorDispatch({
           type: ERROR_ACTION.SET_ERROR,
