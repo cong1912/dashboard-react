@@ -15,4 +15,5 @@ export interface UserInput extends Partial<User> {
 
 export interface UserSession {
   token: string;
+  user: User;
 }

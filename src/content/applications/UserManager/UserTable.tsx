@@ -1,14 +1,12 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import { grey } from '@mui/material/colors';
-import ActionAnswerTable from 'src/components/ActionAnswerTable';
 
-const QuestionTable = ({ questions }) => {
-  const [pageSize, setPageSize] = useState(questions.pageSize);
+const UserTable = () => {
+  const [pageSize, setPageSize] = useState();
   const [rowId, setRowId] = useState(null);
-
   const columns = useMemo(
     () => [
       { field: 'id', headerName: 'Id', width: 220 },
@@ -17,10 +15,10 @@ const QuestionTable = ({ questions }) => {
       {
         field: 'actions',
         headerName: 'Actions',
-        type: 'actions',
-        renderCell: (params) => (
-          <ActionAnswerTable {...{ params, rowId, setRowId }} />
-        )
+        type: 'actions'
+        // renderCell: (params) => (
+        //   <ActionAnswerTable {...{ params, rowId, setRowId }} />
+        // )
       }
     ],
     [rowId]
@@ -39,15 +37,15 @@ const QuestionTable = ({ questions }) => {
         component="h3"
         sx={{ textAlign: 'center', mt: 3, mb: 3 }}
       >
-        Danh sách đáp án
+        Danh sách người dùng
       </Typography>
       <DataGrid
         columns={columns}
-        rows={questions.results}
+        rows={[]}
         getRowId={(row) => row.id}
         rowsPerPageOptions={[5, 10, 20]}
         pageSize={pageSize}
-        onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+        // onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         getRowSpacing={(params) => ({
           top: params.isFirstVisible ? 0 : 5,
           bottom: params.isLastVisible ? 0 : 5
@@ -64,4 +62,4 @@ const QuestionTable = ({ questions }) => {
   );
 };
 
-export default QuestionTable;
+export default UserTable;
