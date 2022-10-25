@@ -46,6 +46,7 @@ const Courses = () => {
   const [image, setImage] = useState([]);
   const [category, setCategory] = useState<ICategory>();
   const [title, setTitle] = useState('');
+  const [filterCategory, setFilterCategory] = useState<ICategory>(null);
 
   // context
   const appContext = useContext(AppContext) as AppContextType;
@@ -54,7 +55,12 @@ const Courses = () => {
   const [success, successDispatch] = successReducer;
 
   //FETCH DATA
-  const { data: courses } = useSWR<ICourses>(COURSE_URL, getData);
+  const { data: courses } = useSWR<ICourses>(
+    filterCategory
+      ? COURSE_URL + `?categoryId=${filterCategory.id}`
+      : COURSE_URL,
+    getData
+  );
   const { data: categories } = useSWR<ICategories>(CATEGORIES_URL, getData);
 
   useEffect(() => {
@@ -119,7 +125,16 @@ const Courses = () => {
           spacing={3}
         >
           <Grid item xs={12}>
-            {!courses ? <CircularProgress /> : <CourseTable course={courses} />}
+            {!courses ? (
+              <CircularProgress />
+            ) : (
+              <CourseTable
+                course={courses}
+                categories={categories}
+                filterCategory={filterCategory}
+                setFilterCategory={setFilterCategory}
+              />
+            )}
           </Grid>
         </Grid>
       </Container>

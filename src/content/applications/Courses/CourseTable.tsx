@@ -4,8 +4,17 @@ import Typography from '@mui/material/Typography';
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import { grey } from '@mui/material/colors';
 import ActiveCourseTable from 'src/components/ActionCourseTable';
+import Grid from '@mui/material/Grid';
+import CircularProgress from '@mui/material/CircularProgress/CircularProgress';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField/TextField';
 
-const CourseTable = ({ course }) => {
+const CourseTable = ({
+  course,
+  categories,
+  filterCategory,
+  setFilterCategory
+}) => {
   const [pageSize, setPageSize] = useState(course.pageSize);
   const [rowId, setRowId] = useState(null);
 
@@ -45,6 +54,9 @@ const CourseTable = ({ course }) => {
     ],
     [rowId]
   );
+
+  if (!course) return <CircularProgress />;
+  if (!categories) return <CircularProgress />;
   return (
     <Box
       sx={{
@@ -53,13 +65,37 @@ const CourseTable = ({ course }) => {
         pb: 5
       }}
     >
-      <Typography
-        variant="h3"
-        component="h3"
-        sx={{ textAlign: 'center', mt: 3, mb: 3 }}
-      >
-        Danh sách khóa học
-      </Typography>
+      <Grid container>
+        <Grid item xs={4}></Grid>
+        <Grid item xs={4}>
+          <Typography
+            variant="h3"
+            component="h3"
+            sx={{ textAlign: 'center', mt: 3, mb: 3 }}
+          >
+            Danh sách khóa học
+          </Typography>
+        </Grid>
+        <Grid item xs={4}>
+          {!categories ? (
+            <CircularProgress />
+          ) : (
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              options={categories.results}
+              onChange={(event, newInputValue) =>
+                setFilterCategory(newInputValue)
+              }
+              value={filterCategory}
+              getOptionLabel={(option: { name: string }) => option.name}
+              renderInput={(params) => {
+                return <TextField {...params} label="Tìm kiếm theo danh mục" />;
+              }}
+            />
+          )}
+        </Grid>
+      </Grid>
       <DataGrid
         columns={columns}
         rows={course.results}

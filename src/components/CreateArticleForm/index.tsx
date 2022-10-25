@@ -18,6 +18,7 @@ import {
   FormControlLabel
 } from '@material-ui/core';
 import QuillInput from '../QuillInput';
+import CircularProgress from '@mui/material/CircularProgress/CircularProgress';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -52,6 +53,7 @@ const CreateBlogForm = ({
     setImage(files);
   };
 
+  if (!categories) return <CircularProgress />;
   return (
     <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="xl">
       <DialogTitle>Tạo tin tức mới</DialogTitle>

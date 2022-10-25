@@ -21,19 +21,20 @@ import { ICategories } from '../Courses';
 const CreateBlogForm = lazy(() => import('src/components/CreateArticleForm'));
 
 interface IBlog {
+  id: number;
   title: string;
   summary: string;
   avatar: string;
   highlight: boolean;
 }
-interface IBlogs {
+export interface IBlogs {
   sizePage: number;
   results: IBlog[];
 }
 
 function BlogManager() {
   const [openDialog, setOpenDialog] = useState(false);
-  const [category, setCategory] = useState<ICategory>();
+  const [category, setCategory] = useState<ICategory>(null);
   const [image, setImage] = useState([]);
   const [content, setContent] = useState('');
   const [blog, setBlog] = useState({
@@ -46,13 +47,17 @@ function BlogManager() {
   const [errors, errorDispatch] = errorsReducer;
   const [success, successDispatch] = successReducer;
   const [highlight, setHighlight] = useState<boolean>(false);
+  const [filterCategory, setFilterCategory] = useState<ICategory>(null);
 
   const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     setBlog({ ...blog, [e.target.name]: e.target.value });
   };
   const [page, setPage] = useState(0);
 
-  const { data: article } = useSWR<IBlogs>(NEWS_URL, getData);
+  const { data: articles } = useSWR<IBlogs>(
+    filterCategory ? NEWS_URL + `?categoryId=${filterCategory.id}` : NEWS_URL,
+    getData
+  );
   const { data: categories } = useSWR<ICategories>(ARTICLE_CATEGORY, getData);
 
   useEffect(() => {
@@ -60,18 +65,6 @@ function BlogManager() {
 
     setCategory(categories?.results[0]);
   }, [categories]);
-  const objectEmpty = {
-    pageSize: 1,
-    results: [{ id: 1, image: 'public/uploads/file-1665731987187.png' }]
-  };
-  const response = article || objectEmpty;
-
-  const objectEmptyCategories = {
-    value: {
-      results: [{ id: 4, name: 'Thông tin chứng khoán' }]
-    }
-  };
-  const resCategories = categories || objectEmptyCategories;
 
   //dialog create
   const handleCloseDialog = () => {
@@ -112,7 +105,8 @@ function BlogManager() {
       setRequesting(false);
     }
   };
-  if (!article) return <CircularProgress />;
+
+  if (!articles) return <CircularProgress />;
   if (!categories) return <CircularProgress />;
   return (
     <>
@@ -131,7 +125,12 @@ function BlogManager() {
           spacing={3}
         >
           <Grid item xs={12}>
-            <BlogTable blogs={response} />
+            <BlogTable
+              blogs={articles}
+              categories={categories}
+              filterCategory={filterCategory}
+              setFilterCategory={setFilterCategory}
+            />
           </Grid>
         </Grid>
       </Container>
@@ -148,7 +147,7 @@ function BlogManager() {
         setImage={setImage}
         requesting={requesting}
         handleCreateBlog={handleCreateBlog}
-        categories={resCategories}
+        categories={categories}
         category={category}
         setCategory={setCategory}
       />

@@ -4,9 +4,17 @@ import Typography from '@mui/material/Typography';
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import { grey } from '@mui/material/colors';
 import ActiveTable from 'src/components/ActiveTable';
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Grid } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
+import { Autocomplete } from '@mui/lab';
+import TextField from '@mui/material/TextField/TextField';
 
-const BlogTable = ({ blogs }) => {
+const BlogTable = ({
+  blogs,
+  categories,
+  filterCategory,
+  setFilterCategory
+}) => {
   const [pageSize, setPageSize] = useState(20);
   const [rowId, setRowId] = useState(null);
 
@@ -44,6 +52,9 @@ const BlogTable = ({ blogs }) => {
     ],
     [rowId]
   );
+
+  if (!blogs) <CircularProgress />;
+  if (!categories) <CircularProgress />;
   return (
     <Box
       sx={{
@@ -52,27 +63,37 @@ const BlogTable = ({ blogs }) => {
         pb: 5
       }}
     >
-      <Typography
-        variant="h3"
-        component="h3"
-        sx={{ textAlign: 'center', mt: 3, mb: 3 }}
-      >
-        Các tin tức
-      </Typography>
-      {/* <FormControl fullWidth sx={{ textAlign: 'right', mt: 3, mb: 3 }}>
-        <InputLabel id="demo-simple-select-label">Age</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          // value={age}
-          label="Age"
-          // onChange={handleChange}
-        >
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </Select>
-      </FormControl> */}
+      <Grid container>
+        <Grid item xs={4}></Grid>
+        <Grid item xs={4}>
+          <Typography
+            variant="h3"
+            component="h3"
+            sx={{ textAlign: 'center', mt: 3, mb: 3 }}
+          >
+            Các tin tức
+          </Typography>
+        </Grid>
+        <Grid item xs={4}>
+          {!categories ? (
+            <CircularProgress />
+          ) : (
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              options={categories.results}
+              onChange={(event, newInputValue) =>
+                setFilterCategory(newInputValue)
+              }
+              value={filterCategory}
+              getOptionLabel={(option: { name: string }) => option.name}
+              renderInput={(params) => {
+                return <TextField {...params} label="Tìm kiếm theo danh mục" />;
+              }}
+            />
+          )}
+        </Grid>
+      </Grid>
       <DataGrid
         columns={columns}
         rows={blogs.results}
