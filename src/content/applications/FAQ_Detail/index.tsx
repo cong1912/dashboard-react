@@ -92,8 +92,8 @@ export default function FaqDetail() {
             >
               <Box
                 display="flex"
-                alignItems={`flex-${con.status === 0 ? 'start' : 'end'}"`}
-                justifyContent={`flex-${con.status === 0 ? 'start' : 'end'}"`}
+                alignItems={`flex-${con.status === 1 ? 'start' : 'end'}"`}
+                justifyContent={`flex-${con.status === 1 ? 'start' : 'end'}"`}
                 flexDirection="column"
                 mr={2}
               >
