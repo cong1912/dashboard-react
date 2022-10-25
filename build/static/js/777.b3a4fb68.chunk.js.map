@@ -1,1 +1,0 @@
-{"version":3,"file":"static/js/777.b3a4fb68.chunk.js","mappings":"qMAMA,UAJc,WACZ,OAAO","sources":["content/applications/UserManager/index.tsx"],"sourcesContent":["import React from 'react';\r\n\r\nconst index = () => {\r\n  return <div>index</div>;\r\n};\r\n\r\nexport default index;\r\n"],"names":[],"sourceRoot":""}
