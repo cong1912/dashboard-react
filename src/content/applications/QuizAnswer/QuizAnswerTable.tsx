@@ -25,6 +25,7 @@ const QuestionTable = ({ questions }) => {
     ],
     [rowId]
   );
+
   return (
     <Box
       sx={{

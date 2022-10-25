@@ -45,8 +45,10 @@ const index = () => {
       try {
         const response: { data: UserSession } = await login(values);
         localStorage.setItem('token', JSON.stringify(response.data.token));
-        navigate('/dashboards/crypto');
+        localStorage.setItem('userSession', JSON.stringify(response.data.user));
+        navigate('/');
         resetForm();
+        setRequesting(false);
       } catch (error) {
         errorDispatch({
           type: ERROR_ACTION.SET_ERROR,

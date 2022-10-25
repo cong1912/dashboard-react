@@ -76,6 +76,7 @@ const FAQDetail = Loader(
 const UserManager = Loader(
   lazy(() => import('src/content/applications/UserManager'))
 );
+
 const LoginPage = Loader(lazy(() => import('src/content/authentication')));
 
 const routes = (isLoggedIn: boolean) => [
