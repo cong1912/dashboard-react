@@ -13,7 +13,7 @@ const UserTable = ({ users }) => {
       { field: 'email', headerName: 'Email', width: 400 },
       {
         field: 'fullName',
-        headerName: 'Tên',
+        headerName: 'Full Name',
         width: 300,
         renderCell: (params) => {
           return (
@@ -41,7 +41,7 @@ const UserTable = ({ users }) => {
         sortable: false,
         filterable: false
       },
-      { field: 'amount', headerName: 'Amount', width: 170 }
+      { field: 'amount', headerName: 'Coins', width: 170 }
     ],
     [rowId]
   );
