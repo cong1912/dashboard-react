@@ -19,7 +19,7 @@ export const changePassword = (data, id) => {
 
   return axios({
     method: 'post',
-    url: `/users/${id}`,
+    url: `/users/change_pass/${id}`,
     data: data,
     headers: {
       Authorization: `Bearer ${token}`
