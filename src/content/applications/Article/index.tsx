@@ -52,7 +52,10 @@ function BlogManager() {
   const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     setBlog({ ...blog, [e.target.name]: e.target.value });
   };
+
   const [page, setPage] = useState(0);
+
+  console.log('content', content);
 
   const { data: articles } = useSWR<IBlogs>(
     filterCategory ? NEWS_URL + `?categoryId=${filterCategory.id}` : NEWS_URL,
