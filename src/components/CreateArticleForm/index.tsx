@@ -19,6 +19,9 @@ import {
 } from '@material-ui/core';
 import QuillInput from '../QuillInput';
 import CircularProgress from '@mui/material/CircularProgress/CircularProgress';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -30,6 +33,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   }
 }));
+
+const API_URL = 'http://139.59.104.129:8000/api/v1/media';
+const UPLOAD_ENDPOINT = 'exact_url';
 
 const CreateBlogForm = ({
   open,
@@ -48,10 +54,52 @@ const CreateBlogForm = ({
   setHighlight
 }) => {
   const classes = useStyles();
+  const token = JSON.parse(localStorage.getItem('token') || 'null');
 
   const handleChange = (files) => {
     setImage(files);
   };
+
+  function uploadAdapter(loader) {
+    return {
+      upload: () => {
+        return new Promise((resolve, reject) => {
+          const body = new FormData();
+          loader.file.then(async (file) => {
+            body.append('file', file);
+            // let headers = new Headers();
+            // headers.append("Origin", "http://localhost:3000");
+            await axios({
+              method: 'post',
+              url: 'http://139.59.104.129:8000/api/v1/media/exact_url',
+              data: body,
+              headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${token}`
+              }
+            })
+              .then((res) => res)
+              .then((res) => {
+                console.log(res, 'res');
+                resolve({
+                  default: `${res.data.url.replace('/public', '')}`
+                });
+              })
+              .catch((err) => {
+                reject(err);
+              });
+          });
+        });
+      }
+    };
+  }
+
+  function uploadPlugin(editor) {
+    editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+      console.log(uploadAdapter(loader));
+      return uploadAdapter(loader);
+    };
+  }
 
   if (!categories) return <CircularProgress />;
   return (
@@ -92,9 +140,22 @@ const CreateBlogForm = ({
               />
             </Grid>
             <Grid item xs={12}>
-              <QuillInput
+              {/* <QuillInput
                 content=""
                 handleChangeContent={handleChangeContent}
+              /> */}
+
+              <CKEditor
+                config={{
+                  extraPlugins: [uploadPlugin]
+                }}
+                editor={ClassicEditor}
+                onReady={(editor) => {}}
+                onBlur={(event, editor) => {}}
+                onFocus={(event, editor) => {}}
+                onChange={(event, editor) => {
+                  handleChangeContent(editor.getData());
+                }}
               />
             </Grid>
             <Grid item xs={12}>
