@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import { grey } from '@mui/material/colors';
 import Avatar from '@mui/material/Avatar';
+import ActiveUsersTable from 'src/components/ActionUsersTable';
 
 const UserTable = ({ users }) => {
   const [pageSize, setPageSize] = useState();
@@ -41,7 +42,15 @@ const UserTable = ({ users }) => {
         sortable: false,
         filterable: false
       },
-      { field: 'amount', headerName: 'Coins', width: 170 }
+      { field: 'amount', headerName: 'Coins', width: 170 },
+      {
+        field: 'actions',
+        headerName: 'Actions',
+        type: 'actions',
+        renderCell: (params) => (
+          <ActiveUsersTable {...{ params, rowId, setRowId }} />
+        )
+      }
     ],
     [rowId]
   );
