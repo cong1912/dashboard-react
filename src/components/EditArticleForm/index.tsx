@@ -18,7 +18,6 @@ import {
   DialogTitle,
   FormControlLabel
 } from '@material-ui/core';
-import QuillInput from '../QuillInput';
 import { multiFetcher } from 'src/helpers/apiHandle';
 import { ARTICLE_CATEGORY, NEWS_URL } from 'src/constants/url';
 import useSWR, { mutate } from 'swr';
@@ -28,6 +27,10 @@ import { SUCCESS_ACTION } from 'src/reduces/SuccessReducer';
 import { ERROR_ACTION } from 'src/reduces/ErrorsReducer';
 import { AppContext } from 'src/AppProvider';
 import { AppContextType } from 'src/interfaces/AppContextType';
+
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { uploadPlugin } from 'src/helpers/uploadAdapter';
 interface IBlog {
   value: {
     article: {
@@ -63,7 +66,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     '& .MuiFormControl-root': {
       width: '100%'
     },
-    '& .ql-container': {
+    '& .ck-content': {
       height: 300
     }
   }
@@ -156,7 +159,7 @@ const EditArticleForm = ({ open, id, setIsOpenUpdateModal }) => {
     setImage(files);
   };
 
-  if (!data) return <div></div>;
+  if (!data) return <CircularProgress />;
   return (
     <Dialog
       open={open}
@@ -203,9 +206,18 @@ const EditArticleForm = ({ open, id, setIsOpenUpdateModal }) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <QuillInput
-                  content={content}
-                  handleChangeContent={setContent}
+                <CKEditor
+                  config={{
+                    extraPlugins: [uploadPlugin]
+                  }}
+                  data={content}
+                  editor={ClassicEditor}
+                  onReady={(editor) => {}}
+                  onBlur={(event, editor) => {}}
+                  onFocus={(event, editor) => {}}
+                  onChange={(event, editor) => {
+                    setContent(editor.getData());
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>

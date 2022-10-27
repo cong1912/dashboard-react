@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import { grey } from '@mui/material/colors';
 import ActiveSectionTable from 'src/components/ActionSectionTable';
+import { CircularProgress } from '@mui/material';
 
 const SectionsTable = ({ sections }) => {
   const [pageSize, setPageSize] = useState(sections.pageSize);
@@ -26,6 +27,8 @@ const SectionsTable = ({ sections }) => {
     ],
     [rowId]
   );
+
+  if (!sections) return <CircularProgress />;
   return (
     <Box
       sx={{
@@ -45,6 +48,7 @@ const SectionsTable = ({ sections }) => {
         columns={columns}
         rows={sections.results}
         getRowId={(row) => row.id}
+        loading={!sections ? true : false}
         rowsPerPageOptions={[5, 10, 20]}
         pageSize={pageSize}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}

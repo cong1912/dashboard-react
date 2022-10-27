@@ -48,6 +48,8 @@ const QuestionTable = ({ questions }) => {
     ],
     [rowId]
   );
+
+  if (!questions) return <CircularProgress />;
   return (
     <Box
       sx={{
@@ -69,6 +71,7 @@ const QuestionTable = ({ questions }) => {
         <DataGrid
           columns={columns}
           rows={questions.results}
+          loading={!questions ? true : false}
           getRowId={(row) => row.id}
           rowsPerPageOptions={[5, 10, 20]}
           pageSize={pageSize}

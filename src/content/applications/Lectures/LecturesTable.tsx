@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import { grey } from '@mui/material/colors';
 import ActionLectureTable from 'src/components/ActionLectureTable';
+import { CircularProgress } from '@mui/material';
 
 const LecturesTable = ({ lectures }) => {
   const [pageSize, setPageSize] = useState(lectures.pageSize);
@@ -26,6 +27,8 @@ const LecturesTable = ({ lectures }) => {
     ],
     [rowId]
   );
+
+  if (!lectures) return <CircularProgress />;
   return (
     <Box
       sx={{
@@ -43,6 +46,7 @@ const LecturesTable = ({ lectures }) => {
       </Typography>
       <DataGrid
         columns={columns}
+        loading={!lectures ? true : false}
         rows={lectures.results}
         getRowId={(row) => row.id}
         rowsPerPageOptions={[5, 10, 20]}

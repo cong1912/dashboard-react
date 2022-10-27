@@ -3,7 +3,8 @@ import React, { lazy, useState, useContext } from 'react';
 import { Helmet } from 'react-helmet-async';
 import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { Grid, Container, CircularProgress } from '@mui/material';
+import { Grid, Container, CircularProgress, Theme } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import Footer from 'src/components/Footer';
 import useSWR, { mutate } from 'swr';
 import { LECTURE_URL } from 'src/constants/url';
@@ -27,6 +28,17 @@ export interface ILecture {
   price: string;
 }
 
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    '& .MuiFormControl-root': {
+      width: '100%'
+    },
+    '& .ck-content': {
+      height: 250
+    }
+  }
+}));
+
 const Lectures = () => {
   const { sectionId } = useParams() as { sectionId: string };
   const [openDialog, setOpenDialog] = useState(false);
@@ -34,6 +46,7 @@ const Lectures = () => {
   const [name, setName] = useState('');
   const [content, setContent] = useState('');
   const [price, setPrice] = useState<number>(0);
+  const classes = useStyles();
 
   // context
   const appContext = useContext(AppContext) as AppContextType;

@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import { grey } from '@mui/material/colors';
 import ActionCategoryTable from 'src/components/ActionCategoryTable';
+import { CircularProgress } from '@mui/material';
 
 const CategoryTable = ({ categories }) => {
   const [pageSize, setPageSize] = useState(categories.pageSize);
@@ -25,6 +26,8 @@ const CategoryTable = ({ categories }) => {
     ],
     [rowId]
   );
+
+  if (!categories) return <CircularProgress />;
   return (
     <Box
       sx={{
@@ -42,6 +45,7 @@ const CategoryTable = ({ categories }) => {
       </Typography>
       <DataGrid
         columns={columns}
+        loading={!categories ? true : false}
         rows={categories.results}
         getRowId={(row) => row.id}
         rowsPerPageOptions={[5, 10, 20]}

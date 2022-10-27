@@ -8,7 +8,6 @@ import {
   DialogContent,
   DialogTitle
 } from '@material-ui/core';
-import QuillInput from '../QuillInput';
 import { updateLecture } from 'src/services/LecturesService';
 
 //context
@@ -20,6 +19,10 @@ import { LECTURE_URL } from 'src/constants/url';
 import useSWR, { mutate } from 'swr';
 import { getData } from 'src/helpers/apiHandle';
 import { ILecture } from 'src/content/applications/Lectures';
+
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { uploadPlugin } from 'src/helpers/uploadAdapter';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -121,7 +124,19 @@ const CreateLectureForm = ({ open, setIsOpenUpdateModal, id, sectionId }) => {
               />
             </Grid>
             <Grid item xs={12}>
-              <QuillInput content={content} handleChangeContent={setContent} />
+              <CKEditor
+                config={{
+                  extraPlugins: [uploadPlugin]
+                }}
+                data={content}
+                editor={ClassicEditor}
+                onReady={(editor) => {}}
+                onBlur={(event, editor) => {}}
+                onFocus={(event, editor) => {}}
+                onChange={(event, editor) => {
+                  setContent(editor.getData());
+                }}
+              />
             </Grid>
           </Grid>
         </DialogContent>

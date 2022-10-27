@@ -91,7 +91,7 @@ const Courses = () => {
       await createCourse(formData);
       successDispatch({
         type: SUCCESS_ACTION.SET_SUCCESS,
-        success: 'Create Blog Success'
+        success: 'Tạo khóa học thành công'
       });
       await mutate(COURSE_URL);
       setOpenDialog(false);
