@@ -11,15 +11,14 @@ export default function BasicTable() {
   const [listFaq, setListFaq] = useState([]);
 
   useEffect(() => {
-    try {
-      getFaqs().then((response) => {
-        console.log(response);
-        setListFaq(response.data.result.results);
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    fetchData();
   }, []);
+
+  const fetchData = () => {
+    getFaqs().then((response) => {
+      setListFaq(response.data.results);
+    });
+  }
 
   return (
     <>

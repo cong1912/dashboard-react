@@ -18,14 +18,14 @@ const ActiveTable = ({ params, rowId, setRowId }) => {
     setId(params.id);
   };
 
-  const handelDeleteBlog = async (params) => {
+  const handelDelete = async (params) => {
     await deleteBlog(params.id);
-    await mutate(NEWS_URL);
+    location.reload();
   };
   const handleCloseDeleteDialog = () => {
     setOpenDeleteDialog(false);
   };
-  const handleDeleteBlog = () => {
+  const handleOpenDeleteDialog = () => {
     setOpenDeleteDialog(true);
   };
 
@@ -38,7 +38,7 @@ const ActiveTable = ({ params, rowId, setRowId }) => {
           </IconButton>
         </Tooltip>
         <Tooltip title="Xóa tin tức này">
-          <IconButton onClick={() => handelDeleteBlog(params)}>
+          <IconButton onClick={handleOpenDeleteDialog}>
             <Delete />
           </IconButton>
         </Tooltip>
@@ -52,7 +52,7 @@ const ActiveTable = ({ params, rowId, setRowId }) => {
         open={openDeleteDialog}
         name="blog"
         handleClose={handleCloseDeleteDialog}
-        handleDelete={handleDeleteBlog}
+        handleDelete={() => handelDelete(params)}
       />
     </>
   );

@@ -25,3 +25,15 @@ export const updateLecture = (data, id) => {
     }
   });
 };
+
+export const deleteLecture = (id) => {
+  const token = JSON.parse(localStorage.getItem('token') || 'null');
+
+  return axios({
+    method: 'delete',
+    url: `/post/${id}`,
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+};

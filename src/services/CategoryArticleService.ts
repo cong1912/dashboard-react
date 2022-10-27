@@ -25,3 +25,15 @@ export const updateCategoryArticle = (data, id) => {
     }
   });
 };
+
+export const deleteCategoryArticle = (id) => {
+  const token = JSON.parse(localStorage.getItem('token') || 'null');
+
+  return axios({
+    method: 'delete',
+    url: `/article_category/${id}`,
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+};

@@ -27,3 +27,15 @@ export const updateCourse = (data, id) => {
     }
   });
 };
+
+export const deleteCourse = (id) => {
+  const token = JSON.parse(localStorage.getItem('token') || 'null');
+
+  return axios({
+    method: 'delete',
+    url: `/courses/${id}`,
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+};
