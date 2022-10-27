@@ -1,10 +1,11 @@
 import { Box, IconButton, Tooltip } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 import { deleteBlog } from 'src/services/ArticleService';
-import { NEWS_URL } from 'src/constants/url';
+import { CATEGORIES_URL } from 'src/constants/url';
 import { mutate } from 'swr';
 import { useState, lazy } from 'react';
 import DeleteDialog from '../DeleteDialog';
+import { deleteCategory } from 'src/services/CategoryService';
 
 const EditCategoryForm = lazy(() => import('src/components/EditCategoryForm'));
 
@@ -17,14 +18,14 @@ const ActionCategoryTable = ({ params, rowId, setRowId }) => {
     setId(params.id);
   };
 
-  const handelDeleteBlog = async (params) => {
-    await deleteBlog(params.id);
-    await mutate(NEWS_URL);
+  const handelDelete = async (params) => {
+    await deleteCategory(params.id);
+    await mutate(CATEGORIES_URL);
   };
   const handleCloseDeleteDialog = () => {
     setOpenDeleteDialog(false);
   };
-  const handleDeleteBlog = () => {
+  const handleOpenDelete = () => {
     setOpenDeleteDialog(true);
   };
 
@@ -37,7 +38,7 @@ const ActionCategoryTable = ({ params, rowId, setRowId }) => {
           </IconButton>
         </Tooltip>
         <Tooltip title="Xóa danh mục này">
-          <IconButton onClick={() => handelDeleteBlog(params)}>
+          <IconButton onClick={handleOpenDelete}>
             <Delete />
           </IconButton>
         </Tooltip>
@@ -52,7 +53,7 @@ const ActionCategoryTable = ({ params, rowId, setRowId }) => {
         open={openDeleteDialog}
         name="blog"
         handleClose={handleCloseDeleteDialog}
-        handleDelete={handleDeleteBlog}
+        handleDelete={() => handelDelete(params)}
       />
     </>
   );

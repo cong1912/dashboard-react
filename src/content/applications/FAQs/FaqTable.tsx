@@ -109,6 +109,7 @@ const RecentOrdersTable: FC<ListFaqProps> = ({ listFaq }) => {
                     <CardMedia
                       component="img"
                       height="194"
+                      crossOrigin='anonymous'
                       image={process.env.REACT_APP_API_BACK_END + faq.imgUrl1.replace("public/", "")}
                     />
                   </TableCell>
@@ -116,6 +117,7 @@ const RecentOrdersTable: FC<ListFaqProps> = ({ listFaq }) => {
                   <CardMedia
                       component="img"
                       height="194"
+                      crossOrigin='anonymous'
                       image={process.env.REACT_APP_API_BACK_END + faq.imgUrl2.replace("public/", "")}
                     />
                   </TableCell>

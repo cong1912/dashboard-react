@@ -1,11 +1,12 @@
 import { Box, IconButton, Tooltip } from '@mui/material';
 import { Delete, Edit, Preview, Quiz } from '@mui/icons-material';
 import { deleteBlog } from 'src/services/ArticleService';
-import { NEWS_URL } from 'src/constants/url';
+import { COURSE_URL, NEWS_URL } from 'src/constants/url';
 import { mutate } from 'swr';
 import { useState, lazy } from 'react';
 import DeleteDialog from '../DeleteDialog';
 import { NavigateFunction, useNavigate } from 'react-router';
+import { deleteCourse } from 'src/services/CourseService';
 
 const EditCourseForm = lazy(() => import('src/components/EditCourseForm'));
 
@@ -19,14 +20,14 @@ const ActiveCourseTable = ({ params, rowId, setRowId }) => {
     setId(params.id);
   };
 
-  const handelDeleteBlog = async (params) => {
-    await deleteBlog(params.id);
-    await mutate(NEWS_URL);
+  const handelDelete = async (params) => {
+    await deleteCourse(params.id);
+    await mutate(COURSE_URL);
   };
   const handleCloseDeleteDialog = () => {
     setOpenDeleteDialog(false);
   };
-  const handleDeleteBlog = () => {
+  const handleOpenDelete = () => {
     setOpenDeleteDialog(true);
   };
 
@@ -55,7 +56,7 @@ const ActiveCourseTable = ({ params, rowId, setRowId }) => {
           </IconButton>
         </Tooltip>
         <Tooltip title="Xóa khóa học này">
-          <IconButton onClick={() => handelDeleteBlog(params)}>
+          <IconButton onClick={handleOpenDelete}>
             <Delete />
           </IconButton>
         </Tooltip>
@@ -69,7 +70,7 @@ const ActiveCourseTable = ({ params, rowId, setRowId }) => {
         open={openDeleteDialog}
         name="blog"
         handleClose={handleCloseDeleteDialog}
-        handleDelete={handleDeleteBlog}
+        handleDelete={() => handelDelete(params)}
       />
     </>
   );
