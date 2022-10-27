@@ -8,13 +8,16 @@ import {
   DialogContent,
   DialogTitle
 } from '@material-ui/core';
-import QuillInput from '../QuillInput';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { uploadPlugin } from 'src/helpers/uploadAdapter';
+
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     '& .MuiFormControl-root': {
       width: '100%'
     },
-    '& .ql-container': {
+    '& .ck-content': {
       height: 200
     }
   }
@@ -35,7 +38,7 @@ const CreateLectureForm = ({
   const classes = useStyles();
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="xl">
+    <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="xl">
       <DialogTitle>Tạo mới bài học</DialogTitle>
       <form className={classes.root} onSubmit={handleCreateLecture}>
         <DialogContent>
@@ -64,7 +67,19 @@ const CreateLectureForm = ({
               />
             </Grid>
             <Grid item xs={12}>
-              <QuillInput content={content} handleChangeContent={setContent} />
+              {/* <QuillInput content={content} handleChangeContent={setContent} /> */}
+              <CKEditor
+                config={{
+                  extraPlugins: [uploadPlugin]
+                }}
+                editor={ClassicEditor}
+                onReady={(editor) => {}}
+                onBlur={(event, editor) => {}}
+                onFocus={(event, editor) => {}}
+                onChange={(event, editor) => {
+                  setContent(editor.getData());
+                }}
+              />
             </Grid>
           </Grid>
         </DialogContent>

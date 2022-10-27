@@ -53,8 +53,8 @@ const BlogTable = ({
     [rowId]
   );
 
-  if (!blogs) <CircularProgress />;
-  if (!categories) <CircularProgress />;
+  if (!blogs) return <CircularProgress />;
+  if (!categories) return <CircularProgress />;
   return (
     <Box
       sx={{
@@ -101,6 +101,7 @@ const BlogTable = ({
         getRowId={(row) => row.id}
         rowsPerPageOptions={[5, 10, 20]}
         pageSize={pageSize}
+        loading={!blogs ? true : false}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         getRowSpacing={(params) => ({
           top: params.isFirstVisible ? 0 : 5,

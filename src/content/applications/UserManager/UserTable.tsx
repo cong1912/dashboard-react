@@ -5,6 +5,7 @@ import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import { grey } from '@mui/material/colors';
 import Avatar from '@mui/material/Avatar';
 import ActiveUsersTable from 'src/components/ActionUsersTable';
+import { CircularProgress } from '@mui/material';
 
 const UserTable = ({ users }) => {
   const [pageSize, setPageSize] = useState();
@@ -55,6 +56,7 @@ const UserTable = ({ users }) => {
     [rowId]
   );
 
+  if (!users) return <CircularProgress />;
   return (
     <Box
       sx={{
@@ -76,6 +78,7 @@ const UserTable = ({ users }) => {
         getRowId={(row) => row.id}
         rowsPerPageOptions={[5, 10, 20]}
         pageSize={pageSize}
+        loading={!users ? true : false}
         // onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         getRowSpacing={(params) => ({
           top: params.isFirstVisible ? 0 : 5,

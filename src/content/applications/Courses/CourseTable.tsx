@@ -84,6 +84,7 @@ const CourseTable = ({
               sx={{ mt: 8 }}
               disablePortal
               id="combo-box-demo"
+              loading={!course ? true : false}
               options={categories.results}
               onChange={(event, newInputValue) =>
                 setFilterCategory(newInputValue)
