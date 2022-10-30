@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-export const getFaqs = () => {
+export const getFaqs = (page: number) => {
   const token = JSON.parse(localStorage.getItem('token') || 'null');
 
   return axios({
     method: 'get',
-    url: 'faq',
+    url: 'faq?page=' + page,
     headers: {
       Authorization: `Bearer ${token}`
     }
