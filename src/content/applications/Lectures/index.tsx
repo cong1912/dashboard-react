@@ -26,7 +26,7 @@ export interface ILecture {
   content: string;
   name: string;
   price: string;
-  order: order;
+  order: string;
 }
 
 const useStyles = makeStyles((theme: Theme) => ({

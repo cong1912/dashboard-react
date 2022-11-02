@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   Grid,
   TextField,
@@ -18,9 +18,7 @@ import {
   FormControlLabel
 } from '@material-ui/core';
 import CircularProgress from '@mui/material/CircularProgress/CircularProgress';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { uploadPlugin } from 'src/helpers/uploadAdapter';
+import Timymce from '../Timymce';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -94,18 +92,7 @@ const CreateBlogForm = ({
               />
             </Grid>
             <Grid item xs={12}>
-              <CKEditor
-                config={{
-                  extraPlugins: [uploadPlugin]
-                }}
-                editor={ClassicEditor}
-                onReady={(editor) => {}}
-                onBlur={(event, editor) => {}}
-                onFocus={(event, editor) => {}}
-                onChange={(event, editor) => {
-                  handleChangeContent(editor.getData());
-                }}
-              />
+              <Timymce handleChangeContent={handleChangeContent} content="" />
             </Grid>
             <Grid item xs={12}>
               <FormLabel>Thumb</FormLabel>

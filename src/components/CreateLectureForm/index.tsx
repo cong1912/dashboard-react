@@ -1,16 +1,14 @@
 import React from 'react';
 import { Grid, TextField, Theme, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Box } from '@mui/system';
 import {
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle
 } from '@material-ui/core';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { uploadPlugin } from 'src/helpers/uploadAdapter';
+
+import Timymce from '../Timymce';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -33,7 +31,7 @@ const CreateLectureForm = ({
   content,
   name,
   price,
-  setPrice
+  setPrice,
   order,
   setOrder
 }) => {
@@ -81,19 +79,7 @@ const CreateLectureForm = ({
               />
             </Grid>
             <Grid item xs={12}>
-              {/* <QuillInput content={content} handleChangeContent={setContent} /> */}
-              <CKEditor
-                config={{
-                  extraPlugins: [uploadPlugin]
-                }}
-                editor={ClassicEditor}
-                onReady={(editor) => {}}
-                onBlur={(event, editor) => {}}
-                onFocus={(event, editor) => {}}
-                onChange={(event, editor) => {
-                  setContent(editor.getData());
-                }}
-              />
+              <Timymce handleChangeContent={setContent} content={content} />
             </Grid>
           </Grid>
         </DialogContent>

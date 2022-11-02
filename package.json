@@ -19,6 +19,7 @@
     "@mui/material": "5.8.2",
     "@mui/styles": "5.8.0",
     "@mui/x-data-grid": "^5.17.6",
+    "@tinymce/tinymce-react": "^4.2.0",
     "@types/react": "17.0.40",
     "@types/react-dom": "17.0.13",
     "apexcharts": "3.35.3",
