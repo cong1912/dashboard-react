@@ -18,10 +18,7 @@ import {
   FormControlLabel
 } from '@material-ui/core';
 import CircularProgress from '@mui/material/CircularProgress/CircularProgress';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { uploadPlugin } from 'src/helpers/uploadAdapter';
-import { Editor, IAllProps } from '@tinymce/tinymce-react';
+import Timymce from '../Timymce';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -50,15 +47,6 @@ const CreateBlogForm = ({
   highlight,
   setHighlight
 }) => {
-  const editorRef = useRef(null);
-  const log = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
-    }
-  };
-  const onChange = (e) => {
-    console.log(e.target.getContent());
-  };
   const classes = useStyles();
 
   const handleChange = (files) => {
@@ -104,46 +92,7 @@ const CreateBlogForm = ({
               />
             </Grid>
             <Grid item xs={12}>
-              <>
-                {/* <Editor
-                  apiKey="4wvwhb18asy172qnsxv6g879f5er5mcoowyg3gygvys2lm9x"
-                  initialValue="<p>This is the initial content of the editor</p>"
-                  init={{
-                    plugins:
-                      'powerpaste casechange searchreplace autolink directionality advcode visualblocks visualchars image link media mediaembed codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists checklist wordcount tinymcespellchecker help formatpainter permanentpen charmap linkchecker emoticons advtable export print autosave',
-                    toolbar:
-                      'undo redo print spellcheckdialog formatpainter | blocks fontfamily fontsize | bold italic underline forecolor backcolor | link image addcomment showcomments  | alignleft aligncenter alignright alignjustify lineheight | checklist bullist numlist indent outdent | removeformat',
-                    toolbar_sticky: true,
-                    icons: 'thin',
-                    skin: 'material-classic',
-                    relative_urls: true,
-                    document_base_url: 'http://www.example.com/path1/',
-                    a11y_advanced_options: true
-                  }}
-                  onChange={onChange}
-                />
-              </> */}
-                {/* @ts-ignore*/}
-                <Editor
-                  apiKey="4wvwhb18asy172qnsxv6g879f5er5mcoowyg3gygvys2lm9x"
-                  onInit={(evt, editor) => (editorRef.current = editor)}
-                  initialValue="<p>This is the initial content of the editor.</p>"
-                  init={{
-                    height: 500,
-                    // menubar: false,
-                    plugins:
-                      'print preview powerpaste casechange importcss tinydrive searchreplace autolink autosave save directionality advcode visualblocks visualchars fullscreen image link media mediaembed template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists checklist wordcount tinymcespellchecker a11ychecker textpattern noneditable help formatpainter pageembed charmap mentions quickbars linkchecker emoticons advtable',
-                    toolbar:
-                      'undo redo | formatselect | ' +
-                      'bold italic backcolor | alignleft aligncenter ' +
-                      'alignright alignjustify | bullist numlist outdent indent | ' +
-                      'removeformat | help',
-                    content_style:
-                      'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-                  }}
-                  onChange={onChange}
-                />
-              </>
+              <Timymce handleChangeContent={handleChangeContent} content="" />
             </Grid>
             <Grid item xs={12}>
               <FormLabel>Thumb</FormLabel>

@@ -31,6 +31,7 @@ import { AppContextType } from 'src/interfaces/AppContextType';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { uploadPlugin } from 'src/helpers/uploadAdapter';
+import Timymce from '../Timymce';
 interface IBlog {
   value: {
     article: {
@@ -206,7 +207,7 @@ const EditArticleForm = ({ open, id, setIsOpenUpdateModal }) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <CKEditor
+                {/* <CKEditor
                   config={{
                     extraPlugins: [uploadPlugin]
                   }}
@@ -219,6 +220,8 @@ const EditArticleForm = ({ open, id, setIsOpenUpdateModal }) => {
                     setContent(editor.getData());
                   }}
                 />
+                data={content} */}
+                <Timymce handleChangeContent={setContent} content={content} />
               </Grid>
               <Grid item xs={12}>
                 <FormLabel>Thumb</FormLabel>
