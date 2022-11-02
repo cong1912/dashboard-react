@@ -35,14 +35,17 @@ import FaqDetail from '../FAQ_Detail';
 interface ListFaqProps {
   className?: string;
   listFaq: Faq[];
+  faqs: any;
+  fetchData: any;
 }
 
-const RecentOrdersTable: FC<ListFaqProps> = ({ listFaq }) => {
-  const [page, setPage] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(5);
+const RecentOrdersTable: FC<ListFaqProps> = ({ listFaq, faqs, fetchData  }) => {
+  const [page, setPage] = useState<number>(faqs.currentPage);
+  const [limit, setLimit] = useState<number>(20);
 
   const handlePageChange = (event: any, newPage: number): void => {
     setPage(newPage);
+    fetchData(newPage);
   };
 
   const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -170,15 +173,15 @@ const RecentOrdersTable: FC<ListFaqProps> = ({ listFaq }) => {
         </Table>
       </TableContainer>
       <Box p={2}>
-        {/* <TablePagination
+        <TablePagination
           component="div"
-          count={filteredCryptoOrders.length}
+          count={faqs.total}
           onPageChange={handlePageChange}
           onRowsPerPageChange={handleLimitChange}
-          page={page}
+          page={faqs.currentPage}
           rowsPerPage={limit}
           rowsPerPageOptions={[5, 10, 25, 30]}
-        /> */}
+        />
       </Box>
     </Card>
   );

@@ -8,15 +8,17 @@ import { getFaqs } from 'src/services/FaqService';
 import RecentOrdersTable from './FaqTable';
 
 export default function BasicTable() {
+  const [faqs, setFaqs] = useState({});
   const [listFaq, setListFaq] = useState([]);
 
   useEffect(() => {
-    fetchData();
+    fetchData(0);
   }, []);
 
-  const fetchData = () => {
-    getFaqs().then((response) => {
+  const fetchData = (page) => {
+    getFaqs(page).then((response) => {
       setListFaq(response.data.results);
+      setFaqs(response.data);
     });
   }
 
@@ -38,7 +40,7 @@ export default function BasicTable() {
         >
           <Grid item xs={12}>
             <Card>
-              <RecentOrdersTable listFaq={listFaq} />
+              <RecentOrdersTable listFaq={listFaq} faqs={faqs} fetchData ={fetchData}/>
             </Card>
           </Grid>
         </Grid>
