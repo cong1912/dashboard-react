@@ -26,6 +26,7 @@ export interface ILecture {
   content: string;
   name: string;
   price: string;
+  order: order;
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -46,6 +47,7 @@ const Lectures = () => {
   const [name, setName] = useState('');
   const [content, setContent] = useState('');
   const [price, setPrice] = useState<number>(0);
+  const [order, setOrder] = useState<number>(0);
   const classes = useStyles();
 
   // context
@@ -56,7 +58,7 @@ const Lectures = () => {
 
   // fetch data
   const { data: lectures } = useSWR(
-    sectionId ? LECTURE_URL + `?sectionId=${sectionId}` : null,
+    sectionId ? LECTURE_URL + `?newsId=${sectionId}` : null,
     getData
   );
 
@@ -77,7 +79,8 @@ const Lectures = () => {
         name: name,
         content: content,
         sectionId: +sectionId,
-        price: +price
+        price: +price,
+        order: +order
       };
 
       await createLecture(data);
@@ -85,7 +88,7 @@ const Lectures = () => {
         type: SUCCESS_ACTION.SET_SUCCESS,
         success: 'Create Lecture Success'
       });
-      await mutate(LECTURE_URL + `?sectionId=${sectionId}`);
+      await mutate(LECTURE_URL + `?newsId=${sectionId}`);
       setOpenDialog(false);
       setContent('');
       setName('');
@@ -133,6 +136,8 @@ const Lectures = () => {
         setPrice={setPrice}
         setName={setName}
         price={price}
+        order={order}
+        setOrder={setOrder}
         name={name}
         content={content}
         requesting={requesting}

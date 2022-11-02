@@ -34,6 +34,8 @@ const CreateLectureForm = ({
   name,
   price,
   setPrice
+  order,
+  setOrder
 }) => {
   const classes = useStyles();
 
@@ -64,6 +66,18 @@ const CreateLectureForm = ({
                   setPrice(e.target.value);
                 }}
                 value={price}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                label="Order"
+                name="order"
+                type="number"
+                onChange={(e) => {
+                  setOrder(e.target.value);
+                }}
+                value={order}
               />
             </Grid>
             <Grid item xs={12}>
