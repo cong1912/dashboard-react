@@ -1,7 +1,5 @@
 import { Box, IconButton, Tooltip } from '@mui/material';
 import { Delete, Edit, Preview, Quiz } from '@mui/icons-material';
-import { COURSE_URL } from 'src/constants/url';
-import { mutate } from 'swr';
 import { useState, lazy } from 'react';
 import DeleteDialog from '../DeleteDialog';
 import { NavigateFunction, useNavigate } from 'react-router';
@@ -42,9 +40,9 @@ const ActiveCourseTable = ({ params, rowId, setRowId }) => {
             <Quiz />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Xem các sections">
+        <Tooltip title="Xem danh sách bài học">
           <IconButton
-            onClick={() => navigate(`/management/course/${params.id}/sections`)}
+            onClick={() => navigate(`/management/course/${params.id}/lectures`)}
           >
             <Preview />
           </IconButton>

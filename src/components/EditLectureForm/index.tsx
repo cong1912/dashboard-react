@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Grid, TextField, Theme, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Box } from '@mui/system';
 import {
   Dialog,
   DialogActions,
@@ -40,6 +39,7 @@ const CreateLectureForm = ({ open, setIsOpenUpdateModal, id, sectionId }) => {
   const [requesting, setRequesting] = useState(false);
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
+  const [order, setOrder] = useState('');
   const [content, setContent] = useState('');
 
   // context
@@ -61,6 +61,7 @@ const CreateLectureForm = ({ open, setIsOpenUpdateModal, id, sectionId }) => {
       setContent(lecture.content);
       setName(lecture.name);
       setPrice(lecture.price);
+      setOrder(lecture.order);
     }
   }, [lecture, id]);
 
@@ -70,8 +71,9 @@ const CreateLectureForm = ({ open, setIsOpenUpdateModal, id, sectionId }) => {
       const data = {
         name: name,
         content: content,
-        sectionId: +sectionId,
-        price: +price
+        newsId: +sectionId,
+        price: +price,
+        order: +order
       };
 
       await updateLecture(data, id);
@@ -79,7 +81,7 @@ const CreateLectureForm = ({ open, setIsOpenUpdateModal, id, sectionId }) => {
         type: SUCCESS_ACTION.SET_SUCCESS,
         success: 'Create Lecture Success'
       });
-      await mutate(LECTURE_URL + `?sectionId=${sectionId}`);
+      await mutate(LECTURE_URL + `?newsId=${sectionId}`);
       setIsOpenUpdateModal(false);
     } catch (error) {
       errorDispatch({
@@ -121,6 +123,18 @@ const CreateLectureForm = ({ open, setIsOpenUpdateModal, id, sectionId }) => {
                   setPrice(e.target.value);
                 }}
                 value={price}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                label="Order"
+                name="order"
+                type="number"
+                onChange={(e) => {
+                  setOrder(e.target.value);
+                }}
+                value={order}
               />
             </Grid>
             <Grid item xs={12}>
