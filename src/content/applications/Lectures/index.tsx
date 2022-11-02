@@ -78,7 +78,7 @@ const Lectures = () => {
       const data = {
         name: name,
         content: content,
-        sectionId: +sectionId,
+        newsId: +sectionId,
         price: +price,
         order: +order
       };
@@ -123,7 +123,7 @@ const Lectures = () => {
             {!lectures ? (
               <CircularProgress />
             ) : (
-              <LecturesTable lectures={lectures} />
+              <LecturesTable lectures={lectures} sectionId={sectionId} />
             )}
           </Grid>
         </Grid>

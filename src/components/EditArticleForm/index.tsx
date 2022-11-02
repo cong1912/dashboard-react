@@ -207,20 +207,6 @@ const EditArticleForm = ({ open, id, setIsOpenUpdateModal }) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                {/* <CKEditor
-                  config={{
-                    extraPlugins: [uploadPlugin]
-                  }}
-                  data={content}
-                  editor={ClassicEditor}
-                  onReady={(editor) => {}}
-                  onBlur={(event, editor) => {}}
-                  onFocus={(event, editor) => {}}
-                  onChange={(event, editor) => {
-                    setContent(editor.getData());
-                  }}
-                />
-                data={content} */}
                 <Timymce handleChangeContent={setContent} content={content} />
               </Grid>
               <Grid item xs={12}>

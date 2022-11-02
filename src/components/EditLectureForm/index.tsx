@@ -32,7 +32,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-const CreateLectureForm = ({ open, setIsOpenUpdateModal, id, sectionId }) => {
+const CreateLectureForm = ({
+  open,
+  setIsOpenUpdateModal,
+  id,
+  sectionId,
+  courseId
+}) => {
+  console.log('id', id, sectionId);
   const classes = useStyles();
   const [requesting, setRequesting] = useState(false);
   const [name, setName] = useState('');
@@ -52,6 +59,8 @@ const CreateLectureForm = ({ open, setIsOpenUpdateModal, id, sectionId }) => {
     getData
   );
 
+  console.log(lecture);
+
   useEffect(() => {
     if (!id || !lecture) {
       return;
@@ -69,7 +78,7 @@ const CreateLectureForm = ({ open, setIsOpenUpdateModal, id, sectionId }) => {
       const data = {
         name: name,
         content: content,
-        newsId: +sectionId,
+        sectionId: +sectionId,
         price: +price,
         order: +order
       };
@@ -79,7 +88,7 @@ const CreateLectureForm = ({ open, setIsOpenUpdateModal, id, sectionId }) => {
         type: SUCCESS_ACTION.SET_SUCCESS,
         success: 'Create Lecture Success'
       });
-      await mutate(LECTURE_URL + `?newsId=${sectionId}`);
+      await mutate(LECTURE_URL + `?newsId=${courseId}`);
       setIsOpenUpdateModal(false);
     } catch (error) {
       errorDispatch({

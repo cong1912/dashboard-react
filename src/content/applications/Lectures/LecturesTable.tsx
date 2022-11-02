@@ -6,7 +6,7 @@ import { grey } from '@mui/material/colors';
 import ActionLectureTable from 'src/components/ActionLectureTable';
 import { CircularProgress } from '@mui/material';
 
-const LecturesTable = ({ lectures }) => {
+const LecturesTable = ({ lectures, sectionId }) => {
   const [pageSize, setPageSize] = useState(lectures.pageSize);
   const [rowId, setRowId] = useState(null);
 
@@ -21,7 +21,7 @@ const LecturesTable = ({ lectures }) => {
         headerName: 'Actions',
         type: 'actions',
         renderCell: (params) => (
-          <ActionLectureTable {...{ params, rowId, setRowId }} />
+          <ActionLectureTable {...{ params, rowId, setRowId, sectionId }} />
         )
       }
     ],

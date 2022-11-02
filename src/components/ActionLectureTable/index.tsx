@@ -8,7 +8,7 @@ import { deleteLecture } from 'src/services/LecturesService';
 
 const EditLectureForm = lazy(() => import('src/components/EditLectureForm'));
 
-const ActionLectureTable = ({ params, rowId, setRowId }) => {
+const ActionLectureTable = ({ params, rowId, setRowId, sectionId }) => {
   const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [id, setId] = useState<number>();
@@ -46,6 +46,7 @@ const ActionLectureTable = ({ params, rowId, setRowId }) => {
         id={id}
         open={isOpenUpdateModal}
         sectionId={params.row.sectionId}
+        courseId={sectionId}
         setIsOpenUpdateModal={setIsOpenUpdateModal}
       />
       <DeleteDialog
