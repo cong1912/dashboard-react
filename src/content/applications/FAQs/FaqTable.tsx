@@ -39,7 +39,7 @@ interface ListFaqProps {
   fetchData: any;
 }
 
-const RecentOrdersTable: FC<ListFaqProps> = ({ listFaq, faqs, fetchData  }) => {
+const RecentOrdersTable: FC<ListFaqProps> = ({ listFaq, faqs, fetchData }) => {
   const [page, setPage] = useState<number>(faqs.currentPage);
   const [limit, setLimit] = useState<number>(20);
 
@@ -56,9 +56,7 @@ const RecentOrdersTable: FC<ListFaqProps> = ({ listFaq, faqs, fetchData  }) => {
 
   return (
     <Card>
-      <CardHeader
-        title="Recent FAQs"
-      />
+      <CardHeader title="Recent FAQs" />
       <Divider />
       <TableContainer>
         <Table>
@@ -66,7 +64,6 @@ const RecentOrdersTable: FC<ListFaqProps> = ({ listFaq, faqs, fetchData  }) => {
             <TableRow>
               <TableCell>Title</TableCell>
               <TableCell>Content</TableCell>
-              <TableCell>Type</TableCell>
               <TableCell>Image 1</TableCell>
               <TableCell>Image 2</TableCell>
               <TableCell>Created</TableCell>
@@ -76,12 +73,14 @@ const RecentOrdersTable: FC<ListFaqProps> = ({ listFaq, faqs, fetchData  }) => {
           <TableBody>
             {listFaq.map((faq) => {
               return (
-                <TableRow
-                  hover
-                  key={faq.id}
-                >
+                <TableRow hover key={faq.id}>
                   <TableCell>
-                    <Typography variant="body1" color="text.primary" fontWeight="bold" noWrap>
+                    <Typography
+                      variant="body1"
+                      color="text.primary"
+                      fontWeight="bold"
+                      noWrap
+                    >
                       {faq.title}
                     </Typography>
                   </TableCell>
@@ -97,31 +96,25 @@ const RecentOrdersTable: FC<ListFaqProps> = ({ listFaq, faqs, fetchData  }) => {
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {faq.type}
-                    </Typography>
-                    
+                    <CardMedia
+                      component="img"
+                      height="194"
+                      crossOrigin="anonymous"
+                      image={
+                        process.env.REACT_APP_API_BACK_END +
+                        faq.imgUrl1.replace('public/', '')
+                      }
+                    />
                   </TableCell>
                   <TableCell>
                     <CardMedia
                       component="img"
                       height="194"
-                      crossOrigin='anonymous'
-                      image={process.env.REACT_APP_API_BACK_END + faq.imgUrl1.replace("public/", "")}
-                    />
-                  </TableCell>
-                  <TableCell>
-                  <CardMedia
-                      component="img"
-                      height="194"
-                      crossOrigin='anonymous'
-                      image={process.env.REACT_APP_API_BACK_END + faq.imgUrl2.replace("public/", "")}
+                      crossOrigin="anonymous"
+                      image={
+                        process.env.REACT_APP_API_BACK_END +
+                        faq.imgUrl2.replace('public/', '')
+                      }
                     />
                   </TableCell>
                   <TableCell>
@@ -134,7 +127,6 @@ const RecentOrdersTable: FC<ListFaqProps> = ({ listFaq, faqs, fetchData  }) => {
                     >
                       {format(Date.parse(faq.created), 'MM-dd-yyyy')}
                     </Typography>
-                    
                   </TableCell>
                   <TableCell align="right">
                     <Tooltip title="Detail Faq" arrow>
@@ -148,7 +140,7 @@ const RecentOrdersTable: FC<ListFaqProps> = ({ listFaq, faqs, fetchData  }) => {
                         color="inherit"
                         size="small"
                         component={Link}
-                        to={'detail/'+faq.id}
+                        to={'detail/' + faq.id}
                       >
                         <EditTwoToneIcon fontSize="small" />
                       </IconButton>

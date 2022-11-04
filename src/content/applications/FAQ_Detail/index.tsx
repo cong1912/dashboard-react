@@ -2,7 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import PageHeader from './PageHeader';
-import { Box, Card, styled, Container, Modal, Dialog } from '@mui/material';
+import {
+  Box,
+  Card,
+  styled,
+  Container,
+  Modal,
+  Dialog,
+  Grid,
+  Paper,
+  Typography
+} from '@mui/material';
 
 import FaqFormModal from './FaqFormModal';
 import { getFaqDetail } from 'src/services/FaqService';
@@ -46,6 +56,14 @@ const style = {
   p: 4
 };
 
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'left',
+  color: theme.palette.text.secondary
+}));
+
 export default function FaqDetail() {
   const { id } = useParams();
   const [imgModal, setImgModal] = React.useState('');
@@ -71,15 +89,16 @@ export default function FaqDetail() {
 
   const [detailFaq, setDetailFaq] = useState<any>({});
 
-  useEffect(() => {
+  const fetchData = async () => {
     try {
-      getFaqDetail(id).then((response) => {
-        console.log(response);
+      await getFaqDetail(id).then((response) => {
         setDetailFaq(response.data);
       });
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   return (
@@ -91,6 +110,65 @@ export default function FaqDetail() {
         <PageHeader handleClickOpenDialog={handleClickOpen} />
       </PageTitleWrapper>
       <Container maxWidth="lg">
+        <Box>
+          <Grid container>
+            <Grid item xs></Grid>
+            <Grid item xs={6}>
+              <Item>
+                <Typography variant="h3" color="initial">
+                  Question
+                </Typography>
+                <Typography variant="body1" color="initial">
+                  title: {detailFaq ? detailFaq.question?.title : ''}
+                </Typography>
+                <Typography variant="body1" color="initial">
+                  content: {detailFaq ? detailFaq.question?.content : ''}
+                </Typography>
+                {detailFaq ? (
+                  <img
+                    width={60}
+                    height={60}
+                    onClick={() =>
+                      handleOpenModalImage(
+                        `${
+                          process.env.REACT_APP_API_BACK_END
+                        }${detailFaq.question?.imgUrl1.replace('public/', '')}`
+                      )
+                    }
+                    crossOrigin="anonymous"
+                    src={`${
+                      process.env.REACT_APP_API_BACK_END
+                    }${detailFaq.question?.imgUrl1.replace('public/', '')}`}
+                    loading="lazy"
+                  />
+                ) : (
+                  ''
+                )}
+                {detailFaq ? (
+                  <img
+                    width={60}
+                    height={60}
+                    onClick={() =>
+                      handleOpenModalImage(
+                        `${
+                          process.env.REACT_APP_API_BACK_END
+                        }${detailFaq.question?.imgUrl2.replace('public/', '')}`
+                      )
+                    }
+                    crossOrigin="anonymous"
+                    src={`${
+                      process.env.REACT_APP_API_BACK_END
+                    }${detailFaq.question?.imgUrl2.replace('public/', '')}`}
+                    loading="lazy"
+                  />
+                ) : (
+                  ''
+                )}
+              </Item>
+            </Grid>
+            <Grid item xs></Grid>
+          </Grid>
+        </Box>
         {detailFaq.conversations?.map((con) => {
           return (
             <Box
@@ -209,7 +287,13 @@ export default function FaqDetail() {
       </Container>
 
       {/* Dialog */}
-      {open && <FaqFormModal open={open} close={handleClose} title={detailFaq.question.title} />}
+      {open && (
+        <FaqFormModal
+          open={open}
+          close={handleClose}
+          title={detailFaq.question.title}
+        />
+      )}
       {/* End Dialog */}
 
       {/* Modal Image */}
