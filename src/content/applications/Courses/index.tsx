@@ -25,7 +25,7 @@ const CreateCourseForm = lazy(() => import('src/components/CreateCourseForm'));
 
 export interface ICourses {
   pageSize: number;
-  results: [ICourse];
+  results: ICourse[];
 }
 export interface ICourse {
   id: number;
@@ -47,6 +47,7 @@ const Courses = () => {
   const [category, setCategory] = useState<ICategory>();
   const [title, setTitle] = useState('');
   const [filterCategory, setFilterCategory] = useState<ICategory>(null);
+  const [page, setPage] = useState(0);
 
   // context
   const appContext = useContext(AppContext) as AppContextType;
@@ -58,7 +59,7 @@ const Courses = () => {
   const { data: courses } = useSWR<ICourses>(
     filterCategory
       ? COURSE_URL + `?categoryId=${filterCategory.id}`
-      : COURSE_URL,
+      : COURSE_URL + `?page=${page}`,
     getData
   );
   const { data: categories } = useSWR<ICategories>(CATEGORIES_URL, getData);
@@ -83,17 +84,17 @@ const Courses = () => {
     event.preventDefault();
     try {
       const formData = new FormData();
-      formData.append('file', image[0]);
-      formData.append('description', description);
-      formData.append('title', title);
-      formData.append('categoryId', category.id && ('1' as unknown as string));
+      formData.set('file', image[0]);
+      formData.set('description', description);
+      formData.set('title', title);
+      formData.set('categoryId', category.id && ('1' as unknown as string));
 
-      await createCourse(formData);
+      const res = await createCourse(formData);
       successDispatch({
         type: SUCCESS_ACTION.SET_SUCCESS,
         success: 'Tạo khóa học thành công'
       });
-      await mutate(COURSE_URL);
+      await mutate(COURSE_URL + `?page=${page}`);
       setOpenDialog(false);
       setDescription('');
       setTitle('');
@@ -129,6 +130,8 @@ const Courses = () => {
               <CircularProgress />
             ) : (
               <CourseTable
+                page={page}
+                setPage={setPage}
                 course={courses}
                 categories={categories}
                 filterCategory={filterCategory}

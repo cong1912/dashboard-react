@@ -126,13 +126,13 @@ const EditArticleForm = ({ open, id, setIsOpenUpdateModal }) => {
 
     try {
       const formData = new FormData();
-      formData.append('content', content);
-      formData.append('title', title);
-      formData.append('summary', summary);
-      formData.append('highlight', highlight as unknown as string);
-      if (categoriesUpdate) formData.append('categoryId', categoriesUpdate.id);
+      formData.set('content', content);
+      formData.set('title', title);
+      formData.set('summary', summary);
+      formData.set('highlight', highlight as unknown as string);
+      if (categoriesUpdate) formData.set('categoryId', categoriesUpdate.id);
       if (image[0]) {
-        formData.append('file', image[0]);
+        formData.set('file', image[0]);
       }
 
       await updateBlog(formData, id);

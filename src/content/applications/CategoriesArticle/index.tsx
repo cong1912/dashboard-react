@@ -35,6 +35,7 @@ const Categories = () => {
   const [requesting, setRequesting] = useState<boolean>(false);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [page, setPage] = useState(0);
 
   // context
   const appContext = useContext(AppContext) as AppContextType;
@@ -43,7 +44,10 @@ const Categories = () => {
   const [success, successDispatch] = successReducer;
 
   // fetch data
-  const { data: categories } = useSWR<ICategories>(ARTICLE_CATEGORY, getData);
+  const { data: categories } = useSWR<ICategories>(
+    ARTICLE_CATEGORY + `?page=${page}`,
+    getData
+  );
   // dialog create
   const handleClickOpenDialog = () => {
     setOpenDialog(true);
@@ -69,7 +73,7 @@ const Categories = () => {
         success: 'Create Answer Success'
       });
 
-      await mutate(ARTICLE_CATEGORY);
+      await mutate(ARTICLE_CATEGORY + `?page=${page}`);
       setOpenDialog(false);
       setName('');
       setDescription('');
@@ -103,7 +107,11 @@ const Categories = () => {
             {!categories ? (
               <CircularProgress />
             ) : (
-              <CategoryTable categories={categories} />
+              <CategoryTable
+                page={page}
+                setPage={setPage}
+                categories={categories}
+              />
             )}
           </Grid>
         </Grid>

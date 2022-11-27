@@ -8,7 +8,7 @@ import { deleteCategory } from 'src/services/CategoryService';
 
 const EditCategoryForm = lazy(() => import('src/components/EditCategoryForm'));
 
-const ActionCategoryTable = ({ params, rowId, setRowId }) => {
+const ActionCategoryTable = ({ params, rowId, setRowId, page }) => {
   const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [id, setId] = useState<number>();
@@ -19,7 +19,7 @@ const ActionCategoryTable = ({ params, rowId, setRowId }) => {
 
   const handelDelete = async (params) => {
     await deleteCategory(params.id);
-    location.reload();
+    await mutate(CATEGORIES_URL + `?page=${page}`);
   };
   const handleCloseDeleteDialog = () => {
     setOpenDeleteDialog(false);

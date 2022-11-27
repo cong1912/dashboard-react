@@ -1,8 +1,7 @@
 import axios from 'axios';
 
+const token = JSON.parse(localStorage.getItem('token') || 'null');
 export const createCourse = (data) => {
-  const token = JSON.parse(localStorage.getItem('token') || 'null');
-
   return axios({
     method: 'post',
     url: '/courses',
@@ -15,8 +14,6 @@ export const createCourse = (data) => {
 };
 
 export const updateCourse = (data, id) => {
-  const token = JSON.parse(localStorage.getItem('token') || 'null');
-
   return axios({
     method: 'put',
     url: `/courses/${id}`,
@@ -29,8 +26,6 @@ export const updateCourse = (data, id) => {
 };
 
 export const deleteCourse = (id) => {
-  const token = JSON.parse(localStorage.getItem('token') || 'null');
-
   return axios({
     method: 'delete',
     url: `/courses/${id}`,

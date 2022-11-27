@@ -58,7 +58,9 @@ function BlogManager() {
   console.log('content', content);
 
   const { data: articles } = useSWR<IBlogs>(
-    filterCategory ? NEWS_URL + `?categoryId=${filterCategory.id}` : NEWS_URL,
+    filterCategory
+      ? NEWS_URL + `?categoryId=${filterCategory.id}`
+      : NEWS_URL + `?page=${page}`,
     getData
   );
   const { data: categories } = useSWR<ICategories>(ARTICLE_CATEGORY, getData);
@@ -81,19 +83,19 @@ function BlogManager() {
 
     try {
       const formData = new FormData();
-      formData.append('file', image[0]);
-      formData.append('content', content);
-      formData.append('title', blog.title);
-      formData.append('summary', blog.summary);
-      formData.append('highlight', highlight as unknown as string);
-      formData.append('categoryId', category.id as unknown as string);
+      formData.set('file', image[0]);
+      formData.set('content', content);
+      formData.set('title', blog.title);
+      formData.set('summary', blog.summary);
+      formData.set('highlight', highlight as unknown as string);
+      formData.set('categoryId', category.id as unknown as string);
 
       await createBlog(formData);
       successDispatch({
         type: SUCCESS_ACTION.SET_SUCCESS,
         success: 'Create Article Success'
       });
-      await mutate(NEWS_URL);
+      await mutate(NEWS_URL + `?page=${page}`);
       setOpenDialog(false);
       setContent('');
       setBlog({
@@ -129,6 +131,8 @@ function BlogManager() {
         >
           <Grid item xs={12}>
             <BlogTable
+              page={page}
+              setPage={setPage}
               blogs={articles}
               categories={categories}
               filterCategory={filterCategory}

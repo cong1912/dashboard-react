@@ -6,7 +6,7 @@ import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Grid, Container, CircularProgress, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import Footer from 'src/components/Footer';
-import useSWR, { mutate } from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 import { LECTURE_URL } from 'src/constants/url';
 import { getData } from 'src/helpers/apiHandle';
 
@@ -29,6 +29,14 @@ export interface ILecture {
   order: string;
 }
 
+export interface ILectures {
+  currentPage: number;
+  pageSize: number;
+  total: number;
+  results: ILecture[];
+  totalPages: number;
+}
+
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     '& .MuiFormControl-root': {
@@ -41,6 +49,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const Lectures = () => {
+  const { mutate } = useSWRConfig();
   const { sectionId } = useParams() as { sectionId: string };
   const [openDialog, setOpenDialog] = useState(false);
   const [requesting, setRequesting] = useState<boolean>(false);
@@ -48,7 +57,7 @@ const Lectures = () => {
   const [content, setContent] = useState('');
   const [price, setPrice] = useState<number>(0);
   const [order, setOrder] = useState<number>(0);
-  const classes = useStyles();
+  const [page, setPage] = useState(0);
 
   // context
   const appContext = useContext(AppContext) as AppContextType;
@@ -57,10 +66,11 @@ const Lectures = () => {
   const [success, successDispatch] = successReducer;
 
   // fetch data
-  const { data: lectures } = useSWR(
+  const { data: lectures } = useSWR<ILectures>(
     sectionId ? LECTURE_URL + `?newsId=${sectionId}` : null,
     getData
   );
+  console.log();
 
   // dialog create
   const handleClickOpenDialog = () => {
@@ -120,11 +130,13 @@ const Lectures = () => {
           spacing={3}
         >
           <Grid item xs={12}>
-            {!lectures ? (
-              <CircularProgress />
-            ) : (
-              <LecturesTable lectures={lectures} sectionId={sectionId} />
-            )}
+            <LecturesTable
+              lectures={lectures}
+              // page={page}
+              // setPage={setPage}
+              data={lectures}
+              sectionId={sectionId}
+            />
           </Grid>
         </Grid>
       </Container>

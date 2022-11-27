@@ -111,12 +111,12 @@ const EditCourseForm = ({ open, id, setIsOpenUpdateModal }) => {
 
     try {
       const formData = new FormData();
-      formData.append('title', title);
-      formData.append('description', description);
+      formData.set('title', title);
+      formData.set('description', description);
       if (categoriesUpdate)
-        formData.append('categoryId', categoriesUpdate.id as unknown as string);
+        formData.set('categoryId', categoriesUpdate.id as unknown as string);
       if (image[0]) {
-        formData.append('file', image[0]);
+        formData.set('file', image[0]);
       }
 
       await updateCourse(formData, id);

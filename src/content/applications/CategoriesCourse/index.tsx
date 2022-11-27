@@ -41,9 +41,12 @@ const Categories = () => {
   const { errorsReducer, successReducer } = appContext;
   const [errors, errorDispatch] = errorsReducer;
   const [success, successDispatch] = successReducer;
-
+  const [page, setPage] = useState(0);
   // fetch data
-  const { data: categories } = useSWR<ICategories>(CATEGORIES_URL, getData);
+  const { data: categories } = useSWR<ICategories>(
+    CATEGORIES_URL + `?page=${page}`,
+    getData
+  );
   // dialog create
   const handleClickOpenDialog = () => {
     setOpenDialog(true);
@@ -69,7 +72,7 @@ const Categories = () => {
         success: 'Create Answer Success'
       });
 
-      await mutate(CATEGORIES_URL);
+      await mutate(CATEGORIES_URL + `?page=${page}`);
       setOpenDialog(false);
       setName('');
       setDescription('');
@@ -103,7 +106,11 @@ const Categories = () => {
             {!categories ? (
               <CircularProgress />
             ) : (
-              <CategoryTable categories={categories} />
+              <CategoryTable
+                page={page}
+                setPage={setPage}
+                categories={categories}
+              />
             )}
           </Grid>
         </Grid>

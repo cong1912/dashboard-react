@@ -4,10 +4,12 @@ import { useState, lazy } from 'react';
 import DeleteDialog from '../DeleteDialog';
 import { NavigateFunction, useNavigate } from 'react-router';
 import { deleteCourse } from 'src/services/CourseService';
+import { mutate } from 'swr';
+import { COURSE_URL } from 'src/constants/url';
 
 const EditCourseForm = lazy(() => import('src/components/EditCourseForm'));
 
-const ActiveCourseTable = ({ params, rowId, setRowId }) => {
+const ActiveCourseTable = ({ params, rowId, setRowId, page }) => {
   const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [id, setId] = useState<number>();
@@ -19,7 +21,7 @@ const ActiveCourseTable = ({ params, rowId, setRowId }) => {
 
   const handelDelete = async (params) => {
     await deleteCourse(params.id);
-    location.reload();
+    await mutate(COURSE_URL + `?page=${page}`);
   };
   const handleCloseDeleteDialog = () => {
     setOpenDeleteDialog(false);

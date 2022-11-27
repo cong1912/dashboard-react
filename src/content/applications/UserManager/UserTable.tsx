@@ -7,9 +7,10 @@ import Avatar from '@mui/material/Avatar';
 import ActiveUsersTable from 'src/components/ActionUsersTable';
 import { CircularProgress } from '@mui/material';
 
-const UserTable = ({ users }) => {
-  const [pageSize, setPageSize] = useState();
+const UserTable = ({ users, page, setPage }) => {
+  const [pageSize, setPageSize] = useState(20);
   const [rowId, setRowId] = useState(null);
+  const rows = users === undefined ? [] : users?.results;
   const columns = useMemo(
     () => [
       { field: 'email', headerName: 'Email', width: 400 },
@@ -74,12 +75,19 @@ const UserTable = ({ users }) => {
       </Typography>
       <DataGrid
         columns={columns}
-        rows={users.results}
+        rows={rows}
+        rowCount={users.total}
+        page={page}
         getRowId={(row) => row.id}
-        rowsPerPageOptions={[5, 10, 20]}
+        rowsPerPageOptions={[20]}
         pageSize={pageSize}
         loading={!users ? true : false}
-        // onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+        pagination
+        paginationMode="server"
+        onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+        onPageChange={(newPage) => {
+          setPage(newPage);
+        }}
         getRowSpacing={(params) => ({
           top: params.isFirstVisible ? 0 : 5,
           bottom: params.isLastVisible ? 0 : 5

@@ -8,7 +8,7 @@ import DeleteDialog from '../DeleteDialog';
 
 const EditBlogForm = lazy(() => import('src/components/EditArticleForm'));
 
-const ActiveTable = ({ params, rowId, setRowId }) => {
+const ActiveTable = ({ params, rowId, setRowId, page }) => {
   const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [id, setId] = useState<number>();
@@ -20,7 +20,7 @@ const ActiveTable = ({ params, rowId, setRowId }) => {
 
   const handelDelete = async (params) => {
     await deleteBlog(params.id);
-    location.reload();
+    await mutate(NEWS_URL + `?page=${page}`);
   };
   const handleCloseDeleteDialog = () => {
     setOpenDeleteDialog(false);

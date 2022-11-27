@@ -6,9 +6,10 @@ import { grey } from '@mui/material/colors';
 import ActionCategoryTable from 'src/components/ActionCategoryTable';
 import { CircularProgress } from '@mui/material';
 
-const CategoryTable = ({ categories }) => {
+const CategoryTable = ({ categories, page, setPage }) => {
   const [pageSize, setPageSize] = useState(categories.pageSize);
   const [rowId, setRowId] = useState(null);
+  const rows = categories === undefined ? [] : categories?.results;
 
   const columns = useMemo(
     () => [
@@ -20,7 +21,7 @@ const CategoryTable = ({ categories }) => {
         headerName: 'Actions',
         type: 'actions',
         renderCell: (params) => (
-          <ActionCategoryTable {...{ params, rowId, setRowId }} />
+          <ActionCategoryTable {...{ params, rowId, setRowId, page }} />
         )
       }
     ],
@@ -46,10 +47,17 @@ const CategoryTable = ({ categories }) => {
       <DataGrid
         columns={columns}
         loading={!categories ? true : false}
-        rows={categories.results}
+        rows={rows}
+        rowCount={categories.total}
+        page={page}
         getRowId={(row) => row.id}
-        rowsPerPageOptions={[5, 10, 20]}
+        rowsPerPageOptions={[20]}
         pageSize={pageSize}
+        pagination
+        paginationMode="server"
+        onPageChange={(newPage) => {
+          setPage(newPage);
+        }}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         getRowSpacing={(params) => ({
           top: params.isFirstVisible ? 0 : 5,

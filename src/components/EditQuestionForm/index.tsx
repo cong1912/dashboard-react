@@ -79,12 +79,12 @@ const CreateQuestionForm = ({ open, setIsOpenUpdateModal, id, newsId }) => {
     event.preventDefault();
     try {
       const formData = new FormData();
-      formData.append('content', content);
-      formData.append('title', title);
-      formData.append('newsId', +newsId as unknown as string);
+      formData.set('content', content);
+      formData.set('title', title);
+      formData.set('newsId', +newsId as unknown as string);
 
       if (image[0]) {
-        formData.append('file', image[0]);
+        formData.set('file', image[0]);
       }
 
       await updateQuestion(formData, id);

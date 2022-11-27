@@ -13,10 +13,13 @@ const BlogTable = ({
   blogs,
   categories,
   filterCategory,
-  setFilterCategory
+  setFilterCategory,
+  page,
+  setPage
 }) => {
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(blogs.pageSize);
   const [rowId, setRowId] = useState(null);
+  const rows = blogs === undefined ? [] : blogs?.results;
 
   const columns = useMemo(
     () => [
@@ -47,7 +50,9 @@ const BlogTable = ({
         field: 'actions',
         headerName: 'Actions',
         type: 'actions',
-        renderCell: (params) => <ActiveTable {...{ params, rowId, setRowId }} />
+        renderCell: (params) => (
+          <ActiveTable {...{ params, rowId, setRowId, page }} />
+        )
       }
     ],
     [rowId]
@@ -97,10 +102,17 @@ const BlogTable = ({
       </Grid>
       <DataGrid
         columns={columns}
-        rows={blogs.results}
+        rows={rows}
+        rowCount={blogs.total}
+        page={page}
         getRowId={(row) => row.id}
-        rowsPerPageOptions={[5, 10, 20]}
         pageSize={pageSize}
+        pagination
+        paginationMode="server"
+        rowsPerPageOptions={[20]}
+        onPageChange={(newPage) => {
+          setPage(newPage);
+        }}
         loading={!blogs ? true : false}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         getRowSpacing={(params) => ({

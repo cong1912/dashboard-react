@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
@@ -11,8 +11,9 @@ import { Users } from 'src/interfaces/User';
 import UserTable from './UserTable';
 
 const index = () => {
+  const [page, setPage] = useState(0);
   // fetch data
-  const { data: users } = useSWR<Users>(USERS_URL, getData);
+  const { data: users } = useSWR<Users>(USERS_URL + `?page=${page}`, getData);
 
   if (!users) return <CircularProgress />;
   return (
@@ -32,7 +33,11 @@ const index = () => {
           spacing={3}
         >
           <Grid item xs={12}>
-            {!users ? <CircularProgress /> : <UserTable users={users} />}
+            {!users ? (
+              <CircularProgress />
+            ) : (
+              <UserTable page={page} setPage={setPage} users={users} />
+            )}
           </Grid>
         </Grid>
       </Container>

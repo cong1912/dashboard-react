@@ -13,10 +13,13 @@ const CourseTable = ({
   course,
   categories,
   filterCategory,
-  setFilterCategory
+  setFilterCategory,
+  setPage,
+  page
 }) => {
   const [pageSize, setPageSize] = useState(course.pageSize);
   const [rowId, setRowId] = useState(null);
+  const rows = course === undefined ? [] : course?.results;
 
   const columns = useMemo(
     () => [
@@ -48,7 +51,7 @@ const CourseTable = ({
         headerName: 'Actions',
         type: 'actions',
         renderCell: (params) => (
-          <ActiveCourseTable {...{ params, rowId, setRowId }} />
+          <ActiveCourseTable {...{ params, rowId, setRowId, page }} />
         )
       }
     ],
@@ -100,11 +103,18 @@ const CourseTable = ({
       </Grid>
       <DataGrid
         columns={columns}
-        rows={course.results}
+        rows={rows}
+        rowCount={course.total}
+        page={page}
         getRowId={(row) => row.id}
-        rowsPerPageOptions={[5, 10, 20]}
         pageSize={pageSize}
+        pagination
+        paginationMode="server"
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+        onPageChange={(newPage) => {
+          setPage(newPage);
+        }}
+        rowsPerPageOptions={[20]}
         getRowSpacing={(params) => ({
           top: params.isFirstVisible ? 0 : 5,
           bottom: params.isLastVisible ? 0 : 5

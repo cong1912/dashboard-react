@@ -6,8 +6,10 @@ import { grey } from '@mui/material/colors';
 import ActionLectureTable from 'src/components/ActionLectureTable';
 import { CircularProgress } from '@mui/material';
 
-const LecturesTable = ({ lectures, sectionId }) => {
-  const [pageSize, setPageSize] = useState(lectures.pageSize);
+const LecturesTable = ({ lectures, sectionId, data }) => {
+  const [pageSize, setPageSize] = useState(data.pageSize);
+  const rows = lectures === undefined ? [] : lectures?.results;
+
   const [rowId, setRowId] = useState(null);
 
   const columns = useMemo(
@@ -28,7 +30,7 @@ const LecturesTable = ({ lectures, sectionId }) => {
     [rowId]
   );
 
-  if (!lectures) return <CircularProgress />;
+  // if (!lectures) return <CircularProgress />;
   return (
     <Box
       sx={{
@@ -45,9 +47,9 @@ const LecturesTable = ({ lectures, sectionId }) => {
         Danh sách bài học
       </Typography>
       <DataGrid
+        rows={rows}
         columns={columns}
         loading={!lectures ? true : false}
-        rows={lectures.results}
         getRowId={(row) => row.id}
         rowsPerPageOptions={[5, 10, 20]}
         pageSize={pageSize}

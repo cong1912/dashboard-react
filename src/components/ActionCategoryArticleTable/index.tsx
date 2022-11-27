@@ -4,10 +4,12 @@ import { useState, lazy } from 'react';
 import DeleteDialog from '../DeleteDialog';
 import EditCategoryArticleForm from '../EditCategoryArticleForm';
 import { deleteCategoryArticle } from 'src/services/CategoryArticleService';
+import { mutate } from 'swr';
+import { ARTICLE_CATEGORY } from 'src/constants/url';
 
 const EditCategoryForm = lazy(() => import('src/components/EditCategoryForm'));
 
-const ActionCategoryArticleTable = ({ params, rowId, setRowId }) => {
+const ActionCategoryArticleTable = ({ params, rowId, setRowId, page }) => {
   const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [id, setId] = useState<number>();
@@ -18,7 +20,7 @@ const ActionCategoryArticleTable = ({ params, rowId, setRowId }) => {
 
   const handelDelete = async (params) => {
     await deleteCategoryArticle(params.id);
-    location.reload();
+    await mutate(ARTICLE_CATEGORY + `?page=${page}`);
   };
   const handleCloseDeleteDialog = () => {
     setOpenDeleteDialog(false);
